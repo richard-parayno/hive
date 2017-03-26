@@ -82,15 +82,6 @@ $('#newclientsform')
             prompt : 'You must select the area type.'
           }
         ]
-      },
-      newremarks: {
-        identifier: 'newremarks',
-        rules: [
-          {
-            type   : 'empty',
-            prompt : 'You must enter the remarks.'
-          }
-        ]
       }
     }
   })
@@ -141,15 +132,6 @@ $('#oldclientsform')
           {
             type   : 'checked',
             prompt : 'You must select the area type.'
-          }
-        ]
-      },
-      oldremarks: {
-        identifier: 'oldremarks',
-        rules: [
-          {
-            type   : 'empty',
-            prompt : 'You must enter the remarks.'
           }
         ]
       }

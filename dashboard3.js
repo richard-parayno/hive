@@ -92,7 +92,7 @@ $('#ocularform')
         rules: [
           {
             type   : 'empty',
-            prompt : 'You must enter the date requested.'
+            prompt : 'You must enter the ocular date requested.'
           }
         ]
       },
@@ -101,7 +101,7 @@ $('#ocularform')
         rules: [
           {
             type   : 'empty',
-            prompt : 'You must enter the contact person.'
+            prompt : 'You must enter a contact person.'
           }
         ]
       }

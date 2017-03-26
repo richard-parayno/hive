@@ -164,17 +164,22 @@
 
           $Date = $_POST['newdate'];
           $number = $_POST['newnumber'];
-          $Remarks = $_POST['newremarks'];
+          if (isset($_POST['newremarks']))
+            $Remarks = $_POST['newremarks'];
 
           require_once('../mysql_connect.php');
 
-          $insertCustomer= "insert into customer (Name, ContactNo, Address) values('{$Name}','{$number}', '{$Area}') ";
+          $insertCustomer= "INSERT INTO customer (Name, ContactNo, Address) values('{$Name}','{$number}', '{$Area}') ";
           $result = mysqli_query($dbc,$insertCustomer);
           $getId= "Select CustomerId from customer WHERE Name='{$Name}'";
           $ew= mysqli_query($dbc, $getId);
           $rows= mysqli_fetch_array($ew,MYSQLI_ASSOC);
           $custId= $rows['CustomerId'];
-          $wq = "insert into pending_order (Job_order_type, Address, customer,  Area_type, status, employee_recieved, customerType, date) values('{$radior}','{$Area}','{$custId}','{$atype}', 'Pending', 3, 1,'{$Date}')";
+          if (isset($_POST['newremarks']))
+            $wq = "INSERT INTO pending_order (Job_order_type, Address, customer,  Area_type, status, employee_recieved, customerType, date, remarks) values('{$radior}','{$Area}','{$custId}','{$atype}', 'Pending', 3, 1,'{$Date}', '{$Remarks}')";
+          else
+            $wq = "INSERT INTO pending_order (Job_order_type, Address, customer,  Area_type, status, employee_recieved, customerType, date) values('{$radior}','{$Area}','{$custId}','{$atype}', 'Pending', 3, 1,'{$Date}')";
+            
           //,{'$Date'}
           $eww = mysqli_query($dbc, $wq);
           
@@ -199,7 +204,8 @@
 
           $Date= $_POST['olddate'];
           $Area=$_POST['oldaddress'];
-          $Remarks=$_POST['oldremarks'];
+          if (isset($_POST['oldremarks']))
+            $Remarks=$_POST['oldremarks'];
 
           $radior = $_POST['oldservicerequested'];
 
@@ -229,7 +235,10 @@
           $_SESSION['currentareatype'] = $atype; 
           $_SESSION['currentdate'] = $Date; 
 
-          $wq= "insert into pending_order (Job_order_type, Address, customer,  Area_type, status, customerType, date) values('{$radior}','{$Area}','{$old}','{$atype}', 'Pending', 2,'{$Date}')";
+          if (isset($_POST['oldremarks']))
+            $wq= "INSERT INTO pending_order (Job_order_type, Address, customer,  Area_type, status, customerType, date, remarks) values('{$radior}','{$Area}','{$old}','{$atype}', 'Pending', 2,'{$Date}', '{$Remarks}')";
+          else
+            $wq= "INSERT INTO pending_order (Job_order_type, Address, customer,  Area_type, status, customerType, date) values('{$radior}','{$Area}','{$old}','{$atype}', 'Pending', 2,'{$Date}')";
 
           $eww= mysqli_query($dbc, $wq);
           if ($req==1) {

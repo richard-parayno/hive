@@ -164,6 +164,10 @@
                     $wr= mysqli_query($dbc,$eww); 
                     $row2=mysqli_fetch_array($wr,MYSQLI_ASSOC); 
                     echo "<h4>Customer Name: </h4><p>" .$row2['Name']. "</p>";
+
+
+
+                    
                     ?>
                 </div>
               </div>
@@ -199,14 +203,15 @@
                 </div>
                  <form id="ocularform" class="ui form" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">  
                    <div class="field">
-                      <label>Date Requested:</label>
+                      <label>Ocular Date Requested (must be before date of service):</label>
                       <div class="ui calendar" id="mycalendar">
                         <div class="ui input left icon">
                           <i class="calendar icon"></i>
-                          <input type="text" name="daterequested" placeholder="Date Requested"/>
+                          <input type="text" name="daterequested" placeholder="Date Requested"/>                  
                         </div>
                       </div>
                     </div>
+                    
                     <div class = "field"> 
                       <label>Contact Person:</label>
                       <input type="text" name="contactperson" placeholder="Contact Person"/>
