@@ -16,6 +16,12 @@
   <script src="../bower_components/semantic-ui-calendar/dist/calendar.min.js"></script>
   <?php 
       ob_start(); 
+      session_start();
+      if (!isset($_SESSION['currentcustomer'])) {
+        echo "<script language='text/javascript'>alert('You must create a new general service request first!')</script>";
+        
+        header("Location: http://".$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'])."/../sales-index.php");
+      }
     ?>
 </head>
 
@@ -170,16 +176,18 @@
           if ($Atype == 'Others'){
             $Atype = $_POST['others'];
           }
+
+          $customer = $_SESSION['currentcustomer'];
+          $areatype = $_SESSION['currentareatype'];
+
        
-          $getId= "Select Address,customer, Area_type, pending_order_Id, Date from pending_order ORDER BY pending_order_Id DESC LIMIT 1"; 
+          $getId= "SELECT pending_order_Id, date FROM pending_order WHERE customer = {$customer}"; 
           $ew= mysqli_query($dbc, $getId); 
           $rows= mysqli_fetch_array($ew,MYSQLI_ASSOC); 
-          $address = $rows['Address'];
-          $areatype=$rows['Area_type'];
-          $customer= $rows['customer'];
           $pendingId= $rows['pending_order_Id'];
-          $date= $rows['Date'];
-          $wq= "insert into job_order (Startdate,enddate,CustomerId,structure_type, job_type,job_status) values({$date}','{$date}','{$customer}', '{$areatype}','General Services', 'Active')";
+          $date= $rows['date'];
+          
+          $wq= "INSERT INTO job_order (Startdate,enddate,CustomerId,structure_type, job_type,job_status) values('{$date}','{$date}','{$customer}', '{$areatype}','General Services', 'Active')";
 
           $eww= mysqli_query($dbc, $wq);
              
@@ -188,7 +196,7 @@
           $getData= mysqli_fetch_array($run,MYSQLI_ASSOC);
           $JOnumber = $getData['JOnumber'];
               
-          $inserting = "insert into general_services(JobOrder_JONumber,Service_Type,pending_order,address) values ('{$JOnumber}','{$Atype}','{$pendingId}','{$address}')"; 
+          $inserting = "INSERT INTO general_services(JobOrder_JONumber,Service_Type,pending_order) values ('{$JOnumber}','{$Atype}','{$pendingId}')"; 
           $runInsert = mysqli_query($dbc,$inserting);
 
           header("Location:  http://".$_SERVER['HTTP_HOST']. dirname($_SERVER['PHP_SELF']). "/../sales-index.php");

@@ -177,8 +177,13 @@
           $wq = "insert into pending_order (Job_order_type, Address, customer,  Area_type, status, employee_recieved, customerType, date) values('{$radior}','{$Area}','{$custId}','{$atype}', 'Pending', 3, 1,'{$Date}')";
           //,{'$Date'}
           $eww = mysqli_query($dbc, $wq);
-          if ($req == 1)
+                  
+
+          if ($req == 1) {
+            $_SESSION['currentcustomer'] = $custId;
+            $_SESSION['currentareatype'] = $atype;  
             header("Location:  http://".$_SERVER['HTTP_HOST']. dirname($_SERVER['PHP_SELF']). "/gsjoborder.php");
+          }
           elseif ($req == 2)
             header("Location:  http://".$_SERVER['HTTP_HOST']. dirname($_SERVER['PHP_SELF']). "/occular.php");
 
