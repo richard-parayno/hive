@@ -114,9 +114,83 @@
 
         <!-- Operations Dashboard START -->
         <div class="sixteen wide centered column">
-          <div class="ui center aligned basic segment">
+          <div class="ui center aligned segment">
             <h3 class="ui header">Operations Dashboard</h3>
             <div class="ui divider">
+            </div>
+            <div class="ui four column grid">
+              <!-- OCULARS W/O SUPERVISOR START -->
+              <div class="four wide column">
+                <div class="ui center aligned segment">
+                  <h5 class="ui centered header">Oculars</h5>
+                  <form class="ui form" method="POST" action="">
+                    <div class="field">
+                      <label>Select Ocular Without Supervisor</label>
+                      <select class="ui search dropdown" name="oculars">
+                        <option value="">Select Service Request Type</option>
+                        <option value="Termite Treatment">Termite Treatment</option>
+                        <option value="Household Treatment">Household Treatment</option>
+                      </select>
+                    </div>
+                    <button class="positive ui primary button" id="termite-button" name="submit1">Schedule Termite Treatment</button>
+                  </form>
+                </div>
+              </div>
+              <!-- OCULARS W/O SUPERVISOR END -->
+              <!-- TERMITE WITHOUT TEAM START -->
+              <div class="four wide column">
+                <div class="ui center aligned segment">
+                  <h5 class="ui centered header">Termite Treatment</h5>
+                  <form class="ui form" method="POST" action="">
+                    <div class="field">
+                      <label>Select Termite Treatment Without Team</label>
+                      <select class="ui search dropdown" name="oculars">
+                        <option value="">Select Service Request Type</option>
+                        <option value="Termite Treatment">Termite Treatment</option>
+                        <option value="Household Treatment">Household Treatment</option>
+                      </select>
+                    </div>
+                    <button class="positive ui primary button" id="termite-button" name="submit1">Schedule Termite Treatment</button>
+                  </form>
+                </div>
+              </div>
+              <!-- TERMITE WITHOUT TEAM END -->
+              <!-- HOUSEHOLD WITHOUT TEAM START -->
+              <div class="four wide column">
+                <div class="ui center aligned segment">
+                  <h5 class="ui centered header">Household Treatment</h5>
+                  <form class="ui form" method="POST" action="">
+                    <div class="field">
+                      <label>Select Household Treatment Without Team</label>
+                      <select class="ui search dropdown" name="oculars">
+                        <option value="">Select Service Request Type</option>
+                        <option value="Termite Treatment">Termite Treatment</option>
+                        <option value="Household Treatment">Household Treatment</option>
+                      </select>
+                    </div>
+                    <button class="positive ui primary button" id="termite-button" name="submit1">Schedule Termite Treatment</button>
+                  </form>
+                </div>
+              </div>
+              <!-- HOUSEHOLD WITHOUT TEAM END -->
+              <!-- GENERAL SERVICE WITHOUT TEAM START -->
+              <div class="four wide column">
+                <div class="ui center aligned segment">
+                  <h5 class="ui centered header">General Services</h5>
+                  <form class="ui form" method="POST" action="">
+                    <div class="field">
+                      <label>Select General Service Without Team</label>
+                      <select class="ui search dropdown" name="oculars">
+                        <option value="">Select Service Request Type</option>
+                        <option value="Termite Treatment">Termite Treatment</option>
+                        <option value="Household Treatment">Household Treatment</option>
+                      </select>
+                    </div>
+                    <button class="positive ui primary button" id="termite-button" name="submit1">Schedule Termite Treatment</button>
+                  </form>
+                </div>
+              </div>
+              <!-- GENERAL SERVICE WITHOUT TEAM END -->
             </div>
           </div>
         </div>
@@ -125,10 +199,11 @@
 
         <!-- CALENDAR START -->
         <div class="thirteen wide centered column">
-          <div class="ui center aligned basic segment">
+          <div class="ui center aligned segment">
             <h3 class="ui header">Calendar of Activities</h3>
             <div class="ui divider">
             </div>
+            
             <div id="calendar">
             </div>
           </div>

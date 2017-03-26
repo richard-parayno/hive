@@ -231,7 +231,7 @@
 
         <!-- OCULAR STATUS START -->
         <div class="sixteen wide centered column">
-          <div class="ui center aligned basic segment">
+          <div class="ui center aligned segment">
             <h3 class="ui header">Ocular Status of Service Requests</h3>
             <div class="ui divider">
             </div>
