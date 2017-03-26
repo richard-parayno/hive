@@ -163,23 +163,23 @@
         <!-- NEW CLIENTS END -->
         <?php
           if (isset($_POST['submit1'])){
-                  
-          $date= $_POST['Date'];
-          $aetype=$_POST['aetype']; 
-          $Atype= $_POST['Atype'];
-          if ($Atype == 'Others')
-            $Atype = $_POST['others'];
-
           require_once('../mysql_connect.php');
+            
+                  
+          $Atype= $_POST['Atype'];
+          if ($Atype == 'Others'){
+            $Atype = $_POST['others'];
+          }
        
-          $getId= "Select Address,customer, Area_type, pending_order_Id from pending_order ORDER BY pending_order_Id DESC LIMIT 1"; 
+          $getId= "Select Address,customer, Area_type, pending_order_Id, Date from pending_order ORDER BY pending_order_Id DESC LIMIT 1"; 
           $ew= mysqli_query($dbc, $getId); 
           $rows= mysqli_fetch_array($ew,MYSQLI_ASSOC); 
           $address = $rows['Address'];
           $areatype=$rows['Area_type'];
           $customer= $rows['customer'];
           $pendingId= $rows['pending_order_Id'];
-          $wq= "insert into job_order (AeinCharge,Startdate,enddate,CustomerId,structure_type, job_type,job_status) values('{$aetype}','{$date}','{$date}','{$customer}', '{$areatype}','General Services', 'Active')";
+          $date= $rows['Date'];
+          $wq= "insert into job_order (Startdate,enddate,CustomerId,structure_type, job_type,job_status) values({$date}','{$date}','{$customer}', '{$areatype}','General Services', 'Active')";
 
           $eww= mysqli_query($dbc, $wq);
              
@@ -203,7 +203,7 @@
               <h3 class="ui centered header">General Services Request Form</h3>
               <div class="ui divider">
               </div>
-              <form id="generalform" class="ui form" method="post" action="<?php echo htmlspecialchars($_SERVER[" PHP_SELF "]);?>">
+              <form id="generalform" class="ui form" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
                 <div class="grouped fields">
                   <div class="field">
                     <label>Job Type</label>
