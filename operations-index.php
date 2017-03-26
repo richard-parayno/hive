@@ -8,6 +8,7 @@
   <link href="bower_components/fullcalendar/dist/fullcalendar.min.css" rel="stylesheet" type="text/css" />
   <link href="bower_components/fullcalendar/dist/fullcalendar.print.css" rel="stylesheet" media="print" type="text/css" />
   <script src="bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="bower_components/chained/jquery.chained.js"></script>
   <script src="bower_components/semantic/dist/semantic.min.js"></script>
   <script src="bower_components/moment/moment.js"></script>
   <script src="bower_components/fullcalendar/dist/fullcalendar.min.js"></script>
@@ -28,6 +29,7 @@
   if ($_SESSION['currentType'] != 2) {
     header("Location: http://".$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'])."/login.php");
   }**/
+
   ?>
   <!-- SIDEBAR START -->
   <div class="ui inverted left vertical sidebar menu" id="sidebar">
@@ -125,14 +127,32 @@
                   <h5 class="ui centered header">Oculars</h5>
                   <form class="ui form" method="POST" action="">
                     <div class="field">
-                      <label>Select Ocular Without Supervisor</label>
-                      <select class="ui search dropdown" name="oculars">
+                      <label>Select Service Request Type</label>
+                      <select class="ui search dropdown" id="servicetypes" name="servicetypes">
                         <option value="">Select Service Request Type</option>
                         <option value="Termite Treatment">Termite Treatment</option>
                         <option value="Household Treatment">Household Treatment</option>
                       </select>
                     </div>
-                    <button class="positive ui primary button" id="termite-button" name="submit1">Schedule Termite Treatment</button>
+                    <div class="field">
+                      <label>Select Ocular Request Without Supervisor</label>
+                      <select class="ui search dropdown" id="oculars" name="oculars">
+                        <option value="">Select Ocular Request Without Supervisor</option>
+                        <?php
+                        require_once("mysql_connect.php");
+                        $getQuery = "SELECT Occular_ID, Job_order_type, DATE(ov.Date) as Date, Area_type, LF_At_Site
+                                       FROM occular_visits ov 
+                                       JOIN pending_order po 
+                                         ON ov.pending_order=po.pending_order_Id
+                                      WHERE SupervisedBy IS NULL";
+                        $result = mysqli_query($dbc, $getQuery);
+                        while($row=mysqli_fetch_array($result, MYSQLI_ASSOC)) {
+                          echo "<option value =\"{$row['Occular_ID']}\" class=\"{$row['Job_order_type']}\">{$row['Date']}, {$row['Area_type']}, Look for {$row['LF_At_Site']}</option>";
+                        }
+                        ?>
+                      </select>
+                    </div>
+                    <button class="positive ui primary button" id="termite-button" name="submit1">Schedule Ocular Request</button>
                   </form>
                 </div>
               </div>
@@ -144,7 +164,7 @@
                   <form class="ui form" method="POST" action="">
                     <div class="field">
                       <label>Select Termite Treatment Without Team</label>
-                      <select class="ui search dropdown" name="oculars">
+                      <select class="ui search dropdown" name="">
                         <option value="">Select Service Request Type</option>
                         <option value="Termite Treatment">Termite Treatment</option>
                         <option value="Household Treatment">Household Treatment</option>
@@ -162,7 +182,7 @@
                   <form class="ui form" method="POST" action="">
                     <div class="field">
                       <label>Select Household Treatment Without Team</label>
-                      <select class="ui search dropdown" name="oculars">
+                      <select class="ui search dropdown" name="">
                         <option value="">Select Service Request Type</option>
                         <option value="Termite Treatment">Termite Treatment</option>
                         <option value="Household Treatment">Household Treatment</option>
@@ -180,7 +200,7 @@
                   <form class="ui form" method="POST" action="">
                     <div class="field">
                       <label>Select General Service Without Team</label>
-                      <select class="ui search dropdown" name="oculars">
+                      <select class="ui search dropdown" name="">
                         <option value="">Select Service Request Type</option>
                         <option value="Termite Treatment">Termite Treatment</option>
                         <option value="Household Treatment">Household Treatment</option>
@@ -216,6 +236,7 @@
 
   <!-- MAIN CONTENT END -->
   <script src="dashboard.js"></script>
+  <script src="dashboard4.js"></script>
 
 </body>
 </html>
