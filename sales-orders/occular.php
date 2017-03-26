@@ -178,14 +178,11 @@
               		 
   						  require_once('../mysql_connect.php');
  						 
-                $getId= "SELECT Address,customer, Area_type, pending_order_Id FROM pending_order WHERE customer = {$currentcustomer} ORDER BY pending_order_Id DESC LIMIT 1"; 
+                $getId= "SELECT pending_order_Id FROM pending_order WHERE customer = {$currentcustomer} ORDER BY pending_order_Id DESC LIMIT 1"; 
                 $ew= mysqli_query($dbc, $getId); 
                 $rows= mysqli_fetch_array($ew,MYSQLI_ASSOC); 
-                $address = $rows['Address'];
-                $areatype=$rows['Area_type'];
-                $customer= $rows['customer'];
                 $pendingId= $rows['pending_order_Id'];
-  					    $wq= "insert into occular_visits (CustomerID, JobSite_Adress,Area_Type, Status,LF_At_Site, Date, pending_order) values('{$customer}','{$address}','{$areatype}','Active','{$Name}', '{$date}', '{$pendingId}')";
+  					    $wq= "insert into occular_visits (CustomerID, Status,LF_At_Site, Date, pending_order) values('{$currentcustomer}','Active','{$Name}', '{$date}', '{$pendingId}')";
  						    $eww= mysqli_query($dbc, $wq);
 
                 header("Location:  http://".$_SERVER['HTTP_HOST']. dirname($_SERVER['PHP_SELF']). "/../sales-index.php");

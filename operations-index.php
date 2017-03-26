@@ -22,12 +22,12 @@
 <body>
   <?php
   session_start();
-  if (!isset($_SESSION['currentUser'])) {
+  /**if (!isset($_SESSION['currentUser'])) {
     header("Location: http://".$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'])."/login.php");
   }
   if ($_SESSION['currentType'] != 2) {
     header("Location: http://".$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'])."/login.php");
-  }
+  }**/
   ?>
   <!-- SIDEBAR START -->
   <div class="ui inverted left vertical sidebar menu" id="sidebar">
