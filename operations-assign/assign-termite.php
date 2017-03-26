@@ -3,7 +3,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-    <title>Hive Resource Management System - View Clients</title>
+    <title>AF-Xtrim Services - View Clients</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.4/semantic.min.css" rel="stylesheet" type="text/css" />
     <link href="https://cdn.rawgit.com/mdehoog/Semantic-UI-Calendar/76959c6f7d33a527b49be76789e984a0a407350b/dist/calendar.min.css" rel="stylesheet" type="text/css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
@@ -15,26 +15,51 @@
     <!-- SIDEBAR START -->
       <div class="ui inverted left vertical sidebar menu">
         <div class="item">
+          <a class="ui logo icon image" href="#">
+            <img src="../assets/logo.png">
+          </a>
           <a href="#">
-            <b>Hive Resource Management System</b>
+            <b>AF-Xtrim Services</b>
           </a>
         </div>
+        <a class="item" href="../sales-index.php">
+          <i class="home icon"></i>
+          Sales Dashboard
+        </a>
+        <a class="item" href="../sales-orders/create-service-requests.php">
+          Create Service Requests
+        </a>
+        <a class="item" href="../sales-orders/reschedule-service-requests.php">
+          Reschedule Service Requests
+        </a>
+        <a class="item" href="../sales-chemicals/chemical.php">
+          Chemical Inventory
+        </a>
+        <a class="item" href="clients-list.php">
+          View Clients
+        </a>
         <div class="item">
           <div class="header">
-            Assign
+            Reports
           </div>
           <div class="menu">
-            <a class="item" href="assign-generalServices.php">
-              Assign General Services
+            <a class="item" href="sales-reports/termite-treatment-report.php">
+              Termite Treatment Report
             </a>
-            <a class="item" href="assign-household.php">
-              Assign Household
+            <a class="item" href="sales-reports/household-treatment-report.php">
+              Household Treatment Report
             </a>
-            <a class="item" href="assign-occular.php">
-              Assign Ocular
+            <a class="item" href="sales-reports/general-services-report.php">
+              General Services Report
             </a>
-            <a class="item" href="assign-termite.php">
-              Assign Termite
+            <a class="item" href="sales-reports/list-of-oculars-report.php">
+              List of Oculars Report
+            </a>
+            <a class="item" href="sales-reports/accomplished-oculars-report.php">
+              Accomplished Oculars Report
+            </a>
+            <a class="item" href="sales-resports/unaccomplished-oculars-report.php">
+              Unaccomplished Oculars Report
             </a>
           </div>
         </div>
@@ -55,10 +80,10 @@
                           $Employee1=$_POST['client2'];
                           $Employee2=$_POST['client3'];
                           $Employee3=$_POST['client4'];
-                            // ECHO "EMPLOYEE 3 " .$Employee3. "<br>"   ;
+                            // ECHO "EMPLOYEE 3 " .$Employee3. "<br>"   ;   
                           $AccountExecutive=$_POST['client5'];
                           $item = $_POST['item'];
-
+                          
                           if($Employee1== $_POST['client3'])
                           {
                              $message.='<p> Employee 1 and Employee 2 cannot be the SAME';
@@ -66,7 +91,7 @@
                           }
                           else
                           {
-                            $message=false;
+                            $message=false; 
                           }
                           if ($Employee1 ==$_POST['client4'])
                           {
@@ -74,17 +99,17 @@
                           }
                           else
                           {
-                            $message=false;
+                            $message=false; 
                           }
                           if ($Employee2==$_POST['client4'])
                           {
                              $message.='<p> Employee 2 and Employee 3 cannot be the SAME';
-
-
+                               
+                            
                           }
                           else
                           {
-                             $message=false;
+                             $message=false; 
                           }
                            if (empty ($_POST['amount']))
                               {
@@ -107,16 +132,16 @@
                                   $quantity=$_POST['amount'];
                                 }
                               }
-
-
+                          
+                      
                            //      echo $message."<br>";
                         // echo $message. "EMPTY PALA BRODIE";
-
+                   
                          if(empty($message)){
-
-
+                        
+                          
                           $CreateTeam = "Insert into termite_team (TTMSPIDno) value ('{$TermiteNum}')";
-                          $run2=mysqli_query($dbc,$CreateTeam);
+                          $run2=mysqli_query($dbc,$CreateTeam); 
                           $getNewTeam = "Select TeamId from termite_team order by teamId DESC LIMIT 1";
                           $run7=mysqli_query($dbc,$getNewTeam);
                           $data= mysqli_fetch_array($run3,MYSQLI_ASSOC);
@@ -143,7 +168,7 @@
                           {
                             echo $message;
                           }
-
+                     
                   } ?>
               <!-- Accept End-->
 
@@ -161,7 +186,7 @@
             <div class="right menu ">
               <a class="ui labeled item notifications">
                 Notifications
-                 
+                <div class="ui basic red circular label">10</div>
               </a>
             </div>
           </div>
@@ -203,139 +228,130 @@
                   <div class="field">
                     <label>Supervisor </label>
           <select name="client1" id="client1" class="ui search dropdown">
-            <?php
+            <?php 
                             // $toSchedule = $_SESSION['termiteocular'] ;
                               //('{$aetype}'
                           // $toSchedule = $_SESSION['termiteocular'] ;
-                          // remove $toshed=4 once session from sales-index works :)
+                          // remove $toshed=4 once session from sales-index works :) 
                        //echo "Peter is " . $age['Peter'] . " years old.";
                    // $termiteocular = $_SESSION['termiteocular'];
                    $JobOrder = 35;
                         require_once('../mysql_connect.php');
                         $getoccular= "Select * from  Job_Order where JONumber = '{ $JobOrder}'";
-                        $runquery= mysqli_query($dbc,$getoccular);
+                        $runquery= mysqli_query($dbc,$getoccular); 
                         $gettingData=mysqli_fetch_array($runquery,MYSQLI_ASSOC);
-                        $custname = "select *    from employee e where e.employeeNo not In
-                                    ( select t.employeeno from team_members t where t.teamIdNo in
-                                    (select ti.teamIdno from team ti where ti.jobOrder_No in
+                        $custname = "select *    from employee e where e.employeeNo not In 
+                                    ( select t.employeeno from team_members t where t.teamIdNo in 
+                                    (select ti.teamIdno from team ti where ti.jobOrder_No in 
                                     (select jo.joNumber from job_order jo where jo.StartDate = '{$gettingData['Date']}'))) and  e.employeeposition = 'Supervisor'";
                         $getname = mysqli_query($dbc, $custname);
                         while ($row = mysqli_fetch_array($getname,MYSQLI_ASSOC)){
                                 echo '<option value="'.$row['EmployeeNo'].'">'.$row['Name'].'</option>';
                               }
-                            $selectOption1 = $_POST['client1'];
-            ?>
+                            $selectOption1 = $_POST['client1']; 
+            ?>        
           </select>
           </div>
           <div class="field">
                     <label>employee1 </label>
           <select name="client2" id="client2" class="ui search dropdown">
-            <?php
+            <?php 
                             // $toSchedule = $_SESSION['termiteocular'] ;
                               //('{$aetype}'
                           // $toSchedule = $_SESSION['termiteocular'] ;
-                          // remove $toshed=4 once session from sales-index works :)
+                          // remove $toshed=4 once session from sales-index works :) 
                        //echo "Peter is " . $age['Peter'] . " years old.";
                    // $termiteocular = $_SESSION['termiteocular'];
                    $JobOrder = 35;
                         require_once('../mysql_connect.php');
                         $getoccular= "Select * from  Job_Order where JONumber = '{ $JobOrder}'";
-                        $runquery= mysqli_query($dbc,$getoccular);
+                        $runquery= mysqli_query($dbc,$getoccular); 
                         $gettingData=mysqli_fetch_array($runquery,MYSQLI_ASSOC);
-                        $custname = "select *    from employee e where e.employeeNo not In
-                                    ( select t.employeeno from team_members t where t.teamIdNo in
-                                    (select ti.teamIdno from team ti where ti.jobOrder_No in
-                                    (select jo.joNumber from job_order jo where jo.StartDate = '{$gettingData['Date']}'))) and  e.employeeposition = 'Worker'";
+                        $custname = "select * from employee e where e.employeeNo not In ( select t.employeeno from team_members t where t.teamIdNo in (select ti.teamIdno from team ti where ti.jobOrder_No in (select jo.joNumber from job_order jo where jo.StartDate = '{$gettingData['Date']}'))) and e.employeeposition = 'Worker' and e.employeeNo not In ( Select tt.EmployeeNo from termiteteammembers tt where tt.TermiteTeamID in (Select tti.TeamID from termite_team tti where tti.TTMSPIDno in(Select ttmsp.TTSPIDNO from termitetreatment_serviceperformance ttmsp WHERE ttmsp.date ='{$gettingData['Date']}')))";
                         $getname = mysqli_query($dbc, $custname);
                         while ($row = mysqli_fetch_array($getname,MYSQLI_ASSOC)){
                                 echo '<option value="'.$row['EmployeeNo'].'">'.$row['Name'].'</option>';
                               }
-                            $selectOption1 = $_POST['client1'];
-            ?>
+                            $selectOption1 = $_POST['client1']; 
+            ?>        
           </select>
 
                   </div>
                    <div class="field">
                     <label>employee2 </label>
           <select name="client3" id="client3" class="ui search dropdown">
-            <?php
+            <?php 
                             // $toSchedule = $_SESSION['termiteocular'] ;
                               //('{$aetype}'
                           // $toSchedule = $_SESSION['termiteocular'] ;
-                          // remove $toshed=4 once session from sales-index works :)
+                          // remove $toshed=4 once session from sales-index works :) 
                        //echo "Peter is " . $age['Peter'] . " years old.";
                    // $termiteocular = $_SESSION['termiteocular'];
                    $JobOrder = 35;
                         require_once('../mysql_connect.php');
                         $getoccular= "Select * from  Job_Order where JONumber = '{ $JobOrder}'";
-                        $runquery= mysqli_query($dbc,$getoccular);
+                        $runquery= mysqli_query($dbc,$getoccular); 
                         $gettingData=mysqli_fetch_array($runquery,MYSQLI_ASSOC);
-                        $custname = "select *    from employee e where e.employeeNo not In
-                                    ( select t.employeeno from team_members t where t.teamIdNo in
-                                    (select ti.teamIdno from team ti where ti.jobOrder_No in
-                                    (select jo.joNumber from job_order jo where jo.StartDate = '{$gettingData['Date']}'))) and  e.employeeposition = 'Worker'";
+                        $custname = "select * from employee e where e.employeeNo not In ( select t.employeeno from team_members t where t.teamIdNo in (select ti.teamIdno from team ti where ti.jobOrder_No in (select jo.joNumber from job_order jo where jo.StartDate = '{$gettingData['Date']}'))) and e.employeeposition = 'Worker' and e.employeeNo not In ( Select tt.EmployeeNo from termiteteammembers tt where tt.TermiteTeamID in (Select tti.TeamID from termite_team tti where tti.TTMSPIDno in(Select ttmsp.TTSPIDNO from termitetreatment_serviceperformance ttmsp WHERE ttmsp.date ='{$gettingData['Date']}')))";
                         $getname = mysqli_query($dbc, $custname);
                         while ($row = mysqli_fetch_array($getname,MYSQLI_ASSOC)){
                                 echo '<option value="'.$row['EmployeeNo'].'">'.$row['Name'].'</option>';
                               }
-                            $selectOption1 = $_POST['client1'];
-            ?>
+                            $selectOption1 = $_POST['client1']; 
+            ?>        
           </select>
 
                   </div>
                     <div class="field">
                     <label>employee3 </label>
           <select name="client4" id="client4" class="ui search dropdown">
-            <?php
+            <?php 
                             // $toSchedule = $_SESSION['termiteocular'] ;
                               //('{$aetype}'
                           // $toSchedule = $_SESSION['termiteocular'] ;
-                          // remove $toshed=4 once session from sales-index works :)
+                          // remove $toshed=4 once session from sales-index works :) 
                        //echo "Peter is " . $age['Peter'] . " years old.";
                    // $termiteocular = $_SESSION['termiteocular'];
                    $JobOrder = 35;
                         require_once('../mysql_connect.php');
                         $getoccular= "Select * from  Job_Order where JONumber = '{ $JobOrder}'";
-                        $runquery= mysqli_query($dbc,$getoccular);
+                        $runquery= mysqli_query($dbc,$getoccular); 
                         $gettingData=mysqli_fetch_array($runquery,MYSQLI_ASSOC);
-                        $custname = "select *    from employee e where e.employeeNo not In
-                                    ( select t.employeeno from team_members t where t.teamIdNo in
-                                    (select ti.teamIdno from team ti where ti.jobOrder_No in
-                                    (select jo.joNumber from job_order jo where jo.StartDate = '{$gettingData['Date']}'))) and  e.employeeposition = 'Worker'";
+                        $custname = "select * from employee e where e.employeeNo not In ( select t.employeeno from team_members t where t.teamIdNo in (select ti.teamIdno from team ti where ti.jobOrder_No in (select jo.joNumber from job_order jo where jo.StartDate = '{$gettingData['Date']}'))) and e.employeeposition = 'Worker' and e.employeeNo not In ( Select tt.EmployeeNo from termiteteammembers tt where tt.TermiteTeamID in (Select tti.TeamID from termite_team tti where tti.TTMSPIDno in(Select ttmsp.TTSPIDNO from termitetreatment_serviceperformance ttmsp WHERE ttmsp.date ='{$gettingData['Date']}')))"`;
                         $getname = mysqli_query($dbc, $custname);
-                        while ($row = mysqli_fetch_array($getname,MYSQLI_ASSOC)){
+                        while ($row = mysqli_fetch_array($getname,MYSQLI_ASSOC)){`
                                 echo '<option value="'.$row['EmployeeNo'].'">'.$row['Name'].'</option>';
                               }
-                            $selectOption1 = $_POST['client1'];
-            ?>
+                            $selectOption1 = $_POST['client1']; 
+            ?>        
           </select>
 
                   </div>
                   <div class="field">
                     <label>Accountant </label>
           <select name="client5" id="client5" class="ui search dropdown">
-            <?php
+            <?php 
                             // $toSchedule = $_SESSION['termiteocular'] ;
                               //('{$aetype}'
                           // $toSchedule = $_SESSION['termiteocular'] ;
-                          // remove $toshed=4 once session from sales-index works :)
+                          // remove $toshed=4 once session from sales-index works :) 
                        //echo "Peter is " . $age['Peter'] . " years old.";
                    // $termiteocular = $_SESSION['termiteocular'];
                    $JobOrder = 35;
                         require_once('../mysql_connect.php');
                         $getoccular= "Select * from  Job_Order where JONumber = '{ $JobOrder}'";
-                        $runquery= mysqli_query($dbc,$getoccular);
+                        $runquery= mysqli_query($dbc,$getoccular); 
                         $gettingData=mysqli_fetch_array($runquery,MYSQLI_ASSOC);
-                        $custname = "select *    from employee e where e.employeeNo not In
-                                    ( select t.employeeno from team_members t where t.teamIdNo in
-                                    (select ti.teamIdno from team ti where ti.jobOrder_No in
+                        $custname = "select *    from employee e where e.employeeNo not In 
+                                    ( select t.employeeno from team_members t where t.teamIdNo in 
+                                    (select ti.teamIdno from team ti where ti.jobOrder_No in 
                                     (select jo.joNumber from job_order jo where jo.StartDate = '{$gettingData['Date']}'))) and  e.employeeposition = 'Accountant'";
                         $getname = mysqli_query($dbc, $custname);
                         while ($row = mysqli_fetch_array($getname,MYSQLI_ASSOC)){
                                 echo '<option value="'.$row['EmployeeNo'].'">'.$row['Name'].'</option>';
                               }
-                            $selectOption1 = $_POST['client1'];
-            ?>
+                            $selectOption1 = $_POST['client1']; 
+            ?>        
           </select>
 
                   </div>
@@ -344,36 +360,37 @@
                       <button class="ui icon button">
                    <i class="add icon"></i>
                    </button>
-                     </label>
+                     </label> 
 
 
           <select name="item" id="item" class="ui search dropdown">
-            <?php
+            <?php 
                             // $toSchedule = $_SESSION['termiteocular'] ;
                               //('{$aetype}'
                           // $toSchedule = $_SESSION['termiteocular'] ;
-                          // remove $toshed=4 once session from sales-index works :)
+                          // remove $toshed=4 once session from sales-index works :) 
                        //echo "Peter is " . $age['Peter'] . " years old.";
                    // $termiteocular = $_SESSION['termiteocular'];
                    $JobOrder = 35;
                         require_once('../mysql_connect.php');
                         $getoccular= "Select * from  Job_Order where JONumber = '{ $JobOrder}'";
-                        $runquery= mysqli_query($dbc,$getoccular);
+                        $runquery= mysqli_query($dbc,$getoccular); 
                         $gettingData=mysqli_fetch_array($runquery,MYSQLI_ASSOC);
                         $cust = "select *    from inventory";
                         $getname = mysqli_query($dbc, $cust);
                         while ($row = mysqli_fetch_array($getname,MYSQLI_ASSOC)){
                                 echo '<option value="'.$row['ProductID'].'">'.$row['ProductName']. " - ".$row['Quantity']." pieces".'</option>';
                               }
-                           // $selectOption1 = $_POST['client1'];
-            ?>
+                           // $selectOption1 = $_POST['client1']; 
+            ?>        
           </select>
-
+                 
                   </div>
                   <div class="four wide field">
                 <label>Amount to be used</label>
                 <input type="number" name="amount" placeholder="example: 123"value="<?php if (isset($_POST['amount']) && !$flag) echo $_POST['amount']; ?>"/>
               </div>
+                  
 
 
 
@@ -381,14 +398,13 @@
 
 
 
-
-
+            
                      <div class="ui buttons">
-                 <button class="ui positive button" type = "submit" name = "accept">Accept <i class="checkmark icon"></i> </button>
+                 <button class="ui positive button" type = "submit" name = "accept">Accept <i class="checkmark icon"></i> </button> 
                 </div>
                    </form>
 
-          <!--code for QUERIES
+          <!--code for QUERIES 
            require_once('../mysql_connect.php');
                $query="select EmployeeNo, name from employee";
               $result=mysqli_query($dbc,$query);
@@ -396,11 +412,11 @@
               {
                 echo '<option value="'.$row['].'">'.$row['name'].'</option>';
               }
-           "select *    from employee e where e.employeeNo not In
-                      ( select t.employeeno from team_members t where t.teamIdNo in
-                      (select ti.teamIdno from team ti where ti.jobOrder_No in
+           "select *    from employee e where e.employeeNo not In 
+                      ( select t.employeeno from team_members t where t.teamIdNo in 
+                      (select ti.teamIdno from team ti where ti.jobOrder_No in 
                       (select jo.joNumber from job_order jo where jo.StartDate = '{$ro['Date']}'))) and  e.employeeposition = 'Worker'"  -->
-
+                 
 
               </div>
             </div>

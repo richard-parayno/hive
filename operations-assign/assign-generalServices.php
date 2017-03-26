@@ -16,7 +16,7 @@
       <div class="ui inverted left vertical sidebar menu">
         <div class="item">
           <a class="ui logo icon image" href="#">
-             
+            <img src="../assets/logo.png">
           </a>
           <a href="#">
             <b>AF-Xtrim Services</b>
@@ -182,7 +182,7 @@
             <div class="right menu ">
               <a class="ui labeled item notifications">
                 Notifications
-                 
+                <div class="ui basic red circular label">10</div>
               </a>
             </div>
           </div>

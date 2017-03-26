@@ -114,6 +114,8 @@
         </div>
         <!-- NOTIFICATION FEED END -->
 
+
+
         <!-- Operations Dashboard START -->
         <div class="sixteen wide centered column">
           <div class="ui center aligned segment">
@@ -125,7 +127,7 @@
               <div class="four wide column">
                 <div class="ui center aligned segment">
                   <h5 class="ui centered header">Oculars</h5>
-                  <form class="ui form" method="POST" action="">
+                  <form id="ocularnosupervisor" class="ui form" method="POST" action="operations-assign/assign-occular.php">
                     <div class="field">
                       <label>Select Service Request Type</label>
                       <select class="ui search dropdown" id="servicetypes" name="servicetypes">
@@ -152,7 +154,7 @@
                         ?>
                       </select>
                     </div>
-                    <button class="positive ui primary button" id="termite-button" name="submit1">Schedule Ocular Request</button>
+                    <button class="positive ui primary button" id="termite-button" name="submit1">Select Supervisor</button>
                   </form>
                 </div>
               </div>
