@@ -204,29 +204,6 @@
               <div class="ui divider">
               </div>
               <form id="generalform" class="ui form" method="post" action="<?php echo htmlspecialchars($_SERVER[" PHP_SELF "]);?>">
-                <div class="field">
-                  <label>Account Executive In Charge: </label>
-                  <select class="ui search dropdown" name="aetype">
-                    <option value=''>Select an Account Executive</option>
-                    <?php
-                      require ('../mysql_connect.php');
-                      $aeincharge = "SELECT employeeno, name FROM employee WHERE employeeposition ='Accountant'";
-                      $getAE = mysqli_query($dbc, $aeincharge);
-                      while ($row = mysqli_fetch_array($getAE,MYSQLI_ASSOC))
-                        echo '<option value="'.$row['employeeno'].'">'.$row['name'].'</option>';
-                    ?>
-                  </select>
-                </div>
-
-                <div class="field">
-                  <label>Date Available</label>
-                  <div class="ui calendar" id="mycalendar">
-                    <div class="ui input left icon">
-                      <i class="calendar icon"></i>
-                      <input type="text" name="Date" placeholder="Date">
-                    </div>
-                  </div>
-                </div>
                 <div class="grouped fields">
                   <div class="field">
                     <label>Job Type</label>
