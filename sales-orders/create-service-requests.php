@@ -170,23 +170,24 @@
 
           $insertCustomer= "insert into customer (Name, ContactNo, Address) values('{$Name}','{$number}', '{$Area}') ";
           $result = mysqli_query($dbc,$insertCustomer);
-          $getId= "Select CustomerId from customer ORDER BY CustomerId DESC LIMIT 1";
+          $getId= "Select CustomerId from customer WHERE Name='{$Name}'";
           $ew= mysqli_query($dbc, $getId);
           $rows= mysqli_fetch_array($ew,MYSQLI_ASSOC);
           $custId= $rows['CustomerId'];
           $wq = "insert into pending_order (Job_order_type, Address, customer,  Area_type, status, employee_recieved, customerType, date) values('{$radior}','{$Area}','{$custId}','{$atype}', 'Pending', 3, 1,'{$Date}')";
           //,{'$Date'}
           $eww = mysqli_query($dbc, $wq);
-                  
+          
+          $_SESSION['currentcustomer'] = $custId;
+          $_SESSION['currentareatype'] = $atype; 
+          $_SESSION['currentdate'] = $Date;           
 
           if ($req == 1) {
-            $_SESSION['currentcustomer'] = $custId;
-            $_SESSION['currentareatype'] = $atype;  
             header("Location:  http://".$_SERVER['HTTP_HOST']. dirname($_SERVER['PHP_SELF']). "/gsjoborder.php");
           }
-          elseif ($req == 2)
+          elseif ($req == 2) {
             header("Location:  http://".$_SERVER['HTTP_HOST']. dirname($_SERVER['PHP_SELF']). "/occular.php");
-
+          }
         }
         // FORM SUBMISSION 1 END
         // FORM SUBMISSION 2 START
@@ -201,6 +202,7 @@
           $Remarks=$_POST['oldremarks'];
 
           $radior = $_POST['oldservicerequested'];
+
           switch ($radior) {
             case 'General Services':
               $req = 1;
@@ -220,17 +222,22 @@
             $atype = $_POST['oldothers'];
           }
           $old= $_POST['old'];
-
+          
           require_once('../mysql_connect.php');
-          $flag=1;
-          // values ('{$Area_visited}','{$Area_Type} ','{$thecustomer} ','{$Date} ','{$Time} ','{$person} ', '{$supervisor}' , '{$callername}', 'Active')";
+
+          $_SESSION['currentcustomer'] = $old;
+          $_SESSION['currentareatype'] = $atype; 
+          $_SESSION['currentdate'] = $Date; 
+
           $wq= "insert into pending_order (Job_order_type, Address, customer,  Area_type, status, customerType, date) values('{$radior}','{$Area}','{$old}','{$atype}', 'Pending', 2,'{$Date}')";
-          //,{'$Date'}
+
           $eww= mysqli_query($dbc, $wq);
-          if ($req==1)
+          if ($req==1) {
             header("Location:  http://".$_SERVER['HTTP_HOST']. dirname($_SERVER['PHP_SELF']). "/gsjoborder.php");
-          elseif ($req==2)
+          }
+          elseif ($req==2) { 
             header("Location:  http://".$_SERVER['HTTP_HOST']. dirname($_SERVER['PHP_SELF']). "/occular.php");
+          }
         }
 
         ?>
@@ -303,7 +310,6 @@
                     <input type="text" name="newdate" placeholder="Date Requested"/>
                   </div>
                 </div>
-
               </div>
               <div class="grouped fields">
                 <div class="field">

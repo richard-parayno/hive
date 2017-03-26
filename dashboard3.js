@@ -83,3 +83,28 @@ $('#generalform')
     }
   })
 ;
+
+$('#ocularform')
+  .form({
+    fields: {
+      daterequested: {
+        identifier: 'daterequested',
+        rules: [
+          {
+            type   : 'empty',
+            prompt : 'You must enter the date requested.'
+          }
+        ]
+      },
+      contactperson: {
+        identifier: 'contactperson',
+        rules: [
+          {
+            type   : 'empty',
+            prompt : 'You must enter the contact person.'
+          }
+        ]
+      }
+    }
+  })
+;

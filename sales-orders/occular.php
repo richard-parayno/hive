@@ -3,15 +3,26 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-    <title>Hive Resource Management System - Create Service Request</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.4/semantic.min.css" rel="stylesheet" type="text/css" />
-    <link href="https://cdn.rawgit.com/mdehoog/Semantic-UI-Calendar/76959c6f7d33a527b49be76789e984a0a407350b/dist/calendar.min.css" rel="stylesheet" type="text/css" />
+    <title>Hive Resource Management System - Ocular Request Form</title>
+    <link href="../bower_components/semantic/dist/semantic.min.css" rel="stylesheet" type="text/css" />
+    <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="../bower_components/semantic/dist/semantic.min.js"></script>
+    <script src="../bower_components/fullcalendar/dist/fullcalendar.min.js"></script>
+    <link href="../bower_components/fullcalendar/dist/fullcalendar.min.css" rel="stylesheet" type="text/css" />
+    <link href="../bower_components/fullcalendar/dist/fullcalendar.print.css" rel="stylesheet" type="text/css" />
+    <script src="../bower_components/moment/moment.js"></script>
+    <link href="../bower_components/semantic-ui-calendar/dist/calendar.min.css" rel="stylesheet" type="text/css" />
+    <script src="../bower_components/semantic-ui-calendar/dist/calendar.min.js"></script>
     <?php 
     ob_start();
+    session_start();
+      if (!isset($_SESSION['currentcustomer'])) {
+        echo "<script language='text/javascript'>alert('You must create a new termite or household service request first!')</script>";
+        
+        header("Location: http://".$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'])."/../sales-index.php");
+    }
     ?>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.4/semantic.min.js"></script>
-    <script src="https://cdn.rawgit.com/mdehoog/Semantic-UI-Calendar/76959c6f7d33a527b49be76789e984a0a407350b/dist/calendar.min.js"></script>
+   
 
   </head>
   <body>
@@ -78,11 +89,20 @@
         <!-- TOP BAR START-->
         <div class="sixteen wide column">
           <div class="ui top menu">
-            <div class="ui header item launch button">
+            <div class="ui item launch button">
                 <i class="icon list layout"></i>
             </div>
             <div class="item">
               Sales and Marketing Department
+            </div>
+            <div class="item">
+              <div class="ui breadcrumb">
+                <a class="section" href="../sales-index.php">Sales Dashboard</a>
+                <i class="right angle icon divider"></i>
+                <a class="section" href="create-service-requests.php">Create Service Request</a>
+                <i class="right angle icon divider"></i>
+                <div class="active section">Ocular Request Form</div>
+              </div>
             </div>
             <div class="right menu ">
               <a class="ui labeled item notifications">
@@ -125,112 +145,77 @@
            
             <!-- CLIENT TOGGLE END -->
 
-            <div class="sixteen wide centered column new-clients">
-
-              <div class="ui basic padded segment">
-                <h3 class="ui centered header"> Client Information</h3>
+            <div class="five wide centered column">
+              <div class="ui padded segment">
+                <h3 class="ui centered header">Service Request Details</h3>
                 <div class="ui divider">
                 </div>
-                <div> 
-                <?php 
-                     require_once('../mysql_connect.php');
-                     $run = "Select * from pending_order ORDER BY pending_order_Id DESC LIMIT 1";
-                     $ew= mysqli_query($dbc, $run);
-                       while ($row = mysqli_fetch_array($ew,MYSQLI_ASSOC)){
-                       $id=$row['customer'];
-                       echo "<br><h3>Service Request Type: </h3>".$row['Job_order_type']. "</br>";
-                       echo "<br><h3>Date Requested: </h3>".$row['date']. "</br>";
-                       }
-                        $eww= "Select Name from customer where CustomerId='{$id}'";
-                        $wr= mysqli_query($dbc,$eww); 
-                        $row2=mysqli_fetch_array($wr,MYSQLI_ASSOC); 
-                        echo "<br><h3>Customer Name: </h3>" .$row2['Name']. "</br";
-
-                ?>
+                <div>
+                  <?php 
+                    require_once('../mysql_connect.php');
+                    $currentcustomer = $_SESSION['currentcustomer'];
+                    $run = "SELECT Job_order_type, date FROM pending_order WHERE customer = {$currentcustomer} ORDER BY pending_order_Id DESC LIMIT 1";
+                    $ew= mysqli_query($dbc, $run);
+                    while ($row = mysqli_fetch_array($ew,MYSQLI_ASSOC)){
+                      echo "<h4>Service Request Type: </h4><p>".$row['Job_order_type']. "</p>";
+                      echo "<h4>Date Requested: </h4><p>".$row['date']. "</p>";
+                    }
+                    $eww= "SELECT Name FROM customer WHERE CustomerId={$currentcustomer}";
+                    $wr= mysqli_query($dbc,$eww); 
+                    $row2=mysqli_fetch_array($wr,MYSQLI_ASSOC); 
+                    echo "<h4>Customer Name: </h4><p>" .$row2['Name']. "</p>";
+                    ?>
+                </div>
               </div>
             </div>
             <!-- Display Information END -->
 
              <?php
-             $flag =0;
-              if (isset($_POST['submit1'])){
-              		if (empty($_POST['Date']))
-              		{
-              			$date=false;
-              			$message.= '<p> You Forgot to choose the date for the Occular!';
-              		}
-              		else
-              		{
-                    $date= $_POST['Date'];
+              if (isset($_POST['submit1'])) {
+              		
+                $date= $_POST['daterequested'];
+                $Name= $_POST['contactperson'];
+              		 
+  						  require_once('../mysql_connect.php');
+ 						 
+                $getId= "SELECT Address,customer, Area_type, pending_order_Id FROM pending_order WHERE customer = {$currentcustomer} ORDER BY pending_order_Id DESC LIMIT 1"; 
+                $ew= mysqli_query($dbc, $getId); 
+                $rows= mysqli_fetch_array($ew,MYSQLI_ASSOC); 
+                $address = $rows['Address'];
+                $areatype=$rows['Area_type'];
+                $customer= $rows['customer'];
+                $pendingId= $rows['pending_order_Id'];
+  					    $wq= "insert into occular_visits (CustomerID, JobSite_Adress,Area_Type, Status,LF_At_Site, Date, pending_order) values('{$customer}','{$address}','{$areatype}','Active','{$Name}', '{$date}', '{$pendingId}')";
+ 						    $eww= mysqli_query($dbc, $wq);
 
-              		}
-                    if (empty($_POST['Name']))
-               {
-                 $message.='<p>you forgot to enter the Client Name!';
-                 $Name=FALSE;
-
-                }
-                 else $Name= $_POST['Name'];
-              		 if(!isset($message)){ 
-  						require_once('../mysql_connect.php');
- 						 $flag=1;
-					  // values ('{$Area_visited}','{$Area_Type} ','{$thecustomer} ','{$Date} ','{$Time} ','{$person} ', '{$supervisor}' , '{$callername}', 'Active')";
- 
- 						// $insertCustomer= "insert into customer (Name, ContactNo, Address) values('{$Name}','{$number}', '{$Area}') ";
- 						// $result = mysqli_query($dbc,$insertCustomer);
- 						 $getId= "Select Address,customer, Area_type, pending_order_Id from pending_order ORDER BY pending_order_Id DESC LIMIT 1"; 
- 					   $ew= mysqli_query($dbc, $getId); 
- 						 $rows= mysqli_fetch_array($ew,MYSQLI_ASSOC); 
-  					// $rows['CustomerId']; customer is int address is varchar areatype is varchar 
-             $address = $rows['Address'];
-             $areatype=$rows['Area_type'];
-             $customer= $rows['customer'];
-             $pendingId= $rows['pending_order_Id'];
-
-             Echo  "The address is : ". $address ;
-             Echo  "The areatype is : ". $areatype ;
-             Echo  "The customer is: ". $customer ;
-             Echo  "The pendingid: ". $pendingId ;
-             Echo  "The name is : ". $Name ;
-             Echo  "The date is : ". $date ;
-  						$wq= "insert into occular_visits (CustomerID, JobSite_Adress,Area_Type, Status,LF_At_Site, Date, pending_order) values('{$customer}','{$address}','{$areatype}','Active','{$Name}', '{$date}', '{$pendingId}')";
- 						 //,{'$Date'}
- 						 $eww= mysqli_query($dbc, $wq);
-   				
-
-             header("Location:  http://".$_SERVER['HTTP_HOST']. dirname($_SERVER['PHP_SELF']). "/../sales-index.php");
+                header("Location:  http://".$_SERVER['HTTP_HOST']. dirname($_SERVER['PHP_SELF']). "/../sales-index.php");
    
-  }
               }
+              
 
               ?>
             <!-- INput START -->
-            <div class="sixteen wide centered column existing-clients">
-              <div class="ui basic padded segment">
-                <h3 class="ui centered header">Occular</h3>
+            <div class="eleven wide centered column">
+              <div class="ui padded segment">
+                <h3 class="ui centered header">Ocular Request Form</h3>
                 <div class="ui divider">
                 </div>
-                 <form class="ui form" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">  
+                 <form id="ocularform" class="ui form" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">  
                    <div class="field">
-                      <label>Date Requested</label>
+                      <label>Date Requested:</label>
                       <div class="ui calendar" id="mycalendar">
-
                         <div class="ui input left icon">
-
-                          <!--  <input type="date" name="Date" value="<?php if (isset($_POST['Date']) && !$flag) echo $_POST['Date']; ?>"/> -->
+                          <i class="calendar icon"></i>
+                          <input type="text" name="daterequested" placeholder="Date Requested"/>
                         </div>
                       </div>
-                       <i class="calendar icon"></i>   
-                       <input type="date" name = "Date" value="<?php if (isset($_POST['Date']) && !$flag) echo $_POST['Date']; ?>"/>
                     </div>
                     <div class = "field"> 
-
-                      <div class = "eight wide field"> 
-                       <label>Looking for at Site:</label>
-                          <input type="text" name="Name" placeholder="Looking For at Site"value="<?php if (isset($_POST['Name']) && !$flag) echo $_POST['Name']; ?>"/>
-
+                      <label>Contact Person:</label>
+                      <input type="text" name="contactperson" placeholder="Contact Person"/>
                     </div>
-                  <input type="submit" name="submit1" value="Submit"> 
+                  <button class="positive ui button primary" type="submit" name="submit1">Submit</button> 
+                  <div class="ui error message"></div>
                   </form>
               </div>
             </div>
@@ -243,42 +228,8 @@
       <!-- MAIN CONTENT END -->
 
       <!-- scripts -->
-      <script>
-    
-
-      $('select.dropdown')
-        .dropdown()
-      ;
-
-
-      $('.notifications')
-        .popup({
-          popup: $('.special.popup'),
-          on: 'click',
-          position: 'bottom right'
-        })
-      ;
-
-      $('#mycalendar').calendar({
-        type: 'date',
-        
-        monthFirst: False, 
-        formater: {
-          date: function (date, settings){
-            if (!date ) return ''; 
-            var day= date.getDate();
-            var month = date.getMonth() + 1;
-            var year= date.getFullYear();
-            return year + '-'+ month +'-'+day;
-          }
-        }
-          
-      })
-      ;
-
-      $(".ui.sidebar").sidebar()
-                      .sidebar('attach events','.ui.launch.button');
-      </script>
+      <script src="../dashboard.js"></script>
+      <script src="../dashboard3.js"></script>
 
   </body>
 </html>

@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-  <title>Hive Resource Management System - Create Service Request</title>
+  <title>Hive Resource Management System - General Service Request Form</title>
   <link href="../bower_components/semantic/dist/semantic.min.css" rel="stylesheet" type="text/css" />
   <script src="../bower_components/jquery/dist/jquery.min.js"></script>
   <script src="../bower_components/semantic/dist/semantic.min.js"></script>
@@ -151,14 +151,15 @@
             <div>
               <?php 
                 require_once('../mysql_connect.php');
-                $run = "Select * from pending_order ORDER BY pending_order_Id DESC LIMIT 1";
+                $currentcustomer = $_SESSION['currentcustomer'];
+                $currentdate = $_SESSION['currentdate'];
+                $run = "SELECT Job_order_type, date FROM pending_order WHERE customer = {$currentcustomer} ORDER BY pending_order_Id DESC LIMIT 1";
                 $ew= mysqli_query($dbc, $run);
                 while ($row = mysqli_fetch_array($ew,MYSQLI_ASSOC)){
-                  $id=$row['customer'];
                   echo "<h4>Service Request Type: </h4><p>".$row['Job_order_type']. "</p>";
                   echo "<h4>Date Requested: </h4><p>".$row['date']. "</p>";
                 }
-                $eww= "Select Name from customer where CustomerId='{$id}'";
+                $eww= "SELECT Name FROM customer WHERE CustomerId='{$_SESSION['currentcustomer']}'";
                 $wr= mysqli_query($dbc,$eww); 
                 $row2=mysqli_fetch_array($wr,MYSQLI_ASSOC); 
                 echo "<h4>Customer Name: </h4><p>" .$row2['Name']. "</p>";
@@ -181,7 +182,7 @@
           $areatype = $_SESSION['currentareatype'];
 
        
-          $getId= "SELECT pending_order_Id, date FROM pending_order WHERE customer = {$customer}"; 
+          $getId= "SELECT pending_order_Id, date FROM pending_order WHERE customer = {$customer} ORDER BY pending_order_Id DESC LIMIT 1"; 
           $ew= mysqli_query($dbc, $getId); 
           $rows= mysqli_fetch_array($ew,MYSQLI_ASSOC); 
           $pendingId= $rows['pending_order_Id'];
