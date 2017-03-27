@@ -142,7 +142,7 @@
                         <option value="">Select Ocular Request Without Supervisor</option>
                         <?php
                         require_once("mysql_connect.php");
-                        $getQuery = "SELECT Occular_ID, Job_order_type, DATE(ov.Date) as Date, Area_type, LF_At_Site
+                        $getQuery = "SELECT Occular_ID, Job_order_type, DATE(ov.Date) as Date, Area_type, LF_At_Site, customer
                                        FROM occular_visits ov 
                                        JOIN pending_order po 
                                          ON ov.pending_order=po.pending_order_Id
@@ -150,11 +150,11 @@
                         $result = mysqli_query($dbc, $getQuery);
                         while($row=mysqli_fetch_array($result, MYSQLI_ASSOC)) {
                           echo "<option value =\"{$row['Occular_ID']}\" class=\"{$row['Job_order_type']}\">{$row['Date']}, {$row['Area_type']}, Look for {$row['LF_At_Site']}</option>";
-                        }
+                        }                      
                         ?>
                       </select>
                     </div>
-                    <button class="positive ui primary button" id="termite-button" name="submit1">Select Supervisor</button>
+                    <button class="positive ui primary button" type="submit" name="submit1">Assign Supervisor</button>
                   </form>
                 </div>
               </div>
@@ -163,16 +163,29 @@
               <div class="four wide column">
                 <div class="ui center aligned segment">
                   <h5 class="ui centered header">Termite Treatment</h5>
-                  <form class="ui form" method="POST" action="">
+                  <form class="ui form" method="POST" action="operations-assign/assign-termite.php">
                     <div class="field">
                       <label>Select Termite Treatment Without Team</label>
-                      <select class="ui search dropdown" name="">
-                        <option value="">Select Service Request Type</option>
-                        <option value="Termite Treatment">Termite Treatment</option>
-                        <option value="Household Treatment">Household Treatment</option>
+                      <select class="ui search dropdown" name="termite">
+                        <option value="">Select Termite Treatment Without Team</option>
+                        <?php
+                        $getQuery2 = "SELECT TTSPIDNO
+                                        FROM termitetreatment_serviceperformance ttsp
+                                        JOIN job_order jo
+                                          ON ttsp.JobORderNo=jo.JONumber
+                                        JOIN customer c
+                                          ON jo.CustomerId=c.CustomerID
+                                        JOIN termite_team tt
+                                          ON ttsp.TTSPIDNo=tt.TTMSPIDNo
+                                       ";
+                        $result2 = mysqli_query($dbc, $getQuery2);
+                        while ($row2 = mysqli_fetch_array($result2, MYSQLI_ASSOC)) {
+                          echo "<option value = \"{$row2['TTSPIDNO']}\">{$row2['Date']} - {$row2['Structure_Type']} - {$row2['Name']}</option>";
+                        }
+                        ?>
                       </select>
                     </div>
-                    <button class="positive ui primary button" id="termite-button" name="submit1">Schedule Termite Treatment</button>
+                    <button class="positive ui primary button" type="submit" name="submit2">Assign Team</button>
                   </form>
                 </div>
               </div>
@@ -181,16 +194,26 @@
               <div class="four wide column">
                 <div class="ui center aligned segment">
                   <h5 class="ui centered header">Household Treatment</h5>
-                  <form class="ui form" method="POST" action="">
+                  <form class="ui form" method="POST" action="operations-assign/assign-household.php">
                     <div class="field">
                       <label>Select Household Treatment Without Team</label>
-                      <select class="ui search dropdown" name="">
-                        <option value="">Select Service Request Type</option>
-                        <option value="Termite Treatment">Termite Treatment</option>
-                        <option value="Household Treatment">Household Treatment</option>
+                      <select class="ui search dropdown" name="household">
+                        <option value="">Select Household Treatment Without Team</option>
+                        <?php
+                        $getQuery3 = "SELECT ControlNumber
+                                        FROM householdpesttreatment hpt
+                                        JOIN job_order jo
+                                          ON hpt.JobOrder_JONumber=jo.JONumber
+                                        JOIN customer c
+                                          ON jo.CustomerId=c.CustomerId";
+                        $result3 = mysqli_query($dbc, $getQuery3);
+                        while ($row3 = mysqli_fetch_array($result3, MYSQLI_ASSOC)) {
+                          
+                        }
+                        ?>
                       </select>
                     </div>
-                    <button class="positive ui primary button" id="termite-button" name="submit1">Schedule Termite Treatment</button>
+                    <button class="positive ui primary button" type="submit" name="submit3">Assign Team</button>
                   </form>
                 </div>
               </div>
@@ -199,16 +222,21 @@
               <div class="four wide column">
                 <div class="ui center aligned segment">
                   <h5 class="ui centered header">General Services</h5>
-                  <form class="ui form" method="POST" action="">
+                  <form class="ui form" method="POST" action="operations-assign/assign-generalServices.php">
                     <div class="field">
                       <label>Select General Service Without Team</label>
-                      <select class="ui search dropdown" name="">
+                      <select class="ui search dropdown" name="generalservice">
                         <option value="">Select Service Request Type</option>
-                        <option value="Termite Treatment">Termite Treatment</option>
-                        <option value="Household Treatment">Household Treatment</option>
+                        <?php
+                        $getQuery4 = "";
+                        $result4 = mysqli_query($dbc, $getQuery4);
+                        while ($row4 = mysqli_fetch_array($result4, MYSQLI_ASSOC)) {
+                          
+                        }
+                        ?>
                       </select>
                     </div>
-                    <button class="positive ui primary button" id="termite-button" name="submit1">Schedule Termite Treatment</button>
+                    <button class="positive ui primary button" type="submit" name="submit4">Assign Team</button>
                   </form>
                 </div>
               </div>

@@ -4,17 +4,31 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-  <title>AF-Xtrim Services - View Clients</title>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.4/semantic.min.css" rel="stylesheet" type="text/css" />
-  <link href="https://cdn.rawgit.com/mdehoog/Semantic-UI-Calendar/76959c6f7d33a527b49be76789e984a0a407350b/dist/calendar.min.css"
-    rel="stylesheet" type="text/css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.4/semantic.min.js"></script>
-  <script src="https://cdn.rawgit.com/mdehoog/Semantic-UI-Calendar/76959c6f7d33a527b49be76789e984a0a407350b/dist/calendar.min.js"></script>
+  <title>Hive Resource Management System</title>
+  <link href="../bower_components/semantic/dist/semantic.min.css" rel="stylesheet" type="text/css" />
+  <link href="../bower_components/fullcalendar/dist/fullcalendar.min.css" rel="stylesheet" type="text/css" />
+  <link href="../bower_components/fullcalendar/dist/fullcalendar.print.css" rel="stylesheet" media="print" type="text/css" />
+  <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="../bower_components/chained/jquery.chained.js"></script>
+  <script src="../bower_components/semantic/dist/semantic.min.js"></script>
+  <script src="../bower_components/moment/moment.js"></script>
+  <script src="../bower_components/fullcalendar/dist/fullcalendar.min.js"></script>
+  <script src="../bower_components/fullcalendar/dist/locale-all.js"></script>
+  <link href="../bower_components/semantic-ui-calendar/dist/calendar.min.css" rel="stylesheet" type="text/css" />
+  <script src="../bower_components/semantic-ui-calendar/dist/calendar.min.js"></script>
 
 </head>
 
 <body>
+  <?php
+  ob_start();
+  session_start();
+  if (isset($_POST['oculars'])) {
+  $chosenocular = $_POST['oculars'];
+  $_SESSION['ocular'] = $chosenocular;
+  }
+
+  ?>
   <!-- SIDEBAR START -->
   <div class="ui inverted left vertical sidebar menu">
     <div class="item">
@@ -77,16 +91,24 @@
     <!-- TOP BAR START-->
     <div class="sixteen wide column">
       <div class="ui top menu">
-        <div class="ui header item launch button">
+        <div class="ui item launch button">
           <i class="icon list layout"></i>
         </div>
         <div class="item">
           Operations Department
         </div>
+        <div class="item">
+          <div class="ui breadcrumb">
+            <a class="section" href="../operations-index.php">Operations Dashboard</a>
+            <i class="right angle icon divider"></i>
+            <a class="section" href="../operations-index.php">Oculars</a>
+            <i class="right angle icon divider"></i>
+            <div class="active section">Assign Workers to Ocular</div>
+          </div>
+        </div>
         <div class="right menu ">
           <a class="ui labeled item notifications">
                 Notifications
-                <div class="ui basic red circular label">10</div>
               </a>
         </div>
       </div>
@@ -119,79 +141,98 @@
         <!-- NOTIFICATION FEED END -->
         <!-- Accept Start -->
         <?php
-                       require_once('../mysql_connect.php');
-                        $flag=0;
-                       if (isset($_POST['accept'])){
+          
+          require_once('../mysql_connect.php');
+          $flag=0;
+          if (isset($_POST['accept'])){
+            //$CallTermite = $_SESSION['chosenocular'];
+            $ocular = $_SESSION['ocular'];
+            echo $ocular;
+            $EmployeeID = $_POST['client'];
+            echo $EmployeeID;
+            $sql = "UPDATE occular_visits SET SupervisedBy='{$EmployeeID}' WHERE Occular_ID= '{$ocular}'";
+            $runquery= mysqli_query($dbc,$sql); 
 
-                          //$CallTermite = $_SESSION['termiteocular'];
-                          $CallTermite = 7;
-                          $EmployeeID = $_POST['client'];
-                          echo $EmployeeID;
-                          $sql = "UPDATE occular_visits SET SupervisedBy='{$EmployeeID}' WHERE Occular_ID= '{$CallTermite}'";
-                          $runquery= mysqli_query($dbc,$sql); 
+            header("Location:  http://".$_SERVER['HTTP_HOST']. dirname($_SERVER['PHP_SELF']). "/../operations-index.php");
 
-                  } ?>
+          } 
+        ?>
           <!-- Accept End-->
+          <div class="five wide centered column">
+            <div class="ui padded segment">
+              <h3 class="ui centered header">Ocular Details</h3>
+              <div class="ui divider">
+              </div>
+              <div>
+                <?php 
+                  require_once('../mysql_connect.php');
+                  $run = "SELECT Job_order_type, DATE(ov.Date) AS Date, ov.CustomerID AS CustomerID, c.Name AS Name, LF_At_Site  FROM pending_order po JOIN occular_visits ov ON ov.pending_order=po.pending_order_Id JOIN customer c ON ov.CustomerID=c.CustomerId WHERE Occular_ID={$chosenocular}";
+                  $ew= mysqli_query($dbc, $run);
+                  while ($row = mysqli_fetch_array($ew,MYSQLI_ASSOC)){
+                    echo "<h4>Service Request Type: </h4><p>".$row['Job_order_type']. "</p>";
+                    echo "<h4>Ocular Date Requested: </h4><p>".$row['Date']. "</p>";
+                    echo "<h4>Customer Name: </h4><p>" .$row['Name']. "</p>";
+                    echo "<h4>Looking For At Site: </h4><p>" .$row['LF_At_Site']. "</p>";
+                    
+                  }
 
+                  ?>
+              </div>
+            </div>
+          </div>
 
-          <div class="eight wide centered column">
-            <div class="ui basic padded segment">
+          <div class="eleven wide centered column">
+            <div class="ui padded segment">
               <h3 class="ui centered header">List of Employees That Can be Assigned For Occular</h3>
               <div class="ui divider">
               </div>
               <div class="ui form">
-                <form class="ui form" method="post" action="<?php echo htmlspecialchars($_SERVER[" PHP_SELF "]);?>">
+                <form class="ui form" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
                   <div class="field">
                     <label>Employees </label>
                     <select name="client" id="client" class="ui search dropdown">
-            <?php 
-                            // $toSchedule = $_SESSION['termiteocular'] ;
-                              //('{$aetype}'
-                          // $toSchedule = $_SESSION['termiteocular'] ;
-                          // remove $toshed=4 once session from sales-index works :) 
-                       //echo "Peter is " . $age['Peter'] . " years old.";
-                   // $termiteocular = $_SESSION['termiteocular'];
-                      $termiteocular = 7;
+                      <option value="">Select Employee That Can Be Assigned</option>
+                      <?php 
+                              // $toSchedule = $_SESSION['chosenocular'] ;
+                                //('{$aetype}'
+                            // $toSchedule = $_SESSION['chosenocular'] ;
+                            // remove $toshed=4 once session from sales-index works :) 
+                        //echo "Peter is " . $age['Peter'] . " years old.";
+                    // $chosenocular = $_SESSION['chosenocular'];
+                        $getQuery = "SELECT customer
+                                      FROM occular_visits ov 
+                                      JOIN pending_order po 
+                                        ON ov.pending_order=po.pending_order_Id
+                                      WHERE Occular_ID= '{$chosenocular}'";
+                        $result = mysqli_query($dbc, $getQuery);
+                        $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+
+                      
                         require_once('../mysql_connect.php');
-                        $getoccular= "Select * from  occular_visits where Occular_ID = '{$termiteocular}'";
+                        $getoccular= "Select * from  occular_visits where Occular_ID = '{$chosenocular}'";
                         $runquery= mysqli_query($dbc,$getoccular); 
                         $gettingData=mysqli_fetch_array($runquery,MYSQLI_ASSOC);
                         $custname = "select * from employee e where e.employeeNo not In ( select t.employeeno from team_members t where t.teamIdNo in (select ti.teamIdno from team ti where ti.jobOrder_No in (select jo.joNumber from job_order jo where jo.StartDate = '{$gettingData['Date']}'))) and e.employeeposition = 'Worker' and e.employeeNo not In ( Select tt.EmployeeNo from termiteteammembers tt where tt.TermiteTeamID in (Select tti.TeamID from termite_team tti where tti.TTMSPIDno in(Select ttmsp.TTSPIDNO from termitetreatment_serviceperformance ttmsp WHERE ttmsp.date ='{$gettingData['Date']}')))";
 
-                        /*"select *    from employee e where e.employeeNo not In 
-                                    ( select t.employeeno from team_members t where t.teamIdNo in 
-                                    (select ti.teamIdno from team ti where ti.jobOrder_No in 
-                                    (select jo.joNumber from job_order jo where jo.StartDate = '{$gettingData['Date']}'))) and  e.employeeposition = 'Worker'";*/
+                          /*"select *    from employee e where e.employeeNo not In 
+                                      ( select t.employeeno from team_members t where t.teamIdNo in 
+                                      (select ti.teamIdno from team ti where ti.jobOrder_No in 
+                                      (select jo.joNumber from job_order jo where jo.StartDate = '{$gettingData['Date']}'))) and  e.employeeposition = 'Worker'";*/
 
-                                    //select * from employee e where e.employeeNo not In ( select t.employeeno from team_members t where t.teamIdNo in (select ti.teamIdno from team ti where ti.jobOrder_No in (select jo.joNumber from job_order jo where jo.StartDate = '2017-03-31'))) and e.employeeposition = 'Worker' and e.employeeNo not In ( Select tt.EmployeeNo from termiteteammembers tt where tt.TermiteTeamID in (Select tti.TeamID from termite_team tti where tti.TTMSPIDno in(Select ttmsp.TTSPIDNO from termitetreatment_serviceperformance ttmsp WHERE ttmsp.date ='2017-03-31')))
+                                      //select * from employee e where e.employeeNo not In ( select t.employeeno from team_members t where t.teamIdNo in (select ti.teamIdno from team ti where ti.jobOrder_No in (select jo.joNumber from job_order jo where jo.StartDate = '2017-03-31'))) and e.employeeposition = 'Worker' and e.employeeNo not In ( Select tt.EmployeeNo from termiteteammembers tt where tt.TermiteTeamID in (Select tti.TeamID from termite_team tti where tti.TTMSPIDno in(Select ttmsp.TTSPIDNO from termitetreatment_serviceperformance ttmsp WHERE ttmsp.date ='2017-03-31')))
                         $getname = mysqli_query($dbc, $custname);
                         while ($row = mysqli_fetch_array($getname,MYSQLI_ASSOC)){
-                                echo '<option value="'.$row['EmployeeNo'].'">'.$row['Name'].'</option>';
-                              }
-                            $selectOption = $_POST['Client']; 
-            ?>        
-                  </select>
-
+                          echo '<option value="'.$row['EmployeeNo'].'">'.$row['Name'].'</option>';
+                        }
+                        $selectOption = $row['customer'];
+                    ?>        
+                    </select>
                   </div>
                   <div class="ui buttons">
 
                     <button class="ui positive button" type="submit" name="accept">Accept <i class="checkmark icon"></i> </button>
                   </div>
                 </form>
-                <!--code for QUERIES 
-           require_once('../mysql_connect.php');
-               $query="select EmployeeNo, name from employee";
-              $result=mysqli_query($dbc,$query);
-              while($row=mysqli_fetch_array($result,MYSQLI_ASSOC))
-              {
-                echo '<option value="'.$row['].'">'.$row['name'].'</option>';
-              }
-           "select *    from employee e where e.employeeNo not In 
-                      ( select t.employeeno from team_members t where t.teamIdNo in 
-                      (select ti.teamIdno from team ti where ti.jobOrder_No in 
-                      (select jo.joNumber from job_order jo where jo.StartDate = '{$ro['Date']}'))) and  e.employeeposition = 'Worker'"  -->
-
-
               </div>
             </div>
           </div>
