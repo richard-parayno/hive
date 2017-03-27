@@ -44,20 +44,20 @@
     </a>
     <div class="item">
       <div class="header">
-        Assign
+        Create Reports
       </div>
       <div class="menu">
-        <a class="item" href="operations-assign/assign-generalServices.php">
-          Assign General Services
+        <a class="item" href="/afxtrim-design/operations-createReport/household-page1.php">
+          Create Household Report
         </a>
-        <a class="item" href="operations-assign/assign-household.php">
-          Assign Household
+        <a class="item" href="/afxtrim-design/operations-createReport/termite-treatment-page1.php">
+          Create Termite Report
         </a>
         <a class="item" href="operations-assign/assign-occular.php">
-          Assign Ocular
+          Create General Services Report
         </a>
         <a class="item" href="operations-assign/assign-termite.php">
-          Assign Termite
+          Create Occular Report
         </a>
       </div>
     </div>
@@ -122,14 +122,14 @@
             <h3 class="ui header">Operations Dashboard</h3>
             <div class="ui divider">
             </div>
-            <div class="ui four column grid">
+            <div class="ui four column doubling stackable grid container">
               <!-- OCULARS W/O SUPERVISOR START -->
               <div class="four wide column">
                 <div class="ui center aligned segment">
                   <h5 class="ui centered header">Oculars</h5>
                   <form id="ocularnosupervisor" class="ui form" method="POST" action="operations-assign/assign-occular.php">
                     <div class="field">
-                      <label>Select Service Request Type</label>
+                      <label>Service Request Type</label>
                       <select class="ui search dropdown" id="servicetypes" name="servicetypes">
                         <option value="">Select Service Request Type</option>
                         <option value="Termite Treatment">Termite Treatment</option>
@@ -137,12 +137,12 @@
                       </select>
                     </div>
                     <div class="field">
-                      <label>Select Ocular Request Without Supervisor</label>
+                      <label>Ocular Request Without Supervisor</label>
                       <select class="ui search dropdown" id="oculars" name="oculars">
                         <option value="">Select Ocular Request Without Supervisor</option>
                         <?php
                         require_once("mysql_connect.php");
-                        $getQuery = "SELECT Occular_ID, Job_order_type, DATE(ov.Date) as Date, Area_type, LF_At_Site, customer
+                        $getQuery = "SELECT Occular_ID, Job_order_type, DATE(ov.Date) AS Date, Area_type, LF_At_Site, customer
                                        FROM occular_visits ov 
                                        JOIN pending_order po 
                                          ON ov.pending_order=po.pending_order_Id
@@ -155,6 +155,7 @@
                       </select>
                     </div>
                     <button class="positive ui primary button" type="submit" name="submit1">Assign Supervisor</button>
+                    <div class="ui error message"></div>
                   </form>
                 </div>
               </div>
@@ -163,21 +164,20 @@
               <div class="four wide column">
                 <div class="ui center aligned segment">
                   <h5 class="ui centered header">Termite Treatment</h5>
-                  <form class="ui form" method="POST" action="operations-assign/assign-termite.php">
+                  <form id="termitenoteam" class="ui form" method="POST" action="operations-assign/assign-termite.php">
                     <div class="field">
-                      <label>Select Termite Treatment Without Team</label>
+                      <label>Termite Treatment Without Team</label>
                       <select class="ui search dropdown" name="termite">
                         <option value="">Select Termite Treatment Without Team</option>
                         <?php
-                        $getQuery2 = "SELECT TTSPIDNO
+                        $getQuery2 = "SELECT TTSPIDNO, Date, Structure_Type, Name
                                         FROM termitetreatment_serviceperformance ttsp
                                         JOIN job_order jo
                                           ON ttsp.JobORderNo=jo.JONumber
                                         JOIN customer c
                                           ON jo.CustomerId=c.CustomerID
                                         JOIN termite_team tt
-                                          ON ttsp.TTSPIDNo=tt.TTMSPIDNo
-                                       ";
+                                          ON ttsp.TTSPIDNo=tt.TTMSPIDNo";
                         $result2 = mysqli_query($dbc, $getQuery2);
                         while ($row2 = mysqli_fetch_array($result2, MYSQLI_ASSOC)) {
                           echo "<option value = \"{$row2['TTSPIDNO']}\">{$row2['Date']} - {$row2['Structure_Type']} - {$row2['Name']}</option>";
@@ -185,7 +185,8 @@
                         ?>
                       </select>
                     </div>
-                    <button class="positive ui primary button" type="submit" name="submit2">Assign Team</button>
+                    <button class="positive ui primary button" type="submit" name="submit2">Assign Termite Team</button>
+                    <div class="ui error message"></div>
                   </form>
                 </div>
               </div>
@@ -194,13 +195,13 @@
               <div class="four wide column">
                 <div class="ui center aligned segment">
                   <h5 class="ui centered header">Household Treatment</h5>
-                  <form class="ui form" method="POST" action="operations-assign/assign-household.php">
+                  <form id="householdnoteam" class="ui form" method="POST" action="operations-assign/assign-household.php">
                     <div class="field">
-                      <label>Select Household Treatment Without Team</label>
+                      <label>Household Treatment Without Team</label>
                       <select class="ui search dropdown" name="household">
                         <option value="">Select Household Treatment Without Team</option>
                         <?php
-                        $getQuery3 = "SELECT ControlNumber
+                        $getQuery3 = "SELECT ControlNumber, DATE(StartDate) AS StartDate, DATE(EndDate) AS EndDate, Structure_Type, Name
                                         FROM householdpesttreatment hpt
                                         JOIN job_order jo
                                           ON hpt.JobOrder_JONumber=jo.JONumber
@@ -208,12 +209,13 @@
                                           ON jo.CustomerId=c.CustomerId";
                         $result3 = mysqli_query($dbc, $getQuery3);
                         while ($row3 = mysqli_fetch_array($result3, MYSQLI_ASSOC)) {
-                          
+                         echo "<option value = \"{$row3['ControlNumber']}\">{$row3['StartDate']} to {$row3['EndDate']} - {$row3['Structure_Type']} - {$row3['Name']}</option>";
                         }
                         ?>
                       </select>
                     </div>
-                    <button class="positive ui primary button" type="submit" name="submit3">Assign Team</button>
+                    <button class="positive ui primary button" type="submit" name="submit3">Assign Household Team</button>
+                    <div class="ui error message"></div>                    
                   </form>
                 </div>
               </div>
@@ -222,21 +224,29 @@
               <div class="four wide column">
                 <div class="ui center aligned segment">
                   <h5 class="ui centered header">General Services</h5>
-                  <form class="ui form" method="POST" action="operations-assign/assign-generalServices.php">
+                  <form id="gsnoteam" class="ui form" method="POST" action="operations-assign/assign-generalServices.php">
                     <div class="field">
-                      <label>Select General Service Without Team</label>
+                      <label>General Service Without Team</label>
                       <select class="ui search dropdown" name="generalservice">
                         <option value="">Select Service Request Type</option>
                         <?php
-                        $getQuery4 = "";
+                        $getQuery4 = "SELECT GeneralServiceID, Area_type, Name, date
+                                        FROM general_services gs
+                                        JOIN job_order jo
+                                          ON gs.JobOrder_JONumber=jo.JONumber
+                                        JOIN pending_order po
+                                          ON gs.pending_order=po.pending_order_Id
+                                        JOIN customer c
+                                          ON jo.CustomerId=c.CustomerId";
                         $result4 = mysqli_query($dbc, $getQuery4);
                         while ($row4 = mysqli_fetch_array($result4, MYSQLI_ASSOC)) {
-                          
+												  echo "<option value = \"{$row4['GeneralServiceID']}\">{$row4['date']} - {$row4['Area_type']} - {$row4['Name']}</option>";
                         }
                         ?>
                       </select>
                     </div>
-                    <button class="positive ui primary button" type="submit" name="submit4">Assign Team</button>
+                    <button class="positive ui primary button" type="submit" name="submit4">Assign General Team</button>
+                    <div class="ui error message"></div>
                   </form>
                 </div>
               </div>
@@ -266,7 +276,7 @@
 
   <!-- MAIN CONTENT END -->
   <script src="dashboard.js"></script>
-  <script src="dashboard4.js"></script>
+  <script src="dashboard5.js"></script>
 
 </body>
 </html>

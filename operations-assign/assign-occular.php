@@ -24,59 +24,41 @@
   ob_start();
   session_start();
   if (isset($_POST['oculars'])) {
-  $chosenocular = $_POST['oculars'];
-  $_SESSION['ocular'] = $chosenocular;
+    $chosenocular = $_POST['oculars'];
+    $_SESSION['ocular'] = $chosenocular;
+  }
+  else {
+    header("Location:  http://".$_SERVER['HTTP_HOST']. dirname($_SERVER['PHP_SELF']). "/../operations-index.php");
   }
 
   ?>
   <!-- SIDEBAR START -->
   <div class="ui inverted left vertical sidebar menu">
     <div class="item">
-      <a class="ui logo icon image" href="#">
-        <img src="../assets/logo.png">
-      </a>
       <a href="#">
-        <b>AF-Xtrim Services</b>
+        <b>Hive Resource Management System</b>
       </a>
     </div>
-    <a class="item" href="../sales-index.php">
-      <i class="home icon"></i> Sales Dashboard
+    <a class="item" href="../operations-index.php">
+      <i class="home icon"></i> Operations Dashboard
     </a>
-    <a class="item" href="../sales-orders/create-service-requests.php">
-          Create Service Requests
-        </a>
-    <a class="item" href="../sales-orders/reschedule-service-requests.php">
-          Reschedule Service Requests
-        </a>
-    <a class="item" href="../sales-chemicals/chemical.php">
-          Chemical Inventory
-        </a>
-    <a class="item" href="clients-list.php">
-          View Clients
-        </a>
     <div class="item">
       <div class="header">
-        Reports
+        Create Report
       </div>
       <div class="menu">
-        <a class="item" href="sales-reports/termite-treatment-report.php">
-              Termite Treatment Report
-            </a>
-        <a class="item" href="sales-reports/household-treatment-report.php">
-              Household Treatment Report
-            </a>
-        <a class="item" href="sales-reports/general-services-report.php">
-              General Services Report
-            </a>
-        <a class="item" href="sales-reports/list-of-oculars-report.php">
-              List of Oculars Report
-            </a>
-        <a class="item" href="sales-reports/accomplished-oculars-report.php">
-              Accomplished Oculars Report
-            </a>
-        <a class="item" href="sales-resports/unaccomplished-oculars-report.php">
-              Unaccomplished Oculars Report
-            </a>
+        <a class="item" href="/../operations-createReport/household-page1.php">
+          Create Household Report
+        </a>
+        <a class="item" href="/../operations-createReport/termite-treatment-page1.php">
+          Create Termite Report
+        </a>
+        <a class="item" href="#">
+          Create General Services Report
+        </a>
+        <a class="item" href="#">
+          Create Occular Report
+        </a>
       </div>
     </div>
     <a class="item" href="../login.php">
@@ -145,7 +127,6 @@
           require_once('../mysql_connect.php');
           $flag=0;
           if (isset($_POST['accept'])){
-            //$CallTermite = $_SESSION['chosenocular'];
             $ocular = $_SESSION['ocular'];
             echo $ocular;
             $EmployeeID = $_POST['client'];
@@ -193,12 +174,6 @@
                     <select name="client" id="client" class="ui search dropdown">
                       <option value="">Select Employee That Can Be Assigned</option>
                       <?php 
-                              // $toSchedule = $_SESSION['chosenocular'] ;
-                                //('{$aetype}'
-                            // $toSchedule = $_SESSION['chosenocular'] ;
-                            // remove $toshed=4 once session from sales-index works :) 
-                        //echo "Peter is " . $age['Peter'] . " years old.";
-                    // $chosenocular = $_SESSION['chosenocular'];
                         $getQuery = "SELECT customer
                                       FROM occular_visits ov 
                                       JOIN pending_order po 
@@ -214,12 +189,6 @@
                         $gettingData=mysqli_fetch_array($runquery,MYSQLI_ASSOC);
                         $custname = "select * from employee e where e.employeeNo not In ( select t.employeeno from team_members t where t.teamIdNo in (select ti.teamIdno from team ti where ti.jobOrder_No in (select jo.joNumber from job_order jo where jo.StartDate = '{$gettingData['Date']}'))) and e.employeeposition = 'Worker' and e.employeeNo not In ( Select tt.EmployeeNo from termiteteammembers tt where tt.TermiteTeamID in (Select tti.TeamID from termite_team tti where tti.TTMSPIDno in(Select ttmsp.TTSPIDNO from termitetreatment_serviceperformance ttmsp WHERE ttmsp.date ='{$gettingData['Date']}')))";
 
-                          /*"select *    from employee e where e.employeeNo not In 
-                                      ( select t.employeeno from team_members t where t.teamIdNo in 
-                                      (select ti.teamIdno from team ti where ti.jobOrder_No in 
-                                      (select jo.joNumber from job_order jo where jo.StartDate = '{$gettingData['Date']}'))) and  e.employeeposition = 'Worker'";*/
-
-                                      //select * from employee e where e.employeeNo not In ( select t.employeeno from team_members t where t.teamIdNo in (select ti.teamIdno from team ti where ti.jobOrder_No in (select jo.joNumber from job_order jo where jo.StartDate = '2017-03-31'))) and e.employeeposition = 'Worker' and e.employeeNo not In ( Select tt.EmployeeNo from termiteteammembers tt where tt.TermiteTeamID in (Select tti.TeamID from termite_team tti where tti.TTMSPIDno in(Select ttmsp.TTSPIDNO from termitetreatment_serviceperformance ttmsp WHERE ttmsp.date ='2017-03-31')))
                         $getname = mysqli_query($dbc, $custname);
                         while ($row = mysqli_fetch_array($getname,MYSQLI_ASSOC)){
                           echo '<option value="'.$row['EmployeeNo'].'">'.$row['Name'].'</option>';

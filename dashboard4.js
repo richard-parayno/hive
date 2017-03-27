@@ -43,29 +43,5 @@ $('#generalform')
   })
 ;
 
-$('#ocularnosupervisor')
-  .form({
-    fields: {
-      daterequested: {
-        servicetypes: 'servicetypes',
-        rules: [
-          {
-            type   : 'empty',
-            prompt : 'You must choose the service type.'
-          }
-        ]
-      },
-      oculars: {
-        identifier: 'oculars',
-        rules: [
-          {
-            type   : 'empty',
-            prompt : 'You must select an ocular request.'
-          }
-        ]
-      }
-    }
-  })
-;
 
 

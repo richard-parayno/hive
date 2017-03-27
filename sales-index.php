@@ -235,7 +235,7 @@
             <h3 class="ui header">Ocular Status of Service Requests</h3>
             <div class="ui divider">
             </div>
-            <div class="ui two column grid">
+            <div class="ui two column stackable doubling grid container">
               <!-- TERMITE OCULARS START -->
               <div class="eight wide column">
                 <div class="ui center aligned segment">
