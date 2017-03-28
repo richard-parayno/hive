@@ -56,7 +56,7 @@
               Create General Services Report
             </a>
         <a class="item" href="occular-page1.php">
-              Create Occular Report
+              Create Ocular Report
             </a>
       </div>
     </div>

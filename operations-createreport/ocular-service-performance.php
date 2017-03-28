@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-  <title>AF-Xtrim Services - Create Service Request</title>
+  <title>Hive Resource Management System</title>
   <link href="../bower_components/semantic/dist/semantic.min.css" rel="stylesheet" type="text/css" />
   <script src="../bower_components/jquery/dist/jquery.min.js"></script>
   <script src="../bower_components/semantic/dist/semantic.min.js"></script>
@@ -17,6 +17,8 @@
   <?php
     ob_start();
     session_start();
+    if (isset($_GET['pk']))
+      $_SESSION['pk'] = $_GET['pk'];
     ?>
 </head>
 
@@ -28,7 +30,7 @@
         <b class="centered">Hive Resource Management System</b>
       </a>
     </div>
-    <a class="item" href="operations-index.php">
+    <a class="item" href="../operations-index.php">
       <i class="home icon"></i> Operations Dashboard
     </a>
     <div class="item">
@@ -46,7 +48,7 @@
               Create General Services Report
             </a>
         <a class="item" href="occular-page1.php">
-              Create Occular Report
+              Create Ocular Report
             </a>
       </div>
     </div>
@@ -112,180 +114,97 @@
         <!-- NOTIFICATION FEED END -->
         <!-- FORM SUBMITTION 1 START-->
         <?php
+          require_once('../mysql_connect.php');
+          if (isset($_POST['submit1'])){
 
-  $flag=0;
-  if (isset($_POST['submit1'])){
+            $findings= $_POST['Findings'];
 
-  $message=NULL;
+            $size=$_POST['size'];
+            $radior= $_POST['radior'];
+                
+            $Remarks=$_POST['remarks'];
+            $radior1 = $_POST['radior1'];
+            $occular = $_SESSION['pk']; 
+            $update = "UPDATE occular_visits set Status = 'Accomplished', Area_Size ='{$size}' , Remarks= '{$Remarks}', Findings= '{$findings}', Recommendation= '{$radior}', Area_Infection = '{$radior1}'  where Occular_ID = '{$occular}'";
+            $run = mysqli_query($dbc,$update);
 
-  /*type of structure here*/
-   if (empty($_POST['Findings']))
-   {
-    $message.='<p>you forgot to enter the Client Name!';
-    $findings=FALSE;
-
-   }
-   else $findings= $_POST['Findings'];
-
-   if (empty($_POST['size']))
-   {
-    $size=FALSE;
-    $message.='<p>You forgot to Enter the Area Size!';
-   }else
-    $size=$_POST['size'];
-   if (empty($_POST['radior']))
-   {
-    $radior=FALSE;
-    $req = false;
-
-    $message.= '<p> You Forgot to choose a Type of Service Requested!';
-   }
-   elseif ($_POST['radior']== "Termite Treatment")
-     {
-
-      $radior= $_POST['radior'];
-       $req=2;
-
-     }
-
-     elseif ($_POST['radior'] == "Household Services")
-     {
-        $radior= $_POST['radior'];
-         
-
-     }
-  
-
-  
-
-   if (empty($_POST['remarks'])){
-    $Remarks=FALSE;
-    $message.='<p>You forgot to input the remarks!';
-   }else
-    $Remarks=$_POST['remarks'];
-   if (empty($_POST['radior1']))
-   {
-   $radior1=FALSE;
-    
-
-    $message.= '<p> You Forgot to choose the degree of infestation!';
-   }
-   else $radior1 = $_POST['radior1'];
-
-  if(!isset($message)){
-  require_once('../mysql_connect.php');
-  $flag=1;
-    // $Occular= $_SESSION['occular_id'];
-  
-      $occular = $_GET['pk']; 
-      echo "Size: " .$occular."<br>";
-      $update = "UPDATE occular_visits set Status = 'Accomplished', Area_Size ='{$size}' , Remarks= '{$Remarks}', Findings= '{$findings}', Recommendation= '{$radior}', Area_Infection = '{$radior1}'  where Occular_ID = '{$occular}'";
-      //UPDATE occular_visits set Status = 'Accomplished', Area_Size ='123' , Remarks= 'asd', Findings= 'asdada', Recommendation= 'Termite Treatment' where Occular_ID = '5'
-      $run = mysqli_query($dbc,$update);
-// $minusInventory= "UPDATE inventory set quantity= quantity-'{$quantity}' where ProductID = '{$item}'";
-
-  // values ('{$Area_visited}','{$Area_Type} ','{$thecustomer} ','{$Date} ','{$Time} ','{$person} ', '{$supervisor}' , '{$callername}', 'Active')";
-
-  }
-}
-// FORM SUBMISSION 1 END
-// FORM SUBMISSION 2 START
+            header("Location: http://".$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'])."/../operations-index.php");
 
 
-
-
-  
-
-            ?>
+          }
+        ?>
           <!-- NEW CLIENTS START -->
 
           <!-- CLIENT TOGGLE START -->
 
           <!-- CLIENT TOGGLE END -->
 
-          <div class="sixteen wide centered column">
+          <div class="eight wide centered column">
 
             <div class="ui padded segment">
-              <h3 class="ui centered header">Occular Report</h3>
+              <h3 class="ui centered header">Ocular Report</h3>
               <div class="ui divider">
               </div>
-              <form class="ui form" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+              <form id="ocularreport" class="ui form" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
                 <div class="field">
-                  <div class="fields">
-                    <div class="two wide field">
-                      <label>Area Size</label>
-                      <input type="number" name="size" placeholder="Area SIze" value="<?php if (isset($_POST['size']) && !$flag) echo $_POST['size']; ?>"
-                      />
-                    </div>
-
-                  </div>
+                  <label>Area Size</label>
+                  <input type="number" name="size" placeholder="Area Size"/>
                 </div>
                 <div class="field">
                   <label>Findings</label>
-                  <div class="fields">
-                    <div class="fourteen wide field">
-                      <input type="text" name="Findings" placeholder="Address Line 1" value="<?php if (isset($_POST['Findings']) && !$flag) echo $_POST['Findings']; ?>"
-                      />
+                  <input type="text" name="Findings" placeholder="Findings"/>
+                </div>
+                <div class="field">
+                  <label>Remarks</label>
+                  <input type="text" name="remarks" placeholder="Remarks"/>
+                </div>
+
+                <div class="grouped fields">
+                  <div class="field">
+                    <label>Recommendation</label>
+                    <div class="ui radio checkbox">
+                      <input type="radio" name="radior" value="Termite Treatment">
+                      <label>Termite Treatment</label>
                     </div>
-
                   </div>
-                </div>
-                <div class="field">
-                  <div class="fields">
-                    <div class="fourteen wide field">
-                      <label>Remarks</label>
-                      <input type="text" name="remarks" placeholder="Remarks" value="<?php if (isset($_POST['remarks']) && !$flag) echo $_POST['remarks']; ?>"
-                      />
+                  <div class="field">
+                    <div class="ui radio checkbox">
+                      <input type="radio" name="radior" value="Household Services">
+                      <label>Household Service</label>
                     </div>
-
                   </div>
                 </div>
-
-                <div class="field">
-                  <label>Recommendation</label>
-                  <div class="ui radio checkbox">
-                    <input type="radio" name="radior" <?php if (isset($radior) && $radior=="Termite Treatment" ) echo "checked";?>                    value="Termite Treatment">
-                    <label>Termite Treatment</label>
+                <div class="grouped fields">
+                  <div class="field">
+                    <label>Degree of Area Infection</label>
+                    <div class="ui radio checkbox">
+                      <input type="radio" name="radior1" value="Heavy">
+                      <label>Heavy</label>
+                    </div>
                   </div>
-                  <br></br>
-                  <div class="ui radio checkbox">
-                    <input type="radio" name="radior" <?php if (isset($radior) && $radior=="Household Services" ) echo "checked";?>                    value="Household Services">
-                    <label>Household Service</label>
+                  <div class="field">
+                    <div class="ui radio checkbox">
+                      <input type="radio" name="radior1" value="Medium">
+                      <label>Medium</label>
+                    </div>
                   </div>
-                  <br> </br>
-
-                </div>
-                <div class="field">
-                  <label>Degree of Area Infection</label>
-                  <div class="ui radio checkbox">
-                    <input type="radio" name="radior1" <?php if (isset($radior) && $radior=="Heavy" ) echo "checked";?> value="Heavy">
-                    <label>Heavy</label>
+                  <div class="field">
+                    <div class="ui radio checkbox">
+                      <input type="radio" name="radior1" value="Light">
+                      <label>Light</label>
+                    </div>
                   </div>
-                  <br></br>
-                  <div class="ui radio checkbox">
-                    <input type="radio" name="radior1" <?php if (isset($radior) && $radior=="Medium" ) echo "checked";?>                    value="Medium">
-                    <label>Medium</label>
-                  </div>
-                  <br> </br>
-                  <div class="ui radio checkbox">
-                    <input type="radio" name="radior1" <?php if (isset($radior) && $radior=="Light" ) echo "checked";?> value="Light">
-                    <label>Light</label>
-                  </div>
-                  <br> </br>
-
                 </div>
 
 
                 <button class="positive ui right labeled icon button" name="submit1">
-                            <i class="check icon"></i>
-                            Done
-                          </button>
-
+                  <i class="check icon"></i>
+                  Done
+                </button>
+                <div class="ui error message"></div>
               </form>
             </div>
           </div>
-          <!-- NEW CLIENTS END  <input type="submit" name="submit" value="Submit1"> -->
-
       </div>
     </div>
   </div>
@@ -295,6 +214,7 @@
 
   <!-- scripts -->
   <script src="../dashboard.js"></script>
+  <script src="../dashboard7.js"></script>
 
 </body>
 

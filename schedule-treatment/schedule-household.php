@@ -211,7 +211,7 @@
       echo "<br>";
       echo "<b>Area Size:     </b>" .$getData['Area_Size'];
       echo "<br>";  
-      echo "<b>Looking For at Site: </b>" .$getData['LF_At_Site'];
+      echo "<b>Contact Person: </b>" .$getData['LF_At_Site'];
       echo "<br>";  
       echo "<b> Remarks: </b>" .$getData['Remarks'];
       echo "<br>";  

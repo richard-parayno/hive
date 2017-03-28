@@ -47,3 +47,18 @@ $('#termite')
     }
   })
 ;
+$('#assignocular')
+  .form({
+    fields: {
+      client: {
+        identifier: 'client',
+        rules: [
+          {
+            type   : 'empty',
+            prompt : 'You must choose a someone to do the ocular.'
+          }
+        ]
+      }
+    }
+  })
+;

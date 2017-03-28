@@ -147,14 +147,18 @@
               <div>
                 <?php 
                   require_once('../mysql_connect.php');
-                  $run = "SELECT Job_order_type, DATE(ov.Date) AS Date, ov.CustomerID AS CustomerID, c.Name AS Name, LF_At_Site  FROM pending_order po JOIN occular_visits ov ON ov.pending_order=po.pending_order_Id JOIN customer c ON ov.CustomerID=c.CustomerId WHERE Occular_ID={$chosenocular}";
+                  $run = "SELECT Job_order_type, DATE(ov.Date) AS Date, ov.CustomerID AS CustomerID, c.Name AS Name, LF_At_Site  
+                            FROM pending_order po 
+                            JOIN occular_visits ov 
+                              ON ov.pending_order=po.pending_order_Id 
+                            JOIN customer c 
+                              ON ov.CustomerID=c.CustomerId WHERE Occular_ID={$chosenocular}";
                   $ew= mysqli_query($dbc, $run);
                   while ($row = mysqli_fetch_array($ew,MYSQLI_ASSOC)){
-                    echo "<h4>Service Request Type: </h4><p>".$row['Job_order_type']. "</p>";
-                    echo "<h4>Ocular Date Requested: </h4><p>".$row['Date']. "</p>";
-                    echo "<h4>Customer Name: </h4><p>" .$row['Name']. "</p>";
-                    echo "<h4>Looking For At Site: </h4><p>" .$row['LF_At_Site']. "</p>";
-                    
+                    echo "<p><b>Service Request Type:</b> ".$row['Job_order_type']. "</p>";
+                    echo "<p><b>Ocular Date Requested:</b> ".$row['Date']. "</p>";
+                    echo "<p><b>Customer Name:</b> " .$row['Name']. "</p>";
+                    echo "<p><b>Contact Person:</b> " .$row['LF_At_Site']. "</p>";
                   }
 
                   ?>
@@ -164,15 +168,15 @@
 
           <div class="eleven wide centered column">
             <div class="ui padded segment">
-              <h3 class="ui centered header">List of Employees That Can be Assigned For Occular</h3>
+              <h3 class="ui centered header">List of Employees that can be assigned for Ocular Inspection</h3>
               <div class="ui divider">
               </div>
               <div class="ui form">
-                <form class="ui form" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+                <form id="assignocular" class="ui form" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
                   <div class="field">
                     <label>Employees </label>
                     <select name="client" id="client" class="ui search dropdown">
-                      <option value="">Select Employee That Can Be Assigned</option>
+                      <option value="">Select Employee</option>
                       <?php 
                         $getQuery = "SELECT customer
                                       FROM occular_visits ov 
@@ -198,9 +202,9 @@
                     </select>
                   </div>
                   <div class="ui buttons">
-
-                    <button class="ui positive button" type="submit" name="accept">Accept <i class="checkmark icon"></i> </button>
+                    <button class="ui positive button" type="submit" name="accept">Assign <i class="checkmark icon"></i> </button>
                   </div>
+                  <div class="ui error message"></div>
                 </form>
               </div>
             </div>
@@ -212,6 +216,7 @@
 
     <!-- scripts -->
     <script src="../dashboard.js"></script>
+    <script src="../dashboard6.js"></script>
 
 </body>
 

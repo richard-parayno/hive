@@ -18,14 +18,14 @@
   <?php
   ob_start();
   session_start();
-  /*
+  
   if (!isset($_SESSION['currentUser'])) {
     header("Location: http://".$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'])."/login.php");
   }
   if ($_SESSION['currentType'] != 1) {
     header("Location: http://".$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'])."/login.php");
   }
-  */
+  
   ?>
 </head>
 <body>
@@ -55,7 +55,7 @@
           Create General Services Report
         </a>
         <a class="item" href="assign-termite.php">
-          Create Occular Report
+          Create Ocular Report
         </a>
       </div>
     </div>

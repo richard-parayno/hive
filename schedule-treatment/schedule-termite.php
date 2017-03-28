@@ -19,6 +19,10 @@
   <?php 
     ob_start();
     session_start();
+    if (isset($_POST['termiteoculars'])) 
+      $_SESSION['termiteoculars'] = $_POST['termiteoculars'];
+    if (isset($_POST['initialtreattermite']))
+      $_SESSION['initialtreattermite'] = $_POST['initialtreattermite'];
     ?>
 </head>
 
@@ -96,7 +100,7 @@
               <i class="right angle icon divider"></i>
               <a class="section" href="../sales-index.php">Schedule Termite Treatment</a>
               <i class="right angle icon divider"></i>
-              <div class="active section">Schedule Termite Treatment</div>
+              <div class="active section">Confirm Termite Treatment</div>
             </div>
           </div>
           <div class="right menu ">
@@ -134,64 +138,55 @@
           <!-- NOTIFICATION FEED END -->
           <!-- accept Button -->
           <?php
-        		$flag=0;
-			if (isset($_POST['accept'])){
-       require_once('../mysql_connect.php');
-				 $toSchedule = $_POST['termiteoculars'] ;
-			//	$toSchedule =4;
-        $query="Select * from occular_visits where occular_id = '{$toSchedule}' ";
-				$wer =  mysqli_query($dbc,$query); 
-				$roww= mysqli_fetch_array($wer, MYSQLI_ASSOC);  
-				$callername= $roww['CustomerID']; 
-				
-				$callername= $roww['CustomerID']; 	
-        $getAreaType = "Select Area_type from pending_order where pending_order_id = '{$roww['pending_order']}'";
-        $run= mysqli_query($dbc,$getAreaType);
-        $getIt=mysqli_fetch_array($run,MYSQLI_ASSOC);
-        $stype= $getIt['Area_type'];
-			
-				$dateTimeclass =  new DateTime ($_POST['initialtreattermite']);
-        $endDate= new DateTime ($_POST['initialtreattermite']);
-        $dateTimeclass->format('Y-m-d');
-        $endDate->format('Y-m-d');
-        $datetrial = new DateInterval('P1Y');  	
-				$endDate->add($datetrial); 
-				$counter=0;
-				$datetrial = new DateInterval('P1Y');  	
-				$endDate->add($datetrial); 
-				$query="insert into job_order (StartDate,EndDate,CustomerId,occular_id,structure_type,job_type, job_status) values ('{$dateTimeclass->format('Y-m-d')}','{$endDate->format('Y-m-d')}','{$callername}', '{$toSchedule}', '{$stype}', 'Termite Treatment', 'Ongoing')";
-				$result=mysqli_query($dbc,$query);
-				$jon= " select JONumber FROM  job_order ORDER BY JONumber DESC LIMIT 1";
-				$placejon= mysqli_query($dbc, $jon); 
-				$thisjon= mysqli_fetch_array($placejon, MYSQLI_ASSOC); 
-				$lastJO= $thisjon['JONumber'];	
-				$query2= " insert into termitetreatment_serviceperformance (JobORderNo,Date) values ('{$lastJO}','{$dateTimeclass->format('Y-m-d')}')"; 
-				$ew= mysqli_query($dbc,$query2);  
-				$counter = 0;
-				while ($dateTimeclass < $endDate and $counter < 12)
-				{
-				  $counter = $counter +1;
-				  $datetri = new DateInterval('P30D');
-				  $dateTimeclass->add($datetri);  
-				  $query4= "insert into termitetreatment_serviceperformance (JobORderNo,Date) values ('{$lastJO}','{$dateTimeclass->format('Y-m-d')}')";
-				  $work= mysqli_query($dbc,$query4); 
-}
-			}
-
-
-        	?>
-            <!-- accept Button end -->
-            <!-- Cancel Button -->
-            <?php
-        		if (isset($_POST['cancel'])){
+            if (isset($_POST['accept'])) {
+              require_once('../mysql_connect.php');
+              $toSchedule = $_SESSION['termiteoculars'] ;
+            
+              $query="Select * from occular_visits where occular_id = '{$toSchedule}' ";
+              $wer =  mysqli_query($dbc,$query); 
+              $roww= mysqli_fetch_array($wer, MYSQLI_ASSOC);  
+              $callername= $roww['CustomerID']; 
+              
+              $callername= $roww['CustomerID']; 	
+              $getAreaType = "Select Area_type from pending_order where pending_order_id = '{$roww['pending_order']}'";
+              $run= mysqli_query($dbc,$getAreaType);
+              $getIt=mysqli_fetch_array($run,MYSQLI_ASSOC);
+              $stype= $getIt['Area_type'];
+            
+              $dateTimeclass =  new DateTime ($_SESSION['initialtreattermite']);
+              $endDate= new DateTime ($_SESSION['initialtreattermite']);
+              $dateTimeclass->format('Y-m-d');
+              $endDate->format('Y-m-d');
+              $datetrial = new DateInterval('P1Y');  	
+              $endDate->add($datetrial); 
+              $counter=0;
+              $datetrial = new DateInterval('P1Y');  	
+              $endDate->add($datetrial); 
+              $query="insert into job_order (StartDate,EndDate,CustomerId,occular_id,structure_type,job_type, job_status) values ('{$dateTimeclass->format('Y-m-d')}','{$endDate->format('Y-m-d')}','{$callername}', '{$toSchedule}', '{$stype}', 'Termite Treatment', 'Ongoing')";
+              $result=mysqli_query($dbc,$query);
+              $jon= " select JONumber FROM  job_order ORDER BY JONumber DESC LIMIT 1";
+              $placejon= mysqli_query($dbc, $jon); 
+              $thisjon= mysqli_fetch_array($placejon, MYSQLI_ASSOC); 
+              $lastJO= $thisjon['JONumber'];	
+              $query2= " insert into termitetreatment_serviceperformance (JobORderNo,Date) values ('{$lastJO}','{$dateTimeclass->format('Y-m-d')}')"; 
+              $ew= mysqli_query($dbc,$query2);  
+              $counter = 0;
+              while ($dateTimeclass < $endDate and $counter < 12) {
+                $counter = $counter +1;
+                $datetri = new DateInterval('P30D');
+                $dateTimeclass->add($datetri);  
+                $query4= "insert into termitetreatment_serviceperformance (JobORderNo,Date) values ('{$lastJO}','{$dateTimeclass->format('Y-m-d')}')";
+                $work= mysqli_query($dbc,$query4); 
+              }
         			header("Location:  http://".$_SERVER['HTTP_HOST']. dirname($_SERVER['PHP_SELF']). "/../sales-index.php");
-
-        		}
-
+              
+            }
+        		if (isset($_POST['cancel']))
+        			header("Location:  http://".$_SERVER['HTTP_HOST']. dirname($_SERVER['PHP_SELF']). "/../sales-index.php");
         	?>
               <!-- Cancel Button end -->
               <!-- CONFIRM SCHEDULE START -->
-              <div class="sixteen wide centered column">
+              <div class="eight wide centered column">
                 <div class="ui center aligned segment">
                   <div class="ui horizontal divider">
                     Ocular Report Details
@@ -201,7 +196,7 @@
                     //('{$aetype}'
                     // $toSchedule = $_SESSION['termiteocular'] ;
                     // remove $toshed=4 once session from sales-index works :) 
-                    $toSchedule = $_POST['termiteoculars']; 
+                    $toSchedule = $_SESSION['termiteoculars']; 
                     $query="Select * from occular_visits where occular_id = '{$toSchedule}' "; 
                     $run =  mysqli_query($dbc,$query);	
                     $getData=mysqli_fetch_array($run,MYSQLI_ASSOC);
@@ -221,7 +216,7 @@
                     echo "<br>";
                     echo "<b>Area Size:     </b>" .$getData['Area_Size'];
                     echo "<br>";	
-                    echo "<b>Looking For at Site: </b>" .$getData['LF_At_Site'];
+                    echo "<b>Contact Person: </b>" .$getData['LF_At_Site'];
                     echo "<br>";	
                     echo "<b> Remarks: </b>" .$getData['Remarks'];
                     echo "<br>";	
@@ -231,44 +226,42 @@
                     $run3=mysqli_query($dbc,$getEmployee);
                     $getdata3=mysqli_fetch_array($run3,MYSQLI_ASSOC);
                     echo "<b>Occular Representative: </b>" .$getdata3['Name'];
-                    echo "<br>";
                   ?>
                   <br> </br>
 
                   <div class="ui horizontal divider">
-                    <h3 class="ui header">Termite Treatment Schedule Details</h3>
+                    Termite Treatment Schedule Details
                   </div>
                   <form class="ui form" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
                     <?php 
-              		 $toSchedule = new DateTime ($_POST['initialtreattermite']);
-              		  $endDate= new DateTime($_POST['initialtreattermite']);
-              		 // $toSchedule  = new DateTime("2018-12-01 00:00:00");
-                  // $endDate= new DateTime("2019-12-01 00:00:00");
-              		  //$dt = new DateTime("2015-11-01 00:00:00"
-              		  $toSchedule->format('Y-m-d');
-              		  $endDate->format('Y-m-d');
-              		  $datetrial = new DateInterval('P1Y');  	
-					  $endDate->add($datetrial); 
-					  $counter=0;
+                      $toSchedule = new DateTime ($_SESSION['initialtreattermite']);
+                      $endDate= new DateTime($_SESSION['initialtreattermite']);
+                      $toSchedule  = new DateTime("2018-12-01 00:00:00");
+                      $endDate= new DateTime("2019-12-01 00:00:00");
+                      $toSchedule->format('Y-m-d');
+                      $endDate->format('Y-m-d');
+                      $datetrial = new DateInterval('P1Y');  	
+		                  $endDate->add($datetrial); 
+		                  $counter=0;
 
-					  echo "<b> the End Date is </b>".$endDate->format('m-d-Y')	;
-						  echo "<br>";
+					            
 
-						   echo "<b> Termite Treatment # 1 is at </b>".$toSchedule->format('m-d-Y');
-						   echo "<br>";
+						          echo "<b> Termite Treatment # 1 is on </b>".$toSchedule->format('m-d-Y');
+						          echo "<br>";
 
-              		  while ($toSchedule < $endDate and $counter!=12)
-						{
-						  $counter = $counter +1;
-						  $datetri = new DateInterval('P30D');
-						  $toSchedule->add($datetri);  
-						  //echo "Peter is " . $age['Peter'] . " years old.";
-						  $toDisplay = $counter+1;
-						  echo "<b> Termite Treatment # </b>" .$toDisplay . " is at " .$toSchedule->format('m-d-Y');
-						  echo "<br>";
+                      while ($toSchedule < $endDate and $counter!=12) {
+                        $counter = $counter +1;
+                        $datetri = new DateInterval('P30D');
+                        $toSchedule->add($datetri);  
+                        //echo "Peter is " . $age['Peter'] . " years old.";
+                        $toDisplay = $counter+1;
+                        echo "<b> Termite Treatment # </b>" .$toDisplay . " is on " .$toSchedule->format('m-d-Y');
+                        echo "<br>";
+                      } 
 
-						  } 
-              	?>
+                      echo "<b> The last treatment is on</b>".$endDate->format('m-d-Y')	;
+						          echo "<br>";
+              	    ?>
 
                     <br></br>
                     <div class="ui buttons">

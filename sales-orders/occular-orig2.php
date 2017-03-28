@@ -235,8 +235,8 @@
                 </div>
               </div>
               <div class = "field">
-                <label>Looking for at Site:</label>
-                <input type="text" name="Name" placeholder="Looking For at Site"value="<?php if (isset($_POST['Name']) && !$flag) echo $_POST['Name']; ?>"/>
+                <label>Contact Person:</label>
+                <input type="text" name="Name" placeholder="Contact Person"value="<?php if (isset($_POST['Name']) && !$flag) echo $_POST['Name']; ?>"/>
               </div>
               <button class="ui primary button" type="submit" name="submit1" value="Submit">Submit</button>
             </form>
