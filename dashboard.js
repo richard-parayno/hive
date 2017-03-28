@@ -121,16 +121,6 @@ $('#slide-replenish').click(function() {
   $('.chemical-replenish').show();
 });
 
-$('.ui.basic.test.modal')
-  .modal({
-    closable  : false,
-    onApprove : function() {
-      window.alert('Confirmed!');
-    }
-})
-.modal('show')
-;
-
 function getClient(str) {
   if (str == "") {
     document.getElementById("showHere").innerHTML = "";

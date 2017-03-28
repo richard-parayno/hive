@@ -1,3 +1,5 @@
+$('#oculars').chained('#servicetypes');
+
 
 $('#ocularnosupervisor')
   .form({

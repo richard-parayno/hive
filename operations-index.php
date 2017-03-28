@@ -148,7 +148,7 @@
                                       WHERE SupervisedBy IS NULL";
                         $result = mysqli_query($dbc, $getQuery);
                         while($row=mysqli_fetch_array($result, MYSQLI_ASSOC)) {
-                          echo "<option value =\"{$row['Occular_ID']}\" class=\"{$row['Job_order_type']}\">{$row['Date']}, {$row['Area_type']}, Look for {$row['LF_At_Site']}</option>";
+                          echo "<option value =\"{$row['Occular_ID']}\" class=\"{$row['Job_order_type']}\">Date: {$row['Date']} | Area Type: {$row['Area_type']} | Look for: {$row['LF_At_Site']}</option>";
                         }                      
                         ?>
                       </select>
@@ -180,7 +180,7 @@
                                        WHERE ttsp.TeamID IS NULL";
                         $result2 = mysqli_query($dbc, $getQuery2);
                         while ($row2 = mysqli_fetch_array($result2, MYSQLI_ASSOC)) {
-                          echo "<option value = \"{$row2['TTSPIDNO']}\">{$row2['Date']} - {$row2['Structure_Type']} - {$row2['Name']}</option>";
+                          echo "<option value = \"{$row2['TTSPIDNO']}\">Date: {$row2['Date']} | Structure Type: {$row2['Structure_Type']} | Name: {$row2['Name']}</option>";
                         }
                         ?>
                       </select>
@@ -206,10 +206,12 @@
                                         JOIN job_order jo
                                           ON hpt.JobOrder_JONumber=jo.JONumber
                                         JOIN customer c
-                                          ON jo.CustomerId=c.CustomerId";
+                                          ON jo.CustomerId=c.CustomerId
+                                       WHERE hpt.teamID IS NULL
+                                         AND jo.job_status != 'Accomplished'";
                         $result3 = mysqli_query($dbc, $getQuery3);
                         while ($row3 = mysqli_fetch_array($result3, MYSQLI_ASSOC)) {
-                         echo "<option value = \"{$row3['ControlNumber']}\">{$row3['StartDate']} to {$row3['EndDate']} - {$row3['Structure_Type']} - {$row3['Name']}</option>";
+                         echo "<option value = \"{$row3['ControlNumber']}\">Date: {$row3['StartDate']} to {$row3['EndDate']} | Structure Type: {$row3['Structure_Type']} | Name: {$row3['Name']}</option>";
                         }
                         ?>
                       </select>
@@ -237,10 +239,12 @@
                                         JOIN pending_order po
                                           ON gs.pending_order=po.pending_order_Id
                                         JOIN customer c
-                                          ON jo.CustomerId=c.CustomerId";
+                                          ON jo.CustomerId=c.CustomerId
+                                       WHERE gs.TeamID IS NULL
+                                         AND jo.status ";
                         $result4 = mysqli_query($dbc, $getQuery4);
                         while ($row4 = mysqli_fetch_array($result4, MYSQLI_ASSOC)) {
-												  echo "<option value = \"{$row4['GeneralServiceID']}\">{$row4['date']} - {$row4['Area_type']} - {$row4['Name']}</option>";
+												  echo "<option value = \"{$row4['GeneralServiceID']}\">Date: {$row4['date']} | Area Type: {$row4['Area_type']} | Name: {$row4['Name']}</option>";
                         }
                         ?>
                       </select>

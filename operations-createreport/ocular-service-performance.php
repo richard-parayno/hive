@@ -16,6 +16,7 @@
   <script src="../bower_components/semantic-ui-calendar/dist/calendar.min.js"></script>
   <?php
     ob_start();
+    session_start();
     ?>
 </head>
 
@@ -208,7 +209,7 @@
               <h3 class="ui centered header">Occular Report</h3>
               <div class="ui divider">
               </div>
-              <form class="ui form" method="post" action="<?php echo htmlspecialchars($_SERVER[" PHP_SELF "]);?>">
+              <form class="ui form" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
                 <div class="field">
                   <div class="fields">
                     <div class="two wide field">

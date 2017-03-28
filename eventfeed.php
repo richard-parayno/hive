@@ -17,7 +17,7 @@ try {
     $e['start'] = $row['StartDate'];
     $e['end'] = $row['EndDate'];
 
-    if ($row['job_status'] == 'Ongoing')
+    if ($row['job_status'] == 'Accomplished')
       $e['color'] = 'green';
     else
       $e['color'] = 'red';

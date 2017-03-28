@@ -3,7 +3,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-  <title>Hive Resource Management System - Create Ocular Report</title>
+  <title>Hive Resource Management System - Create Service Request</title>
   <link href="../bower_components/semantic/dist/semantic.min.css" rel="stylesheet" type="text/css" />
   <script src="../bower_components/jquery/dist/jquery.min.js"></script>
   <script src="../bower_components/semantic/dist/semantic.min.js"></script>
@@ -40,22 +40,22 @@
       <i class="home icon"></i>
       Operations Dashboard
     </a>
-     <div class="item">
+    <div class="item">
       <div class="header">
-        Create Report
+        Assign
       </div>
       <div class="menu">
-        <a class="item" href="household-page1.php">
-          Create Household Report
+        <a class="item" href="operations-assign/assign-generalServices.php">
+          Assign General Services
         </a>
-        <a class="item" href="termite-treatment-page1.php">
-          Create Termite Report
+        <a class="item" href="operations-assign/assign-household.php">
+          Assign Household
         </a>
-        <a class="item" href="assign-occular.php">
-          Create General Services Report
+        <a class="item" href="operations-assign/assign-occular.php">
+          Assign Ocular
         </a>
-        <a class="item" href="assign-termite.php">
-          Create Occular Report
+        <a class="item" href="operations-assign/assign-termite.php">
+          Assign Termite
         </a>
       </div>
     </div>
@@ -83,7 +83,7 @@
           <div class="ui breadcrumb">
             <a class="section" href="../operations-index.php">Operations Dashboard</a>
             <i class="right angle icon divider"></i>
-            <div class="active section">Choose Ocular Report</div>
+            <div class="active section">Household Service Report</div>
           </div>
         </div>
         <div class="right menu ">
@@ -130,8 +130,8 @@
 
         <div class="sixteen wide centered column ">
           <div class="ui padded segment">
-            <h3 class="ui centered header">Occular Service List</h3>
-            <label> <left align><b> Choose a Occular service to create a report for </left></b> </label>
+            <h3 class="ui centered header">HouseHold Service List</h3>
+            <label> <left align><b> Choose a household service to create a report for </left></b> </label>
             <div class="ui divider">
             </div>
 
@@ -149,14 +149,13 @@
                       <tbody>
             <?php
             require_once('../mysql_connect.php');
-            $sql = "SELECT ov.occular_ID, c.name,ov.date, po.Address from occular_visits ov join customer c on ov.CustomerID = c.customerID  join pending_order po on po.pending_order_id = ov.pending_order where ov.Supervisedby IS NOT NULL";
+            $sql = "SELECT hp.ControlNumber, jo.jonumber, jo.startdate, c.name, po.Address FROM householdpesttreatment hp JOIN job_order jo ON hp.joborder_jonumber = jo.jonumber JOIN customer c ON jo.customerid=c.customerid Join occular_visits ov on jo.Occular_id = ov.occular_id join pending_order po on po.pending_order_id = ov.pending_order";
             $qry = mysqli_query($dbc,$sql);
-
             while($row=mysqli_fetch_array($qry,MYSQLI_ASSOC)){
               //<a href=\"clientreport.php?pk={$row['customerId']}\"><div align=\"center\">{$row['name']}
-              $date= new DateTime ($row['date']);
+                   $date= new DateTime ($row['startdate']);
               echo "<tr>
-              <td width=\"5%\"><a href=\"ocular-service-performance.php?pk={$row['occular_ID']}\"><div align=\"center\">{$row['occular_ID']}
+              <td width=\"5%\"><a href=\"household-treatment-service.php?pk={$row['ControlNumber']}\"><div align=\"center\">{$row['ControlNumber']}
               </div></a></td>
               <td width=\"5%\"><div align=\"center\">{$row['name']}</a>
               </div></a></td>
