@@ -1,56 +1,72 @@
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-    <title>Hive Resource Management System - View Clients</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.4/semantic.min.css" rel="stylesheet" type="text/css" />
-    <link href="https://cdn.rawgit.com/mdehoog/Semantic-UI-Calendar/76959c6f7d33a527b49be76789e984a0a407350b/dist/calendar.min.css" rel="stylesheet" type="text/css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.4/semantic.min.js"></script>
-    <script src="https://cdn.rawgit.com/mdehoog/Semantic-UI-Calendar/76959c6f7d33a527b49be76789e984a0a407350b/dist/calendar.min.js"></script>
 
-  </head>
-  <body>
-    <!-- SIDEBAR START -->
-      <div class="ui inverted left vertical sidebar menu">
-        <div class="item">
-          <a href="#">
-            <b>Hive Resource Management System</b>
-          </a>
-        </div>
-        <div class="item">
-          <div class="header">
-            Assign
-          </div>
-          <div class="menu">
-            <a class="item" href="assign-generalServices.php">
-              Assign General Services
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>Hive Resource Management System</title>
+  <link href="../bower_components/semantic/dist/semantic.min.css" rel="stylesheet" type="text/css" />
+  <link href="../bower_components/fullcalendar/dist/fullcalendar.min.css" rel="stylesheet" type="text/css" />
+  <link href="../bower_components/fullcalendar/dist/fullcalendar.print.css" rel="stylesheet" media="print" type="text/css"
+  />
+  <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="../bower_components/chained/jquery.chained.js"></script>
+  <script src="../bower_components/semantic/dist/semantic.min.js"></script>
+  <script src="../bower_components/moment/moment.js"></script>
+  <script src="../bower_components/fullcalendar/dist/fullcalendar.min.js"></script>
+  <script src="../bower_components/fullcalendar/dist/locale-all.js"></script>
+  <link href="../bower_components/semantic-ui-calendar/dist/calendar.min.css" rel="stylesheet" type="text/css" />
+  <script src="../bower_components/semantic-ui-calendar/dist/calendar.min.js"></script>
+
+</head>
+
+<body>
+  <?php
+  $household = $_POST['household'];
+  $_SESSION['household'] = $household;
+  ?>
+  <!-- SIDEBAR START -->
+  <div class="ui inverted left vertical sidebar menu">
+    <div class="item">
+      <a href="#">
+        <b>Hive Resource Management System</b>
+      </a>
+    </div>
+    <a class="item" href="../operations-index.php">
+      <i class="home icon"></i> Operations Dashboard
+    </a>
+    <div class="item">
+      <div class="header">
+        Create Report
+      </div>
+      <div class="menu">
+        <a class="item" href="/../operations-createReport/household-page1.php">
+              Create Household Report
             </a>
-            <a class="item" href="assign-household.php">
-              Assign Household
+        <a class="item" href="/../operations-createReport/termite-treatment-page1.php">
+              Create Termite Report
             </a>
-            <a class="item" href="assign-occular.php">
-              Assign Ocular
+        <a class="item" href="#">
+              Create General Services Report
             </a>
-            <a class="item" href="assign-termite.php">
-              Assign Termite
+        <a class="item" href="#">
+              Create Occular Report
             </a>
-          </div>
-        </div>
-        <a class="item" href="../login.php">
+      </div>
+    </div>
+    <a class="item" href="../login.php">
           Log Out
         </a>
-      </div>
-      <!-- SIDEBAR END -->
-                <!-- Accept Start -->
-                  <?php
+  </div>
+  <!-- SIDEBAR END -->
+  <!-- Accept Start -->
+  <?php
                        require_once('../mysql_connect.php');
                         $flag=0;
                        if (isset($_POST['accept'])){
                           $message = NULL;
                           //$CallTermite = $_SESSION['Job_Order'];
-                          $JobOrder = 35;
+                          $JobOrder = $_SESSION['household'];
                           $Supervisor = $_POST['client1'];
                           $Employee1=$_POST['client2'];
                           $Employee2=$_POST['client3'];
@@ -143,64 +159,64 @@
                           }
 
                   } ?>
-              <!-- Accept End-->
+    <!-- Accept End-->
 
-      <!-- MAIN CONTENT START -->
-      <div class="pusher">
-        <!-- TOP BAR START-->
-        <div class="sixteen wide column">
-          <div class="ui top menu">
-            <div class="ui header item launch button">
-                <i class="icon list layout"></i>
-            </div>
-            <div class="item">
-             Operations Department
-            </div>
-            <div class="right menu ">
-              <a class="ui labeled item notifications">
+    <!-- MAIN CONTENT START -->
+    <div class="pusher">
+      <!-- TOP BAR START-->
+      <div class="sixteen wide column">
+        <div class="ui top menu">
+          <div class="ui header item launch button">
+            <i class="icon list layout"></i>
+          </div>
+          <div class="item">
+            Operations Department
+          </div>
+          <div class="right menu ">
+            <a class="ui labeled item notifications">
                 Notifications
                  
               </a>
-            </div>
           </div>
         </div>
-        <!-- TOP BAR END -->
-        <div class="ui basic padded segment">
-          <div class="ui relaxed grid">
-            <!-- NOTIFICATION FEED START -->
-            <div class="ui special popup">
-              <div class="eight wide column center aligned grid">
-                  <div class="ui small feed">
-                    <h4 class="ui header">Notifications</h4>
-                    <div class="event">
-                      <div class="content">
-                        <div class="summary">
-                          Ocular Inspection for <a>Job Order 1234</a> has been accomplished.
-                        </div>
-                      </div>
-                    </div>
-                    <div class="event">
-                      <div class="content">
-                        <div class="summary">
-                          <a>Job Order 1234</a> has been accomplished.
-                        </div>
-                      </div>
+      </div>
+      <!-- TOP BAR END -->
+      <div class="ui basic padded segment">
+        <div class="ui relaxed grid">
+          <!-- NOTIFICATION FEED START -->
+          <div class="ui special popup">
+            <div class="eight wide column center aligned grid">
+              <div class="ui small feed">
+                <h4 class="ui header">Notifications</h4>
+                <div class="event">
+                  <div class="content">
+                    <div class="summary">
+                      Ocular Inspection for <a>Job Order 1234</a> has been accomplished.
                     </div>
                   </div>
+                </div>
+                <div class="event">
+                  <div class="content">
+                    <div class="summary">
+                      <a>Job Order 1234</a> has been accomplished.
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-            <!-- NOTIFICATION FEED END -->
+          </div>
+          <!-- NOTIFICATION FEED END -->
 
-            <div class="eight wide centered column">
-              <div class="ui basic padded segment">
-                <h3 class="ui centered header">List of Employees That Can be Assigned For Household Services</h3>
-                <div class="ui divider">
-                </div>
-                <div class="ui form">
-      <form class="ui form" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+          <div class="eight wide centered column">
+            <div class="ui basic padded segment">
+              <h3 class="ui centered header">List of Employees That Can be Assigned For Household Services</h3>
+              <div class="ui divider">
+              </div>
+              <div class="ui form">
+                <form class="ui form" method="post" action="<?php echo htmlspecialchars($_SERVER[" PHP_SELF "]);?>">
                   <div class="field">
                     <label>Supervisor </label>
-          <select name="client1" id="client1" class="ui search dropdown">
+                    <select name="client1" id="client1" class="ui search dropdown">
             <?php
                             // $toSchedule = $_SESSION['termiteocular'] ;
                               //('{$aetype}'
@@ -208,7 +224,7 @@
                           // remove $toshed=4 once session from sales-index works :)
                        //echo "Peter is " . $age['Peter'] . " years old.";
                    // $termiteocular = $_SESSION['termiteocular'];
-                   $JobOrder = 35;
+                        $JobOrder = $_SESSION['household'];                        
                         require_once('../mysql_connect.php');
                         $getoccular= "Select * from  Job_Order where JONumber = '{ $JobOrder}'";
                         $runquery= mysqli_query($dbc,$getoccular);
@@ -224,10 +240,10 @@
                             $selectOption1 = $_POST['client1'];
             ?>
           </select>
-          </div>
-          <div class="field">
+                  </div>
+                  <div class="field">
                     <label>employee1 </label>
-          <select name="client2" id="client2" class="ui search dropdown">
+                    <select name="client2" id="client2" class="ui search dropdown">
             <?php
                             // $toSchedule = $_SESSION['termiteocular'] ;
                               //('{$aetype}'
@@ -235,7 +251,7 @@
                           // remove $toshed=4 once session from sales-index works :)
                        //echo "Peter is " . $age['Peter'] . " years old.";
                    // $termiteocular = $_SESSION['termiteocular'];
-                   $JobOrder = 35;
+                        $JobOrder = $_SESSION['household'];
                         require_once('../mysql_connect.php');
                         $getoccular= "Select * from  Job_Order where JONumber = '{ $JobOrder}'";
                         $runquery= mysqli_query($dbc,$getoccular);
@@ -250,9 +266,9 @@
           </select>
 
                   </div>
-                   <div class="field">
+                  <div class="field">
                     <label>employee2 </label>
-          <select name="client3" id="client3" class="ui search dropdown">
+                    <select name="client3" id="client3" class="ui search dropdown">
             <?php
                             // $toSchedule = $_SESSION['termiteocular'] ;
                               //('{$aetype}'
@@ -260,7 +276,7 @@
                           // remove $toshed=4 once session from sales-index works :)
                        //echo "Peter is " . $age['Peter'] . " years old.";
                    // $termiteocular = $_SESSION['termiteocular'];
-                   $JobOrder = 35;
+                        $JobOrder = $_SESSION['household'];                        
                         require_once('../mysql_connect.php');
                         $getoccular= "Select * from  Job_Order where JONumber = '{ $JobOrder}'";
                         $runquery= mysqli_query($dbc,$getoccular);
@@ -275,9 +291,9 @@
           </select>
 
                   </div>
-                    <div class="field">
+                  <div class="field">
                     <label>employee3 </label>
-          <select name="client4" id="client4" class="ui search dropdown">
+                    <select name="client4" id="client4" class="ui search dropdown">
             <?php
                             // $toSchedule = $_SESSION['termiteocular'] ;
                               //('{$aetype}'
@@ -285,7 +301,7 @@
                           // remove $toshed=4 once session from sales-index works :)
                        //echo "Peter is " . $age['Peter'] . " years old.";
                    // $termiteocular = $_SESSION['termiteocular'];
-                   $JobOrder = 35;
+                        $JobOrder = $_SESSION['household'];
                         require_once('../mysql_connect.php');
                         $getoccular= "Select * from  Job_Order where JONumber = '{ $JobOrder}'";
                         $runquery= mysqli_query($dbc,$getoccular);
@@ -302,7 +318,7 @@
                   </div>
                   <div class="field">
                     <label>Accountant </label>
-          <select name="client5" id="client5" class="ui search dropdown">
+                    <select name="client5" id="client5" class="ui search dropdown">
             <?php
                             // $toSchedule = $_SESSION['termiteocular'] ;
                               //('{$aetype}'
@@ -310,7 +326,7 @@
                           // remove $toshed=4 once session from sales-index works :)
                        //echo "Peter is " . $age['Peter'] . " years old.";
                    // $termiteocular = $_SESSION['termiteocular'];
-                   $JobOrder = 35;
+                        $JobOrder = $_SESSION['household'];
                         require_once('../mysql_connect.php');
                         $getoccular= "Select * from  Job_Order where JONumber = '{ $JobOrder}'";
                         $runquery= mysqli_query($dbc,$getoccular);
@@ -336,7 +352,7 @@
                      </label>
 
 
-          <select name="item" id="item" class="ui search dropdown">
+                    <select name="item" id="item" class="ui search dropdown">
             <?php
                             // $toSchedule = $_SESSION['termiteocular'] ;
                               //('{$aetype}'
@@ -344,7 +360,7 @@
                           // remove $toshed=4 once session from sales-index works :)
                        //echo "Peter is " . $age['Peter'] . " years old.";
                    // $termiteocular = $_SESSION['termiteocular'];
-                   $JobOrder = 35;
+                        $JobOrder = $_SESSION['household'];
                         require_once('../mysql_connect.php');
                         $getoccular= "Select * from  Job_Order where JONumber = '{ $JobOrder}'";
                         $runquery= mysqli_query($dbc,$getoccular);
@@ -360,9 +376,10 @@
 
                   </div>
                   <div class="four wide field">
-                <label>Amount to be used</label>
-                <input type="number" name="amount" placeholder="example: 123"value="<?php if (isset($_POST['amount']) && !$flag) echo $_POST['amount']; ?>"/>
-              </div>
+                    <label>Amount to be used</label>
+                    <input type="number" name="amount" placeholder="example: 123" value="<?php if (isset($_POST['amount']) && !$flag) echo $_POST['amount']; ?>"
+                    />
+                  </div>
 
 
 
@@ -372,23 +389,11 @@
 
 
 
-                     <div class="ui buttons">
-                 <button class="ui positive button" type = "submit" name = "accept">Accept <i class="checkmark icon"></i> </button>
-                </div>
-                   </form>
+                  <div class="ui buttons">
+                    <button class="ui positive button" type="submit" name="accept">Accept <i class="checkmark icon"></i> </button>
+                  </div>
+                </form>
 
-          <!--code for QUERIES
-           require_once('../mysql_connect.php');
-               $query="select EmployeeNo, name from employee";
-              $result=mysqli_query($dbc,$query);
-              while($row=mysqli_fetch_array($result,MYSQLI_ASSOC))
-              {
-                echo '<option value="'.$row['].'">'.$row['name'].'</option>';
-              }
-           "select *    from employee e where e.employeeNo not In
-                      ( select t.employeeno from team_members t where t.teamIdNo in
-                      (select ti.teamIdno from team ti where ti.jobOrder_No in
-                      (select jo.joNumber from job_order jo where jo.StartDate = '{$ro['Date']}'))) and  e.employeeposition = 'Worker'"  -->
 
 
               </div>
@@ -401,42 +406,9 @@
       <!-- MAIN CONTENT END -->
 
       <!-- scripts -->
-      <script>
-      $('.existing-clients').css("display", "none");
-      $('.new-clients').css("display", "none");
+      <script src="../dashboard.js"></script>
 
 
-      $('#slide-existing').click(function() {
-        $('.existing-clients').show();
-        $('.new-clients').hide();
-      });
-      $('#slide-new').click(function() {
-        $('.new-clients').show();
-        $('.existing-clients').hide();
-      });
+</body>
 
-
-      $('select.dropdown')
-        .dropdown()
-      ;
-
-
-      $('.notifications')
-        .popup({
-          popup: $('.special.popup'),
-          on: 'click',
-          position: 'bottom right'
-        })
-      ;
-
-      $('#mycalendar').calendar({
-        type: 'date'
-      })
-      ;
-
-      $(".ui.sidebar").sidebar()
-                      .sidebar('attach events','.ui.launch.button');
-      </script>
-
-  </body>
 </html>

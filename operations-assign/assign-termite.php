@@ -3,15 +3,25 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-    <title>Hive Resource Management System - View Clients</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.4/semantic.min.css" rel="stylesheet" type="text/css" />
-    <link href="https://cdn.rawgit.com/mdehoog/Semantic-UI-Calendar/76959c6f7d33a527b49be76789e984a0a407350b/dist/calendar.min.css" rel="stylesheet" type="text/css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.4/semantic.min.js"></script>
-    <script src="https://cdn.rawgit.com/mdehoog/Semantic-UI-Calendar/76959c6f7d33a527b49be76789e984a0a407350b/dist/calendar.min.js"></script>
+    <title>Hive Resource Management System</title>
+    <link href="../bower_components/semantic/dist/semantic.min.css" rel="stylesheet" type="text/css" />
+    <link href="../bower_components/fullcalendar/dist/fullcalendar.min.css" rel="stylesheet" type="text/css" />
+    <link href="../bower_components/fullcalendar/dist/fullcalendar.print.css" rel="stylesheet" media="print" type="text/css" />
+    <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="../bower_components/chained/jquery.chained.js"></script>
+    <script src="../bower_components/semantic/dist/semantic.min.js"></script>
+    <script src="../bower_components/moment/moment.js"></script>
+    <script src="../bower_components/fullcalendar/dist/fullcalendar.min.js"></script>
+    <script src="../bower_components/fullcalendar/dist/locale-all.js"></script>
+    <link href="../bower_components/semantic-ui-calendar/dist/calendar.min.css" rel="stylesheet" type="text/css" />
+    <script src="../bower_components/semantic-ui-calendar/dist/calendar.min.js"></script>
 
   </head>
   <body>
+    <?php
+    $termite = $_POST['termite'];
+    $_SESSION['termite'] = $termite;
+    ?>
     <!-- SIDEBAR START -->
       <div class="ui inverted left vertical sidebar menu">
         <div class="item">
@@ -19,22 +29,25 @@
             <b>Hive Resource Management System</b>
           </a>
         </div>
+        <a class="item" href="../operations-index.php">
+          <i class="home icon"></i> Operations Dashboard
+        </a>
         <div class="item">
           <div class="header">
-            Assign
+            Create Report
           </div>
           <div class="menu">
-            <a class="item" href="assign-generalServices.php">
-              Assign General Services
+            <a class="item" href="/../operations-createReport/household-page1.php">
+              Create Household Report
             </a>
-            <a class="item" href="assign-household.php">
-              Assign Household
+            <a class="item" href="/../operations-createReport/termite-treatment-page1.php">
+              Create Termite Report
             </a>
-            <a class="item" href="assign-occular.php">
-              Assign Ocular
+            <a class="item" href="#">
+              Create General Services Report
             </a>
-            <a class="item" href="assign-termite.php">
-              Assign Termite
+            <a class="item" href="#">
+              Create Occular Report
             </a>
           </div>
         </div>
@@ -50,7 +63,7 @@
                        if (isset($_POST['accept'])){
                           $message = NULL;
                           //$TermiteNum = $_SESSION['Termite_Treatment'];
-                          $TermiteNum = 35;
+                          $TermiteNum = $_SESSION['termite'];
                           $Supervisor = $_POST['client1'];
                           $Employee1=$_POST['client2'];
                           $Employee2=$_POST['client3'];
@@ -210,7 +223,7 @@
                           // remove $toshed=4 once session from sales-index works :)
                        //echo "Peter is " . $age['Peter'] . " years old.";
                    // $termiteocular = $_SESSION['termiteocular'];
-                   $JobOrder = 35;
+                   $JobOrder = $_SESSION['termite'];
                         require_once('../mysql_connect.php');
                         $getoccular= "Select * from  Job_Order where JONumber = '{ $JobOrder}'";
                         $runquery= mysqli_query($dbc,$getoccular);
@@ -237,7 +250,7 @@
                           // remove $toshed=4 once session from sales-index works :)
                        //echo "Peter is " . $age['Peter'] . " years old.";
                    // $termiteocular = $_SESSION['termiteocular'];
-                   $JobOrder = 35;
+                   $JobOrder = $_SESSION['termite'];
                         require_once('../mysql_connect.php');
                         $getoccular= "Select * from  Job_Order where JONumber = '{ $JobOrder}'";
                         $runquery= mysqli_query($dbc,$getoccular);
@@ -262,7 +275,7 @@
                           // remove $toshed=4 once session from sales-index works :)
                        //echo "Peter is " . $age['Peter'] . " years old.";
                    // $termiteocular = $_SESSION['termiteocular'];
-                   $JobOrder = 35;
+                   $JobOrder = $_SESSION['termite'];
                         require_once('../mysql_connect.php');
                         $getoccular= "Select * from  Job_Order where JONumber = '{ $JobOrder}'";
                         $runquery= mysqli_query($dbc,$getoccular);
@@ -287,7 +300,7 @@
                           // remove $toshed=4 once session from sales-index works :)
                        //echo "Peter is " . $age['Peter'] . " years old.";
                    // $termiteocular = $_SESSION['termiteocular'];
-                   $JobOrder = 35;
+                   $JobOrder = $_SESSION['termite'];
                         require_once('../mysql_connect.php');
                         $getoccular= "Select * from  Job_Order where JONumber = '{ $JobOrder}'";
                         $runquery= mysqli_query($dbc,$getoccular);
@@ -312,7 +325,7 @@
                           // remove $toshed=4 once session from sales-index works :)
                        //echo "Peter is " . $age['Peter'] . " years old.";
                    // $termiteocular = $_SESSION['termiteocular'];
-                   $JobOrder = 35;
+                   $JobOrder = $_SESSION['termite'];
                         require_once('../mysql_connect.php');
                         $getoccular= "Select * from  Job_Order where JONumber = '{ $JobOrder}'";
                         $runquery= mysqli_query($dbc,$getoccular);
@@ -346,7 +359,7 @@
                           // remove $toshed=4 once session from sales-index works :)
                        //echo "Peter is " . $age['Peter'] . " years old.";
                    // $termiteocular = $_SESSION['termiteocular'];
-                   $JobOrder = 35;
+                   $JobOrder = $_SESSION['termite'];
                         require_once('../mysql_connect.php');
                         $getoccular= "Select * from  Job_Order where JONumber = '{ $JobOrder}'";
                         $runquery= mysqli_query($dbc,$getoccular);
@@ -403,42 +416,8 @@
       <!-- MAIN CONTENT END -->
 
       <!-- scripts -->
-      <script>
-      $('.existing-clients').css("display", "none");
-      $('.new-clients').css("display", "none");
+      <script src="../dashboard.js"></script>
 
-
-      $('#slide-existing').click(function() {
-        $('.existing-clients').show();
-        $('.new-clients').hide();
-      });
-      $('#slide-new').click(function() {
-        $('.new-clients').show();
-        $('.existing-clients').hide();
-      });
-
-
-      $('select.dropdown')
-        .dropdown()
-      ;
-
-
-      $('.notifications')
-        .popup({
-          popup: $('.special.popup'),
-          on: 'click',
-          position: 'bottom right'
-        })
-      ;
-
-      $('#mycalendar').calendar({
-        type: 'date'
-      })
-      ;
-
-      $(".ui.sidebar").sidebar()
-                      .sidebar('attach events','.ui.launch.button');
-      </script>
 
   </body>
 </html>

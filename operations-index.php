@@ -15,7 +15,6 @@
   <script src="bower_components/fullcalendar/dist/locale-all.js"></script>
   <link href="bower_components/semantic-ui-calendar/dist/calendar.min.css" rel="stylesheet" type="text/css" />
   <script src="bower_components/semantic-ui-calendar/dist/calendar.min.js"></script>
-  <link href="style.css" rel="stylesheet" type="text/css"/>
 
 
 
@@ -47,16 +46,16 @@
         Create Reports
       </div>
       <div class="menu">
-        <a class="item" href="/afxtrim-design/operations-createReport/household-page1.php">
+        <a class="item" href="operations-createreport/household-page1.php">
           Create Household Report
         </a>
-        <a class="item" href="/afxtrim-design/operations-createReport/termite-treatment-page1.php">
+        <a class="item" href="operations-createreport/termite-treatment-page1.php">
           Create Termite Report
         </a>
-        <a class="item" href="operations-assign/assign-occular.php">
+        <a class="item" href="operations-createreport/assign-occular.php">
           Create General Services Report
         </a>
-        <a class="item" href="operations-assign/assign-termite.php">
+        <a class="item" href="operations-createreport/occular-page1.php">
           Create Occular Report
         </a>
       </div>
@@ -177,7 +176,8 @@
                                         JOIN customer c
                                           ON jo.CustomerId=c.CustomerID
                                         JOIN termite_team tt
-                                          ON ttsp.TTSPIDNo=tt.TTMSPIDNo";
+                                          ON ttsp.TTSPIDNo=tt.TTMSPIDNo
+                                       WHERE ttsp.TeamID IS NULL";
                         $result2 = mysqli_query($dbc, $getQuery2);
                         while ($row2 = mysqli_fetch_array($result2, MYSQLI_ASSOC)) {
                           echo "<option value = \"{$row2['TTSPIDNO']}\">{$row2['Date']} - {$row2['Structure_Type']} - {$row2['Name']}</option>";
