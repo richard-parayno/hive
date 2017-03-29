@@ -153,7 +153,7 @@
                         ?>
                       </select>
                     </div>
-                    <button class="positive ui primary button" type="submit" name="submit1">Assign Supervisor</button>
+                    <button class="positive ui primary button" type="submit" name="submit1">Assign Inspector</button>
                     <div class="ui error message"></div>
                   </form>
                 </div>
@@ -232,7 +232,7 @@
                       <select class="ui search dropdown" name="generalservice">
                         <option value="">Select Service Request Type</option>
                         <?php
-                        $getQuery4 = "SELECT GeneralServiceID, Area_type, Name, date
+                        $getQuery4 = "SELECT JobOrder_JONumber, Area_type, Name, date
                                         FROM general_services gs
                                         JOIN job_order jo
                                           ON gs.JobOrder_JONumber=jo.JONumber
@@ -240,11 +240,10 @@
                                           ON gs.pending_order=po.pending_order_Id
                                         JOIN customer c
                                           ON jo.CustomerId=c.CustomerId
-                                       WHERE gs.TeamID IS NULL
-                                         AND jo.status ";
+                                       WHERE gs.TeamID IS NULL";
                         $result4 = mysqli_query($dbc, $getQuery4);
                         while ($row4 = mysqli_fetch_array($result4, MYSQLI_ASSOC)) {
-												  echo "<option value = \"{$row4['GeneralServiceID']}\">Date: {$row4['date']} | Area Type: {$row4['Area_type']} | Name: {$row4['Name']}</option>";
+												  echo "<option value = \"{$row4['JobOrder_JONumber']}\">Date: {$row4['date']} | Area Type: {$row4['Area_type']} | Name: {$row4['Name']}</option>";
                         }
                         ?>
                       </select>

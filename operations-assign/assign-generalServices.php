@@ -22,8 +22,12 @@
 
 <body>
   <?php
-  $JobOrder = $_POST['generalservice'];
-  $_SESSION['generalservice'] = $JobOrder;
+  ob_start();
+  session_start();
+  if (isset($_POST['generalservice'])) {
+    $JobOrder = $_POST['generalservice'];
+    $_SESSION['generalservice'] = $JobOrder;
+  }
   ?>
   <!-- SIDEBAR START -->
   <div class="ui inverted left vertical sidebar menu">
@@ -61,79 +65,35 @@
   <!-- SIDEBAR END -->
   <!-- Accept Start -->
   <?php
-       require_once('../mysql_connect.php');
-        $flag=0;
-       if (isset($_POST['accept'])){
-          $message = NULL;
-          //$CallTermite = $_SESSION['Job_Order'];
-          $JobOrder = $_SESSION['generalservice'];
-          $Supervisor = $_POST['client1'];
-          $Employee1=$_POST['client2'];
-          $Employee2=$_POST['client3'];
-          $Employee3=$_POST['client4'];
-            // ECHO "EMPLOYEE 3 " .$Employee3. "<br>"   ;   
-          $AccountExecutive=$_POST['client5'];
-          $item = $_POST['item'];
+    require_once('../mysql_connect.php');
+    if (isset($_POST['accept'])) {
           
-          if($Employee1== $_POST['client3'])
-          {
-             $message.='<p> Employee 1 and Employee 2 cannot be the SAME';
-             echo "TO CHECK WHAT HAPPENS ".$Employee1. "<br>";
-          }
-          else
-          {
-            $message=false; 
-          }
-          if ($Employee1 ==$_POST['client4'])
-          {
-            $message.='<p> Employee 1 and Employee 3 cannot be the SAME';
-          }
-          else
-          {
-            $message=false; 
-          }
-          if ($Employee2==$_POST['client4'])
-             $message.='<p> Employee 2 and Employee 3 cannot be the SAME';
-          else
-             $message=false; 
-          if (empty ($_POST['amount'])) {
-            $message.= '<p> You forgot to input the amount';
-            $quantity=NULL;
-          }
-          else {
-            $getdata= "Select quantity from inventory where ProductID = '{$item}'";
-            $run5=mysqli_query($dbc,$getdata);
-            $thedata= mysqli_fetch_array($run5,MYSQLI_ASSOC);
+      $JobOrder = $_SESSION['generalservice'];
+      $Supervisor = $_POST['client1'];
+      $Employee1=$_POST['client2'];
+      $Employee2=$_POST['client3'];
+      $Employee3=$_POST['client4'];  
+      $AccountExecutive=$_POST['client5'];
 
-            if ($_POST['amount']>$thedata['quantity']) {
-              $message.="<p> The amount cannot be greater than the quantity in the inventory";
-              $quantity = NULL;
-            }
-            else
-              $quantity=$_POST['amount'];
-          }
-   
-          if(empty($message)) {
-            $AssignSupervisor = "UPDATE Job_Order SET Supervisor ='{$Supervisor}', AEinCharge = '{$AccountExecutive}' WHERE JONumber= '{$JobOrder}'";
-            $runquery= mysqli_query($dbc,$AssignSupervisor); 
-            $CreateTeam = "Insert into team (JobOrder_NO) value ('{$JobOrder}')";
-            $run2=mysqli_query($dbc,$CreateTeam); 
-            $getNewTeam = "Select TeamIdNo from Team order by teamIdNo DESC LIMIT 1";
-            $run7=mysqli_query($dbc,$getNewTeam);
-            $data= mysqli_fetch_array($run3,MYSQLI_ASSOC);
-            $Teamid = $data['TeamIdNo'];
+      $AssignSupervisor = "UPDATE Job_Order SET Supervisor ='{$Supervisor}', AEinCharge = '{$AccountExecutive}' WHERE JONumber= '{$JobOrder}'";
+      $runquery= mysqli_query($dbc,$AssignSupervisor); 
+      $CreateTeam = "Insert into team (JobOrder_NO) value ('{$JobOrder}')";
+      $run2=mysqli_query($dbc,$CreateTeam); 
+      $getNewTeam = "Select TeamIdNo from Team order by teamIdNo DESC LIMIT 1";
+      $run7=mysqli_query($dbc,$getNewTeam);
+      $data= mysqli_fetch_array($run7,MYSQLI_ASSOC);
+      $Teamid = $data['TeamIdNo'];
       
-            $addmem1=" Insert into team_members (EmployeeNo, TeamIdNo) values ('{$Employee1}', '{$Teamid}')";
-            $addmem2=" Insert into team_members (EmployeeNo, TeamIdNo) values ('{$Employee2}', '{$Teamid}')";
-            $addmem3=" Insert into team_members (EmployeeNo, TeamIdNo) values ('{$Employee3}', '{$Teamid}')";
-          
-            $run3=mysqli_query($dbc,$addmem1);
-            $run4=mysqli_query($dbc,$addmem2);
-            $run5=mysqli_query($dbc,$addmem3);
-          }
-          else
-            echo $message;
-     
+      $addmem1=" Insert into team_members (EmployeeNo, TeamIdNo) values ('{$Employee1}', '{$Teamid}')";
+      $addmem2=" Insert into team_members (EmployeeNo, TeamIdNo) values ('{$Employee2}', '{$Teamid}')";
+      $addmem3=" Insert into team_members (EmployeeNo, TeamIdNo) values ('{$Employee3}', '{$Teamid}')";
+      $updateTeam= "UPDATE general_services set TeamID = '{$Teamid}'";
+      $run9=mysqli_query($dbc,$updateTeam);
+      $run3=mysqli_query($dbc,$addmem1);
+      $run4=mysqli_query($dbc,$addmem2);
+      $run5=mysqli_query($dbc,$addmem3);
+
+      
   } 
   ?>
     <!-- Accept End-->
@@ -198,7 +158,7 @@
               <div class="ui divider">
               </div>
               <div class="ui form">
-                <form class="ui form" method="post" action="<?php echo htmlspecialchars($_SERVER[" PHP_SELF "]);?>">
+                <form id="assignemployee" class="ui form" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
                   <div class="field">
                     <label>Supervisor </label>
                     <select name="client1" id="client1" class="ui search dropdown">
@@ -321,6 +281,7 @@
 
       <!-- scripts -->
       <script src="../dashboard.js"></script>
+      <script src="../dashboard7.js"></script>
 
 </body>
 

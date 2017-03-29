@@ -164,6 +164,7 @@
                     $wr= mysqli_query($dbc,$eww); 
                     $row2=mysqli_fetch_array($wr,MYSQLI_ASSOC); 
                     echo "<h4>Customer Name: </h4><p>" .$row2['Name']. "</p>";
+                    $_SESSION['oculardate'] = $row['date'];
 
 
 
@@ -177,8 +178,8 @@
              <?php
               if (isset($_POST['submit1'])) {
               		
-                $date= $_POST['daterequested'];
                 $Name= $_POST['contactperson'];
+                $date= new DateTime($_SESSION['oculardate']);
               		 
   						  require_once('../mysql_connect.php');
  						 
@@ -186,7 +187,7 @@
                 $ew= mysqli_query($dbc, $getId); 
                 $rows= mysqli_fetch_array($ew,MYSQLI_ASSOC); 
                 $pendingId= $rows['pending_order_Id'];
-  					    $wq= "insert into occular_visits (CustomerID, Status,LF_At_Site, Date, pending_order) values('{$currentcustomer}','Active','{$Name}', '{$date}', '{$pendingId}')";
+  					    $wq= "insert into occular_visits (CustomerID, Status,LF_At_Site, Date, pending_order) values('{$currentcustomer}','Active','{$Name}', '{$date->format('Y-m-d')}', '{$pendingId}')";
  						    $eww= mysqli_query($dbc, $wq);
 
                 header("Location:  http://".$_SERVER['HTTP_HOST']. dirname($_SERVER['PHP_SELF']). "/../sales-index.php");
@@ -201,17 +202,7 @@
                 <h3 class="ui centered header">Ocular Request Form</h3>
                 <div class="ui divider">
                 </div>
-                 <form id="ocularform" class="ui form" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">  
-                   <div class="field">
-                      <label>Ocular Date Requested (must be before date of service):</label>
-                      <div class="ui calendar" id="mycalendar">
-                        <div class="ui input left icon">
-                          <i class="calendar icon"></i>
-                          <input type="text" name="daterequested" placeholder="Date Requested"/>                  
-                        </div>
-                      </div>
-                    </div>
-                    
+                 <form id="ocularform" class="ui form" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">   
                     <div class = "field"> 
                       <label>Contact Person:</label>
                       <input type="text" name="contactperson" placeholder="Contact Person"/>
