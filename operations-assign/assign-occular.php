@@ -23,14 +23,19 @@
   <?php
   ob_start();
   session_start();
+  if (!isset($_SESSION['currentUser'])) {
+        header("Location: http://".$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'])."/../login.php");
+      }
+  if ($_SESSION['currentType'] != 2) {
+    header("Location: http://".$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'])."/../login.php");
+  }
+  if (!isset($_POST['submit1']))
+    header("Location: http://".$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'])."/../operations-index.php");
+
   if (isset($_POST['oculars'])) {
     $chosenocular = $_POST['oculars'];
     $_SESSION['ocular'] = $chosenocular;
   }
-  else {
-    header("Location:  http://".$_SERVER['HTTP_HOST']. dirname($_SERVER['PHP_SELF']). "/../operations-index.php");
-  }
-
   ?>
   <!-- SIDEBAR START -->
   <div class="ui inverted left vertical sidebar menu">
@@ -85,47 +90,22 @@
             <i class="right angle icon divider"></i>
             <a class="section" href="../operations-index.php">Oculars</a>
             <i class="right angle icon divider"></i>
-            <div class="active section">Assign Workers to Ocular</div>
+            <div class="active section">Assign Worker to Ocular Inspection</div>
           </div>
         </div>
         <div class="right menu ">
-          <a class="ui labeled item notifications">
-                Notifications
-              </a>
+
         </div>
       </div>
     </div>
     <!-- TOP BAR END -->
     <div class="ui basic padded segment">
       <div class="ui relaxed grid">
-        <!-- NOTIFICATION FEED START -->
-        <div class="ui special popup">
-          <div class="eight wide column center aligned grid">
-            <div class="ui small feed">
-              <h4 class="ui header">Notifications</h4>
-              <div class="event">
-                <div class="content">
-                  <div class="summary">
-                    Ocular Inspection for <a>Job Order 1234</a> has been accomplished.
-                  </div>
-                </div>
-              </div>
-              <div class="event">
-                <div class="content">
-                  <div class="summary">
-                    <a>Job Order 1234</a> has been accomplished.
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- NOTIFICATION FEED END -->
+        
         <!-- Accept Start -->
         <?php
           
           require_once('../mysql_connect.php');
-          $flag=0;
           if (isset($_POST['accept'])){
             $ocular = $_SESSION['ocular'];
             echo $ocular;
@@ -168,7 +148,7 @@
 
           <div class="eleven wide centered column">
             <div class="ui padded segment">
-              <h3 class="ui centered header">List of Employees that can be assigned for Ocular Inspection</h3>
+              <h3 class="ui centered header">Assign Worker to Ocular Inspection</h3>
               <div class="ui divider">
               </div>
               <div class="ui form">
@@ -191,8 +171,26 @@
                         $getoccular= "Select * from  occular_visits where Occular_ID = '{$chosenocular}'";
                         $runquery= mysqli_query($dbc,$getoccular); 
                         $gettingData=mysqli_fetch_array($runquery,MYSQLI_ASSOC);
-                        $custname = "select * from employee e where e.employeeNo not In ( select t.employeeno from team_members t where t.teamIdNo in (select ti.teamIdno from team ti where ti.jobOrder_No in (select jo.joNumber from job_order jo where jo.StartDate = '{$gettingData['Date']}'))) and e.employeeposition = 'Worker' and e.employeeNo not In ( Select tt.EmployeeNo from termiteteammembers tt where tt.TermiteTeamID in (Select tti.TeamID from termite_team tti where tti.TTMSPIDno in(Select ttmsp.TTSPIDNO from termitetreatment_serviceperformance ttmsp WHERE ttmsp.date ='{$gettingData['Date']}')))";
-
+                        $custname = "SELECT * 
+                                         FROM employee e 
+                                        WHERE e.employeeNo NOT IN (SELECT t.employeeno 
+                                                                     FROM team_members t 
+                                                                    WHERE t.teamIdNo IN (SELECT ti.teamIdno 
+                                                                                           FROM team ti 
+                                                                                          WHERE ti.jobOrder_No IN (SELECT jo.joNumber 
+                                                                                                                     FROM job_order jo 
+                                                                                                                    WHERE jo.StartDate = '{$gettingData['Date']}'))) 
+                                          AND e.employeeposition = 'Worker'
+                                          AND e.employeeNo NOT IN (SELECT tt.EmployeeNo 
+                                                                     FROM termiteteammembers tt 
+                                                                    WHERE tt.TermiteTeamID IN (SELECT tti.TeamID 
+                                                                                                 FROM termite_team tti 
+                                                                                                WHERE tti.TTMSPIDno IN (SELECT ttmsp.TTSPIDNO 
+                                                                                                                          FROM termitetreatment_serviceperformance ttmsp 
+                                                                                                                         WHERE ttmsp.date = '{$gettingData['Date']}'))) 
+                                          AND e.employeeNo NOT IN (SELECT ov.SupervisedBy 
+                                                                     FROM Occular_visits ov 
+                                                                    WHERE ov.Date = '{$gettingData['Date']}');";
                         $getname = mysqli_query($dbc, $custname);
                         while ($row = mysqli_fetch_array($getname,MYSQLI_ASSOC)){
                           echo '<option value="'.$row['EmployeeNo'].'">'.$row['Name'].'</option>';
@@ -216,7 +214,24 @@
 
     <!-- scripts -->
     <script src="../dashboard.js"></script>
-    <script src="../dashboard6.js"></script>
+    <script type="text/javascript">
+      $('#assignocular')
+        .form({
+          inline: true,
+          fields: {
+            client: {
+              identifier: 'client',
+              rules: [
+                {
+                  type   : 'empty',
+                  prompt : 'You must choose someone to do the ocular.'
+                }
+              ]
+            }
+          }
+        })
+      ;
+    </script>
 
 </body>
 

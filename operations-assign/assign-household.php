@@ -22,6 +22,17 @@
 
 <body>
   <?php
+  ob_start();
+  session_start();
+  if (!isset($_SESSION['currentUser'])) {
+        header("Location: http://".$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'])."/../login.php");
+      }
+  if ($_SESSION['currentType'] != 2) {
+    header("Location: http://".$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'])."/../login.php");
+  }
+  if (!isset($_POST['submit3']))
+    header("Location: http://".$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'])."/../operations-index.php");
+
   if (isset($_POST['household'])) {
     $household = $_POST['household'];
     $_SESSION['household'] = $household;
@@ -48,10 +59,10 @@
           <a class="item" href="/../operations-createReport/termite-treatment-page1.php">
               Create Termite Report
             </a>
-          <a class="item" href="#">
+          <a class="item" href="/../operations-createReport/">
               Create General Services Report
             </a>
-          <a class="item" href="#">
+          <a class="item" href="/../operations-createReport/">
               Create Ocular Report
             </a>
         </div>
@@ -130,49 +141,24 @@
               <div class="ui breadcrumb">
                 <a class="section" href="../operations-index.php">Operations Dashboard</a>
                 <i class="right angle icon divider"></i>
-                <a class="section" href="../operations-index.php">Household</a>
+                <a class="section" href="../operations-index.php">Household Service</a>
                 <i class="right angle icon divider"></i>
-                <div class="active section">Assign Team to Household</div>
+                <div class="active section">Assign Team to Household Service</div>
               </div>
             </div>
             <div class="right menu ">
-              <a class="ui labeled item notifications">
-                Notifications
-                 
-              </a>
+              
             </div>
           </div>
         </div>
         <!-- TOP BAR END -->
         <div class="ui basic padded segment">
           <div class="ui relaxed grid">
-            <!-- NOTIFICATION FEED START -->
-            <div class="ui special popup">
-              <div class="eight wide column center aligned grid">
-                <div class="ui small feed">
-                  <h4 class="ui header">Notifications</h4>
-                  <div class="event">
-                    <div class="content">
-                      <div class="summary">
-                        Ocular Inspection for <a>Job Order 1234</a> has been accomplished.
-                      </div>
-                    </div>
-                  </div>
-                  <div class="event">
-                    <div class="content">
-                      <div class="summary">
-                        <a>Job Order 1234</a> has been accomplished.
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!-- NOTIFICATION FEED END -->
+            
 
             <div class="eight wide centered column">
               <div class="ui padded segment">
-                <h3 class="ui centered header">List of Employees that can be assigned for Household Services</h3>
+                <h3 class="ui centered header">Assign Team to Household Service</h3>
                 <div class="ui divider">
                 </div>
                 <div class="ui form">
@@ -209,7 +195,26 @@
                           $getoccular= "Select * from  Job_Order where JONumber = '{ $JobOrder}'";
                           $runquery= mysqli_query($dbc,$getoccular);
                           $gettingData=mysqli_fetch_array($runquery,MYSQLI_ASSOC);
-                          $custname = "select * from employee e where e.employeeNo not In ( select t.employeeno from team_members t where t.teamIdNo in (select ti.teamIdno from team ti where ti.jobOrder_No in (select jo.joNumber from job_order jo where jo.StartDate = '{$gettingData['Date']}'))) and e.employeeposition = 'Worker' and e.employeeNo not In ( Select tt.EmployeeNo from termiteteammembers tt where tt.TermiteTeamID in (Select tti.TeamID from termite_team tti where tti.TTMSPIDno in(Select ttmsp.TTSPIDNO from termitetreatment_serviceperformance ttmsp WHERE ttmsp.date ='{$gettingData['Date']}')))";
+                          $custname = "SELECT * 
+                                         FROM employee e 
+                                        WHERE e.employeeNo NOT IN (SELECT t.employeeno 
+                                                                     FROM team_members t 
+                                                                    WHERE t.teamIdNo IN (SELECT ti.teamIdno 
+                                                                                           FROM team ti 
+                                                                                          WHERE ti.jobOrder_No IN (SELECT jo.joNumber 
+                                                                                                                     FROM job_order jo 
+                                                                                                                    WHERE jo.StartDate = '{$gettingData['Date']}'))) 
+                                          AND e.employeeposition = 'Worker'
+                                          AND e.employeeNo NOT IN (SELECT tt.EmployeeNo 
+                                                                     FROM termiteteammembers tt 
+                                                                    WHERE tt.TermiteTeamID IN (SELECT tti.TeamID 
+                                                                                                 FROM termite_team tti 
+                                                                                                WHERE tti.TTMSPIDno IN (SELECT ttmsp.TTSPIDNO 
+                                                                                                                          FROM termitetreatment_serviceperformance ttmsp 
+                                                                                                                         WHERE ttmsp.date = '{$gettingData['Date']}'))) 
+                                          AND e.employeeNo NOT IN (SELECT ov.SupervisedBy 
+                                                                     FROM Occular_visits ov 
+                                                                    WHERE ov.Date = '{$gettingData['Date']}');";
                           $getname = mysqli_query($dbc, $custname);
                           while ($row = mysqli_fetch_array($getname,MYSQLI_ASSOC)){
                             echo '<option value="'.$row['EmployeeNo'].'">'.$row['Name'].'</option>';
@@ -229,7 +234,26 @@
                           $getoccular= "Select * from  Job_Order where JONumber = '{ $JobOrder}'";
                           $runquery= mysqli_query($dbc,$getoccular);
                           $gettingData=mysqli_fetch_array($runquery,MYSQLI_ASSOC);
-                          $custname = "select * from employee e where e.employeeNo not In ( select t.employeeno from team_members t where t.teamIdNo in (select ti.teamIdno from team ti where ti.jobOrder_No in (select jo.joNumber from job_order jo where jo.StartDate = '{$gettingData['Date']}'))) and e.employeeposition = 'Worker' and e.employeeNo not In ( Select tt.EmployeeNo from termiteteammembers tt where tt.TermiteTeamID in (Select tti.TeamID from termite_team tti where tti.TTMSPIDno in(Select ttmsp.TTSPIDNO from termitetreatment_serviceperformance ttmsp WHERE ttmsp.date ='{$gettingData['Date']}')))";
+                          $custname = "SELECT * 
+                                         FROM employee e 
+                                        WHERE e.employeeNo NOT IN (SELECT t.employeeno 
+                                                                     FROM team_members t 
+                                                                    WHERE t.teamIdNo IN (SELECT ti.teamIdno 
+                                                                                           FROM team ti 
+                                                                                          WHERE ti.jobOrder_No IN (SELECT jo.joNumber 
+                                                                                                                     FROM job_order jo 
+                                                                                                                    WHERE jo.StartDate = '{$gettingData['Date']}'))) 
+                                          AND e.employeeposition = 'Worker'
+                                          AND e.employeeNo NOT IN (SELECT tt.EmployeeNo 
+                                                                     FROM termiteteammembers tt 
+                                                                    WHERE tt.TermiteTeamID IN (SELECT tti.TeamID 
+                                                                                                 FROM termite_team tti 
+                                                                                                WHERE tti.TTMSPIDno IN (SELECT ttmsp.TTSPIDNO 
+                                                                                                                          FROM termitetreatment_serviceperformance ttmsp 
+                                                                                                                         WHERE ttmsp.date = '{$gettingData['Date']}'))) 
+                                          AND e.employeeNo NOT IN (SELECT ov.SupervisedBy 
+                                                                     FROM Occular_visits ov 
+                                                                    WHERE ov.Date = '{$gettingData['Date']}');";
                           $getname = mysqli_query($dbc, $custname);
                           while ($row = mysqli_fetch_array($getname,MYSQLI_ASSOC)){
                             echo '<option value="'.$row['EmployeeNo'].'">'.$row['Name'].'</option>';
@@ -248,7 +272,26 @@
                           $getoccular= "Select * from  Job_Order where JONumber = '{ $JobOrder}'";
                           $runquery= mysqli_query($dbc,$getoccular);
                           $gettingData=mysqli_fetch_array($runquery,MYSQLI_ASSOC);
-                          $custname = "select * from employee e where e.employeeNo not In ( select t.employeeno from team_members t where t.teamIdNo in (select ti.teamIdno from team ti where ti.jobOrder_No in (select jo.joNumber from job_order jo where jo.StartDate = '{$gettingData['Date']}'))) and e.employeeposition = 'Worker' and e.employeeNo not In ( Select tt.EmployeeNo from termiteteammembers tt where tt.TermiteTeamID in (Select tti.TeamID from termite_team tti where tti.TTMSPIDno in(Select ttmsp.TTSPIDNO from termitetreatment_serviceperformance ttmsp WHERE ttmsp.date ='{$gettingData['Date']}')))";
+                          $custname = "SELECT * 
+                                         FROM employee e 
+                                        WHERE e.employeeNo NOT IN (SELECT t.employeeno 
+                                                                     FROM team_members t 
+                                                                    WHERE t.teamIdNo IN (SELECT ti.teamIdno 
+                                                                                           FROM team ti 
+                                                                                          WHERE ti.jobOrder_No IN (SELECT jo.joNumber 
+                                                                                                                     FROM job_order jo 
+                                                                                                                    WHERE jo.StartDate = '{$gettingData['Date']}'))) 
+                                          AND e.employeeposition = 'Worker'
+                                          AND e.employeeNo NOT IN (SELECT tt.EmployeeNo 
+                                                                     FROM termiteteammembers tt 
+                                                                    WHERE tt.TermiteTeamID IN (SELECT tti.TeamID 
+                                                                                                 FROM termite_team tti 
+                                                                                                WHERE tti.TTMSPIDno IN (SELECT ttmsp.TTSPIDNO 
+                                                                                                                          FROM termitetreatment_serviceperformance ttmsp 
+                                                                                                                         WHERE ttmsp.date = '{$gettingData['Date']}'))) 
+                                          AND e.employeeNo NOT IN (SELECT ov.SupervisedBy 
+                                                                     FROM Occular_visits ov 
+                                                                    WHERE ov.Date = '{$gettingData['Date']}');";
                           $getname = mysqli_query($dbc, $custname);
                           while ($row = mysqli_fetch_array($getname,MYSQLI_ASSOC)){
                             echo '<option value="'.$row['EmployeeNo'].'">'.$row['Name'].'</option>';
@@ -300,8 +343,8 @@
                       </select>
                     </div>
                     <div class="field">
-                      <label>Amount to be used</label>
-                      <input type="number" name="amount" placeholder="Enter the amount" />
+                      <label>Amount to be Used</label>
+                      <input type="number" name="amount" placeholder="Amount to be Used" />
                     </div>
                     <div class="ui buttons">
                       <button class="ui positive button" type="submit" name="accept">Accept <i class="checkmark icon"></i> </button>
@@ -319,7 +362,102 @@
 
         <!-- scripts -->
         <script src="../dashboard.js"></script>
-        <script src="../dashboard8.js"></script>
+        <script type="text/javascript">
+          $('#assignemployee')
+            .form({
+              inline: true,
+              fields: {
+                client1: {
+                  identifier: 'client1',
+                  rules: [
+                    {
+                      type   : 'empty',
+                      prompt : 'You must select the Supervisor.'
+                    }
+                  ]
+                },
+                client2: {
+                  identifier: 'client2',
+                  rules: [
+                    {
+                      type   : 'empty',
+                      prompt : 'You must select an Employee.'
+                    },
+                    {
+                      type   : 'different[client3]',
+                      prompt : 'You can\'t choose the same employees!'
+                    },
+                    {
+                      type   : 'different[client4]',
+                      prompt : 'You can\'t choose the same employees!'
+                    }
+                  ]
+                },
+                client3: {
+                  identifier: 'client3',
+                  rules: [
+                    {
+                      type   : 'empty',
+                      prompt : 'You must select an Employee.'
+                    },
+                    {
+                      type   : 'different[client2]',
+                      prompt : 'You can\'t choose the same employees!'
+                    },
+                    {
+                      type   : 'different[client4]',
+                      prompt : 'You can\'t choose the same employees!'
+                    }
+                  ]
+                },
+                client4: {
+                  identifier: 'client4',
+                  rules: [
+                    {
+                      type   : 'empty',
+                      prompt : 'You must select an Employee.'
+                    },
+                    {
+                      type   : 'different[client2]',
+                      prompt : 'You can\'t choose the same employees!'
+                    },
+                    {
+                      type   : 'different[client3]',
+                      prompt : 'You can\'t choose the same employees!'
+                    }
+                  ]
+                },
+                client5: {
+                  identifier: 'client5',
+                  rules: [
+                    {
+                      type   : 'empty',
+                      prompt : 'You must select an Accountant.'
+                    }
+                  ]
+                },
+                item: {
+                  identifier: 'item',
+                  rules: [
+                    {
+                      type   : 'empty',
+                      prompt : 'You must select atleast one item to use.'
+                    }
+                  ]
+                },
+                number: {
+                  identifier: 'number',
+                  rules: [
+                    {
+                      type   : 'empty',
+                      prompt : 'You must enter the amount to be used.'
+                    }
+                  ]
+                }
+              }
+            })
+          ;
+        </script>
 
 
 </body>

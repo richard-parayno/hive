@@ -7,8 +7,7 @@
   <title>Hive Resource Management System</title>
   <link href="../bower_components/semantic/dist/semantic.min.css" rel="stylesheet" type="text/css" />
   <link href="../bower_components/fullcalendar/dist/fullcalendar.min.css" rel="stylesheet" type="text/css" />
-  <link href="../bower_components/fullcalendar/dist/fullcalendar.print.css" rel="stylesheet" media="print" type="text/css"
-  />
+  <link href="../bower_components/fullcalendar/dist/fullcalendar.print.css" rel="stylesheet" media="print" type="text/css"/>
   <script src="../bower_components/jquery/dist/jquery.min.js"></script>
   <script src="../bower_components/chained/jquery.chained.js"></script>
   <script src="../bower_components/semantic/dist/semantic.min.js"></script>
@@ -24,6 +23,16 @@
   <?php
   ob_start();
   session_start();
+
+  if (!isset($_SESSION['currentUser'])) {
+    header("Location: http://".$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'])."/../login.php");
+  }
+  if ($_SESSION['currentType'] != 2) {
+    header("Location: http://".$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'])."/../login.php");
+  }
+  if (!isset($_POST['submit4']))
+    header("Location: http://".$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'])."/../operations-index.php");
+        
   if (isset($_POST['generalservice'])) {
     $JobOrder = $_POST['generalservice'];
     $_SESSION['generalservice'] = $JobOrder;
@@ -122,42 +131,17 @@
             </div>
           </div>
           <div class="right menu ">
-            <a class="ui labeled item notifications">
-                Notifications
-              </a>
+            
           </div>
         </div>
       </div>
       <!-- TOP BAR END -->
       <div class="ui basic padded segment">
         <div class="ui relaxed grid">
-          <!-- NOTIFICATION FEED START -->
-          <div class="ui special popup">
-            <div class="eight wide column center aligned grid">
-              <div class="ui small feed">
-                <h4 class="ui header">Notifications</h4>
-                <div class="event">
-                  <div class="content">
-                    <div class="summary">
-                      Ocular Inspection for <a>Job Order 1234</a> has been accomplished.
-                    </div>
-                  </div>
-                </div>
-                <div class="event">
-                  <div class="content">
-                    <div class="summary">
-                      <a>Job Order 1234</a> has been accomplished.
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- NOTIFICATION FEED END -->
 
           <div class="eight wide centered column">
-            <div class="ui basic padded segment">
-              <h3 class="ui centered header">List of Assignable Employees For General Services</h3>
+            <div class="ui padded segment">
+              <h3 class="ui centered header">Assign Team to General Services</h3>
               <div class="ui divider">
               </div>
               <div class="ui form">
@@ -165,107 +149,160 @@
                   <div class="field">
                     <label>Supervisor </label>
                     <select name="client1" id="client1" class="ui search dropdown">
-                    <?php 
-                      $JobOrder = $_SESSION['generalservice'];
-                      require_once('../mysql_connect.php');
-                      $getoccular= "Select * from  Job_Order where JONumber = '{ $JobOrder}'";
-                      $runquery= mysqli_query($dbc,$getoccular); 
-                      $gettingData=mysqli_fetch_array($runquery,MYSQLI_ASSOC);
-                      $custname = "select *    from employee e where e.employeeNo not In 
-                                  ( select t.employeeno from team_members t where t.teamIdNo in 
-                                  (select ti.teamIdno from team ti where ti.jobOrder_No in 
-                                  (select jo.joNumber from job_order jo where jo.StartDate = '{$gettingData['Date']}'))) and  e.employeeposition = 'Supervisor'";
-                      $getname = mysqli_query($dbc, $custname);
-                      while ($row = mysqli_fetch_array($getname,MYSQLI_ASSOC)){
-                        echo '<option value="'.$row['EmployeeNo'].'">'.$row['Name'].'</option>';
-                      }
-                      $selectOption1 = $_POST['client1']; 
-                    ?>        
+                      <option value="">Select Supervisor</option>                      
+                      <?php 
+                        $JobOrder = $_SESSION['generalservice'];
+                        require_once('../mysql_connect.php');
+                        $getoccular= "Select * from  Job_Order where JONumber = '{ $JobOrder}'";
+                        $runquery= mysqli_query($dbc,$getoccular); 
+                        $gettingData=mysqli_fetch_array($runquery,MYSQLI_ASSOC);
+                        $custname = "select *    from employee e where e.employeeNo not In 
+                                    ( select t.employeeno from team_members t where t.teamIdNo in 
+                                    (select ti.teamIdno from team ti where ti.jobOrder_No in 
+                                    (select jo.joNumber from job_order jo where jo.StartDate = '{$gettingData['Date']}'))) and  e.employeeposition = 'Supervisor'";
+                        $getname = mysqli_query($dbc, $custname);
+                        while ($row = mysqli_fetch_array($getname,MYSQLI_ASSOC)){
+                          echo '<option value="'.$row['EmployeeNo'].'">'.$row['Name'].'</option>';
+                        }
+                        $selectOption1 = $_POST['client1']; 
+                      ?>        
                     </select>
                   </div>
                   <div class="field">
-                    <label>employee1 </label>
+                    <label>Employee </label>
                     <select name="client2" id="client2" class="ui search dropdown">
-                    <?php           
-                      $JobOrder = $_SESSION['generalservice'];
-                      require_once('../mysql_connect.php');
-                      $getoccular= "Select * from  Job_Order where JONumber = '{ $JobOrder}'";
-                      $runquery= mysqli_query($dbc,$getoccular); 
-                      $gettingData=mysqli_fetch_array($runquery,MYSQLI_ASSOC);
-                      $custname = "select *    from employee e where e.employeeNo not In 
-                                  ( select t.employeeno from team_members t where t.teamIdNo in 
-                                  (select ti.teamIdno from team ti where ti.jobOrder_No in 
-                                  (select jo.joNumber from job_order jo where jo.StartDate = '{$gettingData['Date']}'))) and  e.employeeposition = 'Worker'";
-                      $getname = mysqli_query($dbc, $custname);
-                      while ($row = mysqli_fetch_array($getname,MYSQLI_ASSOC)){
-                              echo '<option value="'.$row['EmployeeNo'].'">'.$row['Name'].'</option>';
-                            }
-                      $selectOption1 = $_POST['client1']; 
-                    ?>        
+                      <option value="">Select Employee</option>                      
+                      <?php           
+                        $JobOrder = $_SESSION['generalservice'];
+                        require_once('../mysql_connect.php');
+                        $getoccular= "Select * from  Job_Order where JONumber = '{ $JobOrder}'";
+                        $runquery= mysqli_query($dbc,$getoccular); 
+                        $gettingData=mysqli_fetch_array($runquery,MYSQLI_ASSOC);
+                        $custname = "SELECT * 
+                                          FROM employee e 
+                                          WHERE e.employeeNo NOT IN (SELECT t.employeeno 
+                                                                      FROM team_members t 
+                                                                      WHERE t.teamIdNo IN (SELECT ti.teamIdno 
+                                                                                            FROM team ti 
+                                                                                            WHERE ti.jobOrder_No IN (SELECT jo.joNumber 
+                                                                                                                      FROM job_order jo 
+                                                                                                                      WHERE jo.StartDate = '{$gettingData['Date']}'))) 
+                                            AND e.employeeposition = 'Worker'
+                                            AND e.employeeNo NOT IN (SELECT tt.EmployeeNo 
+                                                                      FROM termiteteammembers tt 
+                                                                      WHERE tt.TermiteTeamID IN (SELECT tti.TeamID 
+                                                                                                  FROM termite_team tti 
+                                                                                                  WHERE tti.TTMSPIDno IN (SELECT ttmsp.TTSPIDNO 
+                                                                                                                            FROM termitetreatment_serviceperformance ttmsp 
+                                                                                                                          WHERE ttmsp.date = '{$gettingData['Date']}'))) 
+                                            AND e.employeeNo NOT IN (SELECT ov.SupervisedBy 
+                                                                      FROM Occular_visits ov 
+                                                                      WHERE ov.Date = '{$gettingData['Date']}');";
+                        $getname = mysqli_query($dbc, $custname);
+                        while ($row = mysqli_fetch_array($getname,MYSQLI_ASSOC)){
+                                echo '<option value="'.$row['EmployeeNo'].'">'.$row['Name'].'</option>';
+                              }
+                        $selectOption1 = $_POST['client1']; 
+                      ?>        
                     </select>
                   </div>
                   <div class="field">
-                    <label>employee2 </label>
+                    <label>Employee </label>
                     <select name="client3" id="client3" class="ui search dropdown">
-                    <?php 
-                      $JobOrder = $_SESSION['generalservice'];
-                      require_once('../mysql_connect.php');
-                      $getoccular= "SELECT * from  Job_Order where JONumber = '{ $JobOrder}'";
-                      $runquery= mysqli_query($dbc,$getoccular); 
-                      $gettingData=mysqli_fetch_array($runquery,MYSQLI_ASSOC);
-                      $custname = "SELECT *    from employee e where e.employeeNo not In 
-                                  ( select t.employeeno from team_members t where t.teamIdNo in 
-                                  (select ti.teamIdno from team ti where ti.jobOrder_No in 
-                                  (select jo.joNumber from job_order jo where jo.StartDate = '{$gettingData['Date']}'))) and  e.employeeposition = 'Worker'";
-                      $getname = mysqli_query($dbc, $custname);
-                      while ($row = mysqli_fetch_array($getname,MYSQLI_ASSOC)){
-                        echo '<option value="'.$row['EmployeeNo'].'">'.$row['Name'].'</option>';
-                      }
-                      $selectOption1 = $_POST['client1']; 
-                    ?>        
+                      <option value="">Select Employee</option>                      
+                      <?php 
+                        $JobOrder = $_SESSION['generalservice'];
+                        require_once('../mysql_connect.php');
+                        $getoccular= "SELECT * from  Job_Order where JONumber = '{ $JobOrder}'";
+                        $runquery= mysqli_query($dbc,$getoccular); 
+                        $gettingData=mysqli_fetch_array($runquery,MYSQLI_ASSOC);
+                        $custname = "SELECT * 
+                                          FROM employee e 
+                                          WHERE e.employeeNo NOT IN (SELECT t.employeeno 
+                                                                      FROM team_members t 
+                                                                      WHERE t.teamIdNo IN (SELECT ti.teamIdno 
+                                                                                            FROM team ti 
+                                                                                            WHERE ti.jobOrder_No IN (SELECT jo.joNumber 
+                                                                                                                      FROM job_order jo 
+                                                                                                                      WHERE jo.StartDate = '{$gettingData['Date']}'))) 
+                                            AND e.employeeposition = 'Worker'
+                                            AND e.employeeNo NOT IN (SELECT tt.EmployeeNo 
+                                                                      FROM termiteteammembers tt 
+                                                                      WHERE tt.TermiteTeamID IN (SELECT tti.TeamID 
+                                                                                                  FROM termite_team tti 
+                                                                                                  WHERE tti.TTMSPIDno IN (SELECT ttmsp.TTSPIDNO 
+                                                                                                                            FROM termitetreatment_serviceperformance ttmsp 
+                                                                                                                          WHERE ttmsp.date = '{$gettingData['Date']}'))) 
+                                            AND e.employeeNo NOT IN (SELECT ov.SupervisedBy 
+                                                                      FROM Occular_visits ov 
+                                                                      WHERE ov.Date = '{$gettingData['Date']}');";
+                        $getname = mysqli_query($dbc, $custname);
+                        while ($row = mysqli_fetch_array($getname,MYSQLI_ASSOC)){
+                          echo '<option value="'.$row['EmployeeNo'].'">'.$row['Name'].'</option>';
+                        }
+                        $selectOption1 = $_POST['client1']; 
+                      ?>        
                     </select>
                   </div>
                   <div class="field">
-                    <label>employee3 </label>
+                    <label>Employee </label>
                     <select name="client4" id="client4" class="ui search dropdown">
-                    <?php 
-                      $JobOrder = $_SESSION['generalservice'];
-                      require_once('../mysql_connect.php');
-                      $getoccular= "SELECT * from  Job_Order where JONumber = '{ $JobOrder}'";
-                      $runquery= mysqli_query($dbc,$getoccular); 
-                      $gettingData=mysqli_fetch_array($runquery,MYSQLI_ASSOC);
-                      $custname = "SELECT *    from employee e where e.employeeNo not In 
-                                  ( select t.employeeno from team_members t where t.teamIdNo in 
-                                  (select ti.teamIdno from team ti where ti.jobOrder_No in 
-                                  (select jo.joNumber from job_order jo where jo.StartDate = '{$gettingData['Date']}'))) and  e.employeeposition = 'Worker'";
-                      $getname = mysqli_query($dbc, $custname);
-                      while ($row = mysqli_fetch_array($getname,MYSQLI_ASSOC)){
-                        echo '<option value="'.$row['EmployeeNo'].'">'.$row['Name'].'</option>';
-                      }
-                      $selectOption1 = $_POST['client1']; 
-                    ?>        
+                      <option value="">Select Employee</option>
+                      <?php 
+                        $JobOrder = $_SESSION['generalservice'];
+                        require_once('../mysql_connect.php');
+                        $getoccular= "SELECT * from  Job_Order where JONumber = '{ $JobOrder}'";
+                        $runquery= mysqli_query($dbc,$getoccular); 
+                        $gettingData=mysqli_fetch_array($runquery,MYSQLI_ASSOC);
+                        $custname = "SELECT * 
+                                          FROM employee e 
+                                          WHERE e.employeeNo NOT IN (SELECT t.employeeno 
+                                                                      FROM team_members t 
+                                                                      WHERE t.teamIdNo IN (SELECT ti.teamIdno 
+                                                                                            FROM team ti 
+                                                                                            WHERE ti.jobOrder_No IN (SELECT jo.joNumber 
+                                                                                                                      FROM job_order jo 
+                                                                                                                      WHERE jo.StartDate = '{$gettingData['Date']}'))) 
+                                            AND e.employeeposition = 'Worker'
+                                            AND e.employeeNo NOT IN (SELECT tt.EmployeeNo 
+                                                                      FROM termiteteammembers tt 
+                                                                      WHERE tt.TermiteTeamID IN (SELECT tti.TeamID 
+                                                                                                  FROM termite_team tti 
+                                                                                                  WHERE tti.TTMSPIDno IN (SELECT ttmsp.TTSPIDNO 
+                                                                                                                            FROM termitetreatment_serviceperformance ttmsp 
+                                                                                                                          WHERE ttmsp.date = '{$gettingData['Date']}'))) 
+                                            AND e.employeeNo NOT IN (SELECT ov.SupervisedBy 
+                                                                      FROM Occular_visits ov 
+                                                                      WHERE ov.Date = '{$gettingData['Date']}');";
+                        $getname = mysqli_query($dbc, $custname);
+                        while ($row = mysqli_fetch_array($getname,MYSQLI_ASSOC)){
+                          echo '<option value="'.$row['EmployeeNo'].'">'.$row['Name'].'</option>';
+                        }
+                        $selectOption1 = $_POST['client1']; 
+                      ?>        
                     </select>
 
                   </div>
                   <div class="field">
                     <label>Accountant </label>
                     <select name="client5" id="client5" class="ui search dropdown">
-                    <?php 
-                      $JobOrder = $_SESSION['generalservice'];
-                      require_once('../mysql_connect.php');
-                      $getoccular= "Select * from  Job_Order where JONumber = '{ $JobOrder}'";
-                      $runquery= mysqli_query($dbc,$getoccular); 
-                      $gettingData=mysqli_fetch_array($runquery,MYSQLI_ASSOC);
-                      $custname = "SELECT *    from employee e where e.employeeNo not In 
-                                  ( select t.employeeno from team_members t where t.teamIdNo in 
-                                  (select ti.teamIdno from team ti where ti.jobOrder_No in 
-                                  (select jo.joNumber from job_order jo where jo.StartDate = '{$gettingData['Date']}'))) and  e.employeeposition = 'Accountant'";
-                      $getname = mysqli_query($dbc, $custname);
-                      while ($row = mysqli_fetch_array($getname,MYSQLI_ASSOC)){
-                        echo '<option value="'.$row['EmployeeNo'].'">'.$row['Name'].'</option>';
-                      }
-                      $selectOption1 = $_POST['client1']; 
-                    ?>        
+                      <option value="">Select Accountant</option>                        
+                      <?php 
+                        $JobOrder = $_SESSION['generalservice'];
+                        require_once('../mysql_connect.php');
+                        $getoccular= "Select * from  Job_Order where JONumber = '{ $JobOrder}'";
+                        $runquery= mysqli_query($dbc,$getoccular); 
+                        $gettingData=mysqli_fetch_array($runquery,MYSQLI_ASSOC);
+                        $custname = "SELECT *    from employee e where e.employeeNo not In 
+                                    ( select t.employeeno from team_members t where t.teamIdNo in 
+                                    (select ti.teamIdno from team ti where ti.jobOrder_No in 
+                                    (select jo.joNumber from job_order jo where jo.StartDate = '{$gettingData['Date']}'))) and  e.employeeposition = 'Accountant'";
+                        $getname = mysqli_query($dbc, $custname);
+                        while ($row = mysqli_fetch_array($getname,MYSQLI_ASSOC)){
+                          echo '<option value="'.$row['EmployeeNo'].'">'.$row['Name'].'</option>';
+                        }
+                        $selectOption1 = $_POST['client1']; 
+                      ?>        
                     </select>
                   </div>
                   <div class="ui buttons">
@@ -284,7 +321,84 @@
 
       <!-- scripts -->
       <script src="../dashboard.js"></script>
-      <script src="../dashboard7.js"></script>
+      <script type="text/javascript">
+        $('#assignemployee')
+          .form({
+            inline: true,
+            fields: {
+              client1: {
+                identifier: 'client1',
+                rules: [
+                  {
+                    type   : 'empty',
+                    prompt : 'You must select the Supervisor.'
+                  }
+                ]
+              },
+              client2: {
+                identifier: 'client2',
+                rules: [
+                  {
+                    type   : 'empty',
+                    prompt : 'You must select an Employee.'
+                  },
+                  {
+                    type   : 'different[client3]',
+                    prompt : 'You can\'t choose the same employees!'
+                  },
+                  {
+                    type   : 'different[client4]',
+                    prompt : 'You can\'t choose the same employees!'
+                  }
+                ]
+              },
+              client3: {
+                identifier: 'client3',
+                rules: [
+                  {
+                    type   : 'empty',
+                    prompt : 'You must select an Employee.'
+                  },
+                  {
+                    type   : 'different[client2]',
+                    prompt : 'You can\'t choose the same employees!'
+                  },
+                  {
+                    type   : 'different[client4]',
+                    prompt : 'You can\'t choose the same employees!'
+                  }
+                ]
+              },
+              client4: {
+                identifier: 'client4',
+                rules: [
+                  {
+                    type   : 'empty',
+                    prompt : 'You must select an Employee.'
+                  },
+                  {
+                    type   : 'different[client2]',
+                    prompt : 'You can\'t choose the same employees!'
+                  },
+                  {
+                    type   : 'different[client3]',
+                    prompt : 'You can\'t choose the same employees!'
+                  }
+                ]
+              },
+              client5: {
+                identifier: 'client5',
+                rules: [
+                  {
+                    type   : 'empty',
+                    prompt : 'You must select an Accountant.'
+                  }
+                ]
+              }
+            }
+          })
+        ;
+      </script>
 
 </body>
 

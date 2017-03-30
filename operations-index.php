@@ -21,6 +21,7 @@
 </head>
 <body>
   <?php
+  ob_start();
   session_start();
   if (!isset($_SESSION['currentUser'])) {
     header("Location: http://".$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'])."/login.php");
@@ -252,9 +253,10 @@
   <!-- MAIN CONTENT END -->
   <script src="dashboard.js"></script>
   <script type="text/javascript">
-    $('#oculars').chained('#servicetypes');
+    
     $('#ocularnosupervisor')
       .form({
+        inline: true,        
         fields: {
           servicetypes: {
             identifier: 'servicetypes',
@@ -280,6 +282,7 @@
 
     $('#termitenoteam')
       .form({
+        inline: true,        
         fields: {
           termite: {
             identifier: 'termite',
@@ -296,6 +299,7 @@
 
     $('#householdnoteam')
       .form({
+        inline: true,        
         fields: {
           household: {
             identifier: 'household',
@@ -312,6 +316,7 @@
 
     $('#gsnoteam')
       .form({
+        inline: true,
         fields: {
           generalservice: {
             identifier: 'generalservice',
@@ -325,6 +330,8 @@
         }
       })
     ;
+
+    $('#oculars').chained('#servicetypes');
   </script>
 
 </body>
