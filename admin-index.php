@@ -47,8 +47,10 @@
         User Accounts
       </div>
       <div class="menu">
-        <a class="item" href="admin-manage/manage-employee.php">Manage Employee</a>
-        <a class="item" href="admin-manage/add-employee.php">Add Employee</a>
+        <a class="item" href="admin-manage/manage-employees.php">Manage Employees</a>
+      </div>
+      <div class="menu">
+        <a class="item" href="admin-manage/manage-accounts.php">Manage Accounts</a>
       </div>
     </div>
     <a class="item" href="login.php">
@@ -78,7 +80,6 @@
     <!-- TOP BAR END -->
     <div class="ui basic padded segment">
       <div class="ui relaxed grid">
-        <!-- Admin Dashboard START -->
         <div class="sixteen wide centered column">
           <div class="ui center aligned segment">
             <h3 class="ui header">Admin Dashboard</h3>

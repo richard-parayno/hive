@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-  <title>AF-Xtrim Services</title>
+  <title>Hive Resource Management System</title>
   <link href="../bower_components/semantic/dist/semantic.min.css" rel="stylesheet" type="text/css" />
   <link href="../bower_components/fullcalendar/dist/fullcalendar.min.css" rel="stylesheet" type="text/css" />
   <link href="../bower_components/fullcalendar/dist/fullcalendar.print.css" rel="stylesheet" media="print" type="text/css"
@@ -87,7 +87,7 @@
     <div class="pusher">
       <!-- TOP BAR START-->
       <div class="sixteen wide column">
-        <div class="ui top menu" id="topbar">
+        <div class="ui sticky top menu" >
           <a class="ui item launch">
             <i class="sidebar icon"></i> Menu
           </a>
@@ -104,38 +104,13 @@
             </div>
           </div>
           <div class="right menu ">
-            <a class="ui labeled item notifications">
-            Notifications
-          </a>
+
           </div>
         </div>
       </div>
       <!-- TOP BAR END -->
       <div class="ui basic padded segment">
         <div class="ui relaxed grid">
-          <!-- NOTIFICATION FEED START -->
-          <div class="ui special popup">
-            <div class="eight wide column center aligned grid">
-              <div class="ui small feed">
-                <h4 class="ui header">Notifications</h4>
-                <div class="event">
-                  <div class="content">
-                    <div class="summary">
-                      Ocular Inspection for <a>Job Order 1234</a> has been accomplished.
-                    </div>
-                  </div>
-                </div>
-                <div class="event">
-                  <div class="content">
-                    <div class="summary">
-                      <a>Job Order 1234</a> has been accomplished.
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- NOTIFICATION FEED END -->
           <!-- accept Button -->
           <?php
             if (isset($_POST['accept'])) {
@@ -155,14 +130,17 @@
             
               $dateTimeclass =  new DateTime ($_SESSION['initialtreattermite']);
               $endDate= new DateTime ($_SESSION['initialtreattermite']);
+              $toGetLastDate = newDateTime($_SESSION['initialtreattermtite']);
               $dateTimeclass->format('Y-m-d');
-              $endDate->format('Y-m-d');
-              $datetrial = new DateInterval('P1Y');  	
-              $endDate->add($datetrial); 
-              $counter=0;
-              $datetrial = new DateInterval('P1Y');  	
-              $endDate->add($datetrial); 
-              $query="insert into job_order (StartDate,EndDate,CustomerId,occular_id,structure_type,job_type, job_status) values ('{$dateTimeclass->format('Y-m-d')}','{$endDate->format('Y-m-d')}','{$callername}', '{$toSchedule}', '{$stype}', 'Termite Treatment', 'Ongoing')";
+              $ctr=1;
+              while ($ctr<12)
+              {
+                $ctr=$ctr+1; 
+                $forLast= new DateInterval ('P30D');
+                $toGetLastDate->add($forLast);
+
+              }
+              $query="insert into job_order (StartDate,EndDate,CustomerId,occular_id,structure_type,job_type, job_status) values ('{$endDate->format('Y-m-d')}','{$toGetLastDate->format('Y-m-d')}','{$callername}', '{$toSchedule}', '{$stype}', 'Termite Treatment', 'Ongoing')";
               $result=mysqli_query($dbc,$query);
               $jon= " select JONumber FROM  job_order ORDER BY JONumber DESC LIMIT 1";
               $placejon= mysqli_query($dbc, $jon); 
@@ -170,14 +148,15 @@
               $lastJO= $thisjon['JONumber'];	
               $query2= " insert into termitetreatment_serviceperformance (JobORderNo,Date) values ('{$lastJO}','{$dateTimeclass->format('Y-m-d')}')"; 
               $ew= mysqli_query($dbc,$query2);  
-              $counter = 0;
-              while ($dateTimeclass < $endDate and $counter < 12) {
+              $counter = 1;
+              while ( $counter < 12) {
                 $counter = $counter +1;
                 $datetri = new DateInterval('P30D');
                 $dateTimeclass->add($datetri);  
                 $query4= "insert into termitetreatment_serviceperformance (JobORderNo,Date) values ('{$lastJO}','{$dateTimeclass->format('Y-m-d')}')";
                 $work= mysqli_query($dbc,$query4); 
               }
+
         			header("Location:  http://".$_SERVER['HTTP_HOST']. dirname($_SERVER['PHP_SELF']). "/../sales-index.php");
               
             }
@@ -212,9 +191,9 @@
                     $date = new DateTime ($getData['Date']);
                     // $dateTimeclass = new DateTime ($_POST['Date']); 
                     //$dateTimeclass->format('Y-m-d')
-                    echo "<b>Date of Occular: </b>" .$date->format('m-d-Y');
+                    echo "<b>Date of Ocular: </b>" .$date->format('m-d-Y');
                     echo "<br>";
-                    echo "<b>Area Size:     </b>" .$getData['Area_Size'];
+                    echo "<b>Area Size (in sq. m):     </b>" .$getData['Area_Size'];
                     echo "<br>";	
                     echo "<b>Contact Person: </b>" .$getData['LF_At_Site'];
                     echo "<br>";	
@@ -225,7 +204,7 @@
                     $getEmployee= "Select Name from employee where EmployeeNo = '{$getData['SupervisedBy']}'";
                     $run3=mysqli_query($dbc,$getEmployee);
                     $getdata3=mysqli_fetch_array($run3,MYSQLI_ASSOC);
-                    echo "<b>Occular Representative: </b>" .$getdata3['Name'];
+                    echo "<b>Ocular Inspector: </b>" .$getdata3['Name'];
                   ?>
                   <br> </br>
 
@@ -235,21 +214,18 @@
                   <form class="ui form" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
                     <?php 
                       $toSchedule = new DateTime ($_SESSION['initialtreattermite']);
-                      $endDate= new DateTime($_SESSION['initialtreattermite']);
-                      $toSchedule  = new DateTime("2018-12-01 00:00:00");
-                      $endDate= new DateTime("2019-12-01 00:00:00");
+                     
                       $toSchedule->format('Y-m-d');
-                      $endDate->format('Y-m-d');
-                      $datetrial = new DateInterval('P1Y');  	
-		                  $endDate->add($datetrial); 
-		                  $counter=0;
+               	
+
+		                  $counter=1;
 
 					            
 
 						          echo "<b> Termite Treatment # 1 is on </b>".$toSchedule->format('m-d-Y');
 						          echo "<br>";
 
-                      while ($toSchedule < $endDate and $counter!=12) {
+                      while ($counter!=12) {
                         $counter = $counter +1;
                         $datetri = new DateInterval('P30D');
                         $toSchedule->add($datetri);  
@@ -259,8 +235,7 @@
                         echo "<br>";
                       } 
 
-                      echo "<b> The last treatment is on</b>".$endDate->format('m-d-Y')	;
-						          echo "<br>";
+                  
               	    ?>
 
                     <br></br>

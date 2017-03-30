@@ -208,7 +208,7 @@
                                                                                                                          WHERE ttmsp.date = '{$gettingData['Date']}'))) 
                                           AND e.employeeNo NOT IN (SELECT ov.SupervisedBy 
                                                                      FROM Occular_visits ov 
-                                                                    WHERE ov.Date = '{$gettingData['Date']}')";
+                                                                    WHERE ov.Date = '{$gettingData['Date']}' and ov.SupervisedBy is not NULL)";
                           $getname = mysqli_query($dbc, $custname);
                           while ($row = mysqli_fetch_array($getname,MYSQLI_ASSOC)){
                             echo '<option value="'.$row['EmployeeNo'].'">'.$row['Name'].'</option>';

@@ -117,29 +117,6 @@
       <!-- TOP BAR END -->
       <div class="ui basic padded segment">
         <div class="ui relaxed grid">
-          <!-- NOTIFICATION FEED START -->
-          <div class="ui special popup">
-            <div class="eight wide column center aligned grid">
-              <div class="ui small feed">
-                <h4 class="ui header">Notifications</h4>
-                <div class="event">
-                  <div class="content">
-                    <div class="summary">
-                      Ocular Inspection for <a>Job Order 1234</a> has been accomplished.
-                    </div>
-                  </div>
-                </div>
-                <div class="event">
-                  <div class="content">
-                    <div class="summary">
-                      <a>Job Order 1234</a> has been accomplished.
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- NOTIFICATION FEED END -->
           <?php
 
           if (isset($_POST['submit1'])) {
@@ -181,7 +158,7 @@
                         <option value="">Select Termite Ocular to Schedule</option>
                         <?php
                         require_once('mysql_connect.php');
-                        $getQuery = "SELECT Occular_Id, Name
+                        $getQuery = "SELECT Occular_Id, Name, DATE(ov.date) AS Date, Area_Infection
                                        FROM occular_visits ov
                                        JOIN customer c
                                          ON ov.CustomerId=c.CustomerId
@@ -189,7 +166,7 @@
                         $process = mysqli_query($dbc,$getQuery);
 
                         while ($row = mysqli_fetch_array($process, MYSQLI_ASSOC)) {
-                          echo "<option value=\"{$row['Occular_Id']}\">Client: {$row['Name']}</option>";
+                          echo "<option value=\"{$row['Occular_Id']}\">Date: {$row['Date']} | Client: {$row['Name']} | Infection Level: {$row['Area_Infection']} </option>";
                         }
                         ?>
                       </select>

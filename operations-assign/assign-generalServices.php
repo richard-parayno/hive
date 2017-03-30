@@ -179,25 +179,25 @@
                         $runquery= mysqli_query($dbc,$getoccular); 
                         $gettingData=mysqli_fetch_array($runquery,MYSQLI_ASSOC);
                         $custname = "SELECT * 
-                                          FROM employee e 
-                                          WHERE e.employeeNo NOT IN (SELECT t.employeeno 
-                                                                      FROM team_members t 
-                                                                      WHERE t.teamIdNo IN (SELECT ti.teamIdno 
-                                                                                            FROM team ti 
-                                                                                            WHERE ti.jobOrder_No IN (SELECT jo.joNumber 
-                                                                                                                      FROM job_order jo 
-                                                                                                                      WHERE jo.StartDate = '{$gettingData['Date']}'))) 
-                                            AND e.employeeposition = 'Worker'
-                                            AND e.employeeNo NOT IN (SELECT tt.EmployeeNo 
-                                                                      FROM termiteteammembers tt 
-                                                                      WHERE tt.TermiteTeamID IN (SELECT tti.TeamID 
-                                                                                                  FROM termite_team tti 
-                                                                                                  WHERE tti.TTMSPIDno IN (SELECT ttmsp.TTSPIDNO 
-                                                                                                                            FROM termitetreatment_serviceperformance ttmsp 
-                                                                                                                          WHERE ttmsp.date = '{$gettingData['Date']}'))) 
-                                            AND e.employeeNo NOT IN (SELECT ov.SupervisedBy 
-                                                                      FROM Occular_visits ov 
-                                                                      WHERE ov.Date = '{$gettingData['Date']}');";
+                                         FROM employee e 
+                                        WHERE e.employeeNo NOT IN (SELECT t.employeeno 
+                                                                     FROM team_members t 
+                                                                    WHERE t.teamIdNo IN (SELECT ti.teamIdno 
+                                                                                           FROM team ti 
+                                                                                          WHERE ti.jobOrder_No IN (SELECT jo.joNumber 
+                                                                                                                     FROM job_order jo 
+                                                                                                                    WHERE jo.StartDate = '{$gettingData['Date']}'))) 
+                                          AND e.employeeposition = 'Worker'
+                                          AND e.employeeNo NOT IN (SELECT tt.EmployeeNo 
+                                                                     FROM termiteteammembers tt 
+                                                                    WHERE tt.TermiteTeamID IN (SELECT tti.TeamID 
+                                                                                                 FROM termite_team tti 
+                                                                                                WHERE tti.TTMSPIDno IN (SELECT ttmsp.TTSPIDNO 
+                                                                                                                          FROM termitetreatment_serviceperformance ttmsp 
+                                                                                                                         WHERE ttmsp.date = '{$gettingData['Date']}'))) 
+                                          AND e.employeeNo NOT IN (SELECT ov.SupervisedBy 
+                                                                     FROM Occular_visits ov 
+                                                                    WHERE ov.Date = '{$gettingData['Date']}' and ov.SupervisedBy is not NULL)";
                         $getname = mysqli_query($dbc, $custname);
                         while ($row = mysqli_fetch_array($getname,MYSQLI_ASSOC)){
                                 echo '<option value="'.$row['EmployeeNo'].'">'.$row['Name'].'</option>';

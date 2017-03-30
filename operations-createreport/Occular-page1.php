@@ -53,7 +53,7 @@
         </a>
       </div>
     </div>
-    <a class="item" href="login.php">
+    <a class="item" href="../login.php">
       Log Out
     </a>
   </div>
@@ -124,8 +124,8 @@
 
         <div class="sixteen wide centered column ">
           <div class="ui padded segment">
-            <h3 class="ui centered header">Occular Service List</h3>
-            <label> <left align><b> Choose a Occular service to create a report for </left></b> </label>
+            <h3 class="ui centered header">Ocular Service List</h3>
+            <label>Choose the number of the Ocular Service you wish to create a report for</label>
             <div class="ui divider">
             </div>
 
@@ -143,7 +143,7 @@
                       <tbody>
             <?php
             require_once('../mysql_connect.php');
-            $sql = "SELECT ov.occular_ID, c.name,ov.date, po.Address from occular_visits ov join customer c on ov.CustomerID = c.customerID  join pending_order po on po.pending_order_id = ov.pending_order where ov.Supervisedby IS NOT NULL";
+            $sql = "SELECT ov.occular_ID, c.name,ov.date, po.Address from occular_visits ov join customer c on ov.CustomerID = c.customerID  join pending_order po on po.pending_order_id = ov.pending_order where ov.Supervisedby IS NOT NULL and ov.Recommendation IS NULL";
             $qry = mysqli_query($dbc,$sql);
 
             while($row=mysqli_fetch_array($qry,MYSQLI_ASSOC)){

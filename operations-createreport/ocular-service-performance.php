@@ -147,7 +147,7 @@
               </div>
               <form id="ocularreport" class="ui form" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
                 <div class="field">
-                  <label>Area Size</label>
+                  <label>Area Size (in sq. m)</label>
                   <input type="number" name="size" placeholder="Area Size"/>
                 </div>
                 <div class="field">
