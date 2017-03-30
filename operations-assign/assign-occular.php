@@ -57,7 +57,7 @@
           Create General Services Report
         </a>
         <a class="item" href="#">
-          Create Occular Report
+          Create Ocular Report
         </a>
       </div>
     </div>

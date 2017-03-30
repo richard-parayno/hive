@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.5.2
--- https://www.phpmyadmin.net/
+-- version 4.5.1
+-- http://www.phpmyadmin.net
 --
--- Host: localhost
--- Generation Time: Mar 29, 2017 at 03:45 PM
--- Server version: 10.1.21-MariaDB
--- PHP Version: 7.1.1
+-- Host: 127.0.0.1
+-- Generation Time: Mar 29, 2017 at 05:15 PM
+-- Server version: 10.1.16-MariaDB
+-- PHP Version: 5.6.24
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `appdev`
+-- Database: `afxtrim`
 --
 
 -- --------------------------------------------------------
@@ -117,6 +117,21 @@ CREATE TABLE `employee` (
   `EndDate` date NOT NULL,
   `EmployeePosition` varchar(45) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `employee`
+--
+
+INSERT INTO `employee` (`EmployeeNo`, `Name`, `ContactNo`, `StartDate`, `EndDate`, `EmployeePosition`) VALUES
+(1, 'Sheila Facuri', '09278697137', '2017-03-30', '2017-12-31', 'Accountant'),
+(2, 'Mary Jane Botona', '09178239118', '2017-03-30', '2017-12-31', 'Supervisor'),
+(3, 'Deanne Baldemor', '0917123456', '2017-03-30', '2017-12-31', 'Supervisor'),
+(4, 'Paul Galang', '09278697137', '2017-03-30', '2017-12-31', 'Worker'),
+(5, 'Alex Espiritu', '0917123457', '2017-03-30', '2017-12-31', 'Worker'),
+(6, 'Manuel Toleran', '0927123456', '2017-03-30', '2017-12-31', 'Worker'),
+(7, 'Ana Laid', '0917123491', '2017-03-30', '2017-12-31', 'Worker'),
+(8, 'Hanz Arce', '0917123123', '2017-03-30', '2017-12-31', 'Worker'),
+(9, 'Paula Casas', '0917833456', '2017-03-30', '2017-12-31', 'Worker');
 
 -- --------------------------------------------------------
 
@@ -402,6 +417,14 @@ CREATE TABLE `users` (
   `Password` varchar(45) NOT NULL,
   `UserType` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`UserIdno`, `Username`, `Password`, `UserType`) VALUES
+(2, 'operations', 'pass123!', 2),
+(1, 'sales', 'pass123!', 1);
 
 --
 -- Indexes for dumped tables

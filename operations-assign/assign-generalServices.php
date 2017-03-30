@@ -93,6 +93,9 @@
       $run4=mysqli_query($dbc,$addmem2);
       $run5=mysqli_query($dbc,$addmem3);
 
+      header("Location: http://".$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'])."/../operations-index.php");
+
+
       
   } 
   ?>

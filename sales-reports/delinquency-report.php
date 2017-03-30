@@ -3,7 +3,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-    <title>Hive Resource Management System - View Clients</title>
+    <title>AF-Xtrim Services - View Clients</title>
     <link href="../bower_components/semantic/dist/semantic.min.css" rel="stylesheet" type="text/css" />
     <link href="../bower_components/fullcalendar/dist/fullcalendar.min.css" rel="stylesheet" type="text/css" />
     <link href="../bower_components/fullcalendar/dist/fullcalendar.print.css" rel="stylesheet" media="print" type="text/css" />
@@ -21,8 +21,11 @@
     <!-- SIDEBAR START -->
       <div class="ui inverted left vertical sidebar menu" id="sidebar">
         <div class="item">
+          <a class="ui logo icon image" href="#">
+            <img src="../assets/logo.png">
+          </a>
           <a href="#">
-            <b>Hive Resource Management System</b>
+            <b>AF-Xtrim Services</b>
           </a>
         </div>
         <a class="item" href="../sales-index.php">
@@ -38,7 +41,7 @@
         <a class="item" href="../sales-chemicals/chemical.php">
           Chemical Inventory
         </a>
-        <a class="item" href="../sales-clients/clients-list.php">
+        <a class="item" href="clients-list.php">
           View Clients
         </a>
         <div class="item">
@@ -67,9 +70,6 @@
             <a class="item" href="unaccomplished-oculars-report.php">
               Unaccomplished Oculars Report
             </a>
-            <a class="item" href="delinquency-report.php">
-              Delinquency Report
-            </a>
           </div>
         </div>
         <a class="item" href="../login.php">
@@ -93,12 +93,13 @@
             <div class="right menu ">
               <a class="ui labeled item notifications">
                 Notifications
+                <div class="ui basic red circular label">10</div>
               </a>
             </div>
           </div>
         </div>
         <!-- TOP BAR END -->
-
+		
         <div class="ui basic padded segment">
           <div class="ui relaxed grid">
             <!-- NOTIFICATION FEED START -->
@@ -137,18 +138,18 @@
                  <select name="month" id="month" class="ui search dropdown" onchange="getMonth(this.value)">
                     <?php
                     echo "<option value=''>Select Month</option>";
-                    echo "<option value='1'>January</option>";
-					echo "<option value='2'>February</option>";
-					echo "<option value='3'>March</option>";
-					echo "<option value='4'>April</option>";
-					echo "<option value='5'>May</option>";
-					echo "<option value='6'>June</option>";
-					echo "<option value='7'>July</option>";
-					echo "<option value='8'>August</option>";
-					echo "<option value='9'>September</option>";
-					echo "<option value='10'>October</option>";
-					echo "<option value='11'>November</option>";
-					echo "<option value='12'>December</option>";
+                    echo "<option value='January'>January</option>";
+					echo "<option value='February'>February</option>";
+					echo "<option value='March'>March</option>";
+					echo "<option value='April'>April</option>";
+					echo "<option value='May'>May</option>";
+					echo "<option value='June'>June</option>";
+					echo "<option value='July'>July</option>";
+					echo "<option value='August'>August</option>";
+					echo "<option value='September'>September</option>";
+					echo "<option value='October'>October</option>";
+					echo "<option value='November'>November</option>";
+					echo "<option value='December'>December</option>";
                     ?>
                   </select>
                 </div>
@@ -166,7 +167,6 @@
 
       <!-- scripts -->
 	  <script src="../dashboard.js"></script>
-	  <script src="../dashboard2.js"></script>
 
 
   </body>

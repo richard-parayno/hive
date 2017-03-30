@@ -3,7 +3,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-    <title>Hive Resource Management System - View Clients</title>
+    <title>AF-Xtrim Services - View Clients</title>
     <link href="../bower_components/semantic/dist/semantic.min.css" rel="stylesheet" type="text/css" />
     <link href="../bower_components/fullcalendar/dist/fullcalendar.min.css" rel="stylesheet" type="text/css" />
     <link href="../bower_components/fullcalendar/dist/fullcalendar.print.css" rel="stylesheet" media="print" type="text/css" />
@@ -22,10 +22,10 @@
       <div class="ui inverted left vertical sidebar menu" id="sidebar">
         <div class="item">
           <a class="ui logo icon image" href="#">
-             
+            <img src="../assets/logo.png">
           </a>
           <a href="#">
-            <b>Hive Resource Management System</b>
+            <b>AF-Xtrim Services</b>
           </a>
         </div>
         <a class="item" href="../sales-index.php">
@@ -70,9 +70,6 @@
             <a class="item" href="unaccomplished-oculars-report.php">
               Unaccomplished Oculars Report
             </a>
-            <a class="item" href="delinquency-report.php">
-              Delinquency Report
-            </a>
           </div>
         </div>
         <a class="item" href="../login.php">
@@ -96,7 +93,7 @@
             <div class="right menu ">
               <a class="ui labeled item notifications">
                 Notifications
-                 
+                <div class="ui basic red circular label">10</div>
               </a>
             </div>
           </div>
@@ -189,7 +186,7 @@
       <!-- scripts -->
       <script src="../dashboard.js"></script>
 	  <!-- DataTables -->
-
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 		<script type="text/javascript" src="http://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
 		<link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
 		<script type="text/javascript">

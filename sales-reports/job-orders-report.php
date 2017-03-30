@@ -3,7 +3,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-    <title>Hive Resource Management System - View Clients</title>
+    <title>AF-Xtrim Services - View Clients</title>
     <link href="../bower_components/semantic/dist/semantic.min.css" rel="stylesheet" type="text/css" />
     <link href="../bower_components/fullcalendar/dist/fullcalendar.min.css" rel="stylesheet" type="text/css" />
     <link href="../bower_components/fullcalendar/dist/fullcalendar.print.css" rel="stylesheet" media="print" type="text/css" />
@@ -16,26 +16,17 @@
     <script src="../bower_components/semantic-ui-calendar/dist/calendar.min.js"></script>
     <link href="../style.css" rel="stylesheet" type="text/css"/>
 
+
   </head>
   <body>
-    <?php
-    ob_start();
-    session_start();
-    if (!isset($_SESSION['currentUser'])) {
-      header("Location: http://".$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'])."../login.php");
-    }
-    if ($_SESSION['currentType'] != 1) {
-      header("Location: http://".$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'])."../login.php");
-    }
-    ?>
     <!-- SIDEBAR START -->
       <div class="ui inverted left vertical sidebar menu" id="sidebar">
         <div class="item">
           <a class="ui logo icon image" href="#">
-             
+            <img src="../assets/logo.png">
           </a>
           <a href="#">
-            <b>Hive Resource Management System</b>
+            <b>AF-Xtrim Services</b>
           </a>
         </div>
         <a class="item" href="../sales-index.php">
@@ -80,9 +71,6 @@
             <a class="item" href="unaccomplished-oculars-report.php">
               Unaccomplished Oculars Report
             </a>
-            <a class="item" href="delinquency-report.php">
-              Delinquency Report
-            </a>
           </div>
         </div>
         <a class="item" href="../login.php">
@@ -103,17 +91,10 @@
             <div class="item">
               Sales and Marketing Department
             </div>
-            <div class="item">
-              <div class="ui breadcrumb">
-                <a class="section" href="../sales-index.php">Sales Dashboard</a>
-                <i class="right angle icon divider"></i>
-                <div class="active section">Accomplished Oculars Report</div>
-              </div>
-            </div>
             <div class="right menu ">
               <a class="ui labeled item notifications">
                 Notifications
-                 
+                <div class="ui basic red circular label">10</div>
               </a>
             </div>
           </div>
@@ -157,21 +138,6 @@
 
                   <div align="center" class="field">
 					<?php
-            //QUERIES
-            require_once('../mysql_connect.php');
-            //JOB ORDER COUNT
-            $termiteQuery = "SELECT COUNT(*) AS count FROM job_order WHERE job_type='Termite Treatment'";
-            $householdQuery = "SELECT COUNT(*) AS count FROM job_order WHERE job_type='General Services'";
-            $generalQuery = "SELECT COUNT(*) AS count FROM job_order WHERE job_type='Household Services'";
-            $resultTermite = mysqli_query($dbc, $termiteQuery);
-            $resultHousehold = mysqli_query($dbc, $householdQuery);
-            $resultGeneral = mysqli_query($dbc, $generalQuery);
-            $termite = mysqli_fetch_array($resultTermite, MYSQLI_ASSOC);
-            $household = mysqli_fetch_array($resultHousehold, MYSQLI_ASSOC);
-            $general = mysqli_fetch_array($resultGeneral, MYSQLI_ASSOC);
-
-
-
 						$KoolControlsFolder = "../KoolPHPSuite/KoolControls";//Relative path to "KoolPHPSuite/KoolControls" folder
 						require $KoolControlsFolder."/KoolChart/koolchart.php";
 
@@ -195,15 +161,13 @@
 						$chart_column_line->PlotArea->YAxis->Color = "black";
 						$chart_column_line->PlotArea->YAxis->MajorGridLines->Color = "#b4b4b4";
 						$chart_column_line->PlotArea->YAxis->MinorGridLines->Color = "#d2d2d2";
-						$series = new ColumnSeries();
+						$series = new ColumnSeries("Job Orders");
 						$series->Appearance->BackgroundColor = "#5CB8E3";
 
-            //JOB ORDER
-						$series->ArrayData(array($termite['count'],$household['count'],$general['count']));
+						$series->ArrayData(array(20,30,40));
 						$chart_column_line->PlotArea->AddSeries($series);
-						$series = new LineSeries();
+						$series = new LineSeries("Sales");
 						$series->Appearance->BackgroundColor = "green";
-            //SALES
 						$series->ArrayData(array(76,15,60));
 						$chart_column_line->PlotArea->AddSeries($series);
 					?>

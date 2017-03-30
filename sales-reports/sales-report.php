@@ -3,7 +3,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-    <title>Hive Resource Management System - View Clients</title>
+    <title>AF-Xtrim Services - View Clients</title>
     <link href="../bower_components/semantic/dist/semantic.min.css" rel="stylesheet" type="text/css" />
     <link href="../bower_components/fullcalendar/dist/fullcalendar.min.css" rel="stylesheet" type="text/css" />
     <link href="../bower_components/fullcalendar/dist/fullcalendar.print.css" rel="stylesheet" media="print" type="text/css" />
@@ -23,10 +23,10 @@
       <div class="ui inverted left vertical sidebar menu" id="sidebar">
         <div class="item">
           <a class="ui logo icon image" href="#">
-             
+            <img src="../assets/logo.png">
           </a>
           <a href="#">
-            <b>Hive Resource Management System</b>
+            <b>AF-Xtrim Services</b>
           </a>
         </div>
         <a class="item" href="../sales-index.php">
@@ -71,9 +71,6 @@
             <a class="item" href="unaccomplished-oculars-report.php">
               Unaccomplished Oculars Report
             </a>
-            <a class="item" href="delinquency-report.php">
-              Delinquency Report
-            </a>
           </div>
         </div>
         <a class="item" href="../login.php">
@@ -97,31 +94,13 @@
             <div class="right menu ">
               <a class="ui labeled item notifications">
                 Notifications
+                <div class="ui basic red circular label">10</div>
               </a>
             </div>
           </div>
         </div>
         <!-- TOP BAR END -->
-
-				<br>
-				<div align="right" class="months">
-					<select class="ui search dropdown">
-					  <option value="">Month</option>
-					  <option value="jan">January</option>
-					  <option value="feb">February</option>
-					  <option value="mar">March</option>
-					  <option value="apr">April</option>
-					  <option value="may">May</option>
-					  <option value="jun">June</option>
-					  <option value="jul">July</option>
-					  <option value="aug">August</option>
-					  <option value="sep">September</option>
-					  <option value="oct">October</option>
-					  <option value="nov">November</option>
-					  <option value="dec">December</option>
-					</select>
-				</div>
-
+		
         <div class="ui basic padded segment">
           <div class="ui relaxed grid">
             <!-- NOTIFICATION FEED START -->
@@ -147,48 +126,67 @@
               </div>
             </div>
             <!-- NOTIFICATION FEED END -->
-
+			
             <div class="eight wide centered column">
               <div class="ui basic padded segment">
                 <h3 class="ui centered header">Sales Report</h3>
                 <div class="ui divider"></div>
-				<div align="right"><?php echo "Date: " .date("m/d/y");?></div>
 				<br>
                 <div class="ui form">
+				<div class="field">
+                  <label>Month</label>
+                 <select name="month" id="month" class="ui search dropdown" onchange="getMonth(this.value)">
+                    <?php
+                    echo "<option value=''>Select Month</option>";
+                    echo "<option value='January'>January</option>";
+					echo "<option value='February'>February</option>";
+					echo "<option value='March'>March</option>";
+					echo "<option value='April'>April</option>";
+					echo "<option value='May'>May</option>";
+					echo "<option value='June'>June</option>";
+					echo "<option value='July'>July</option>";
+					echo "<option value='August'>August</option>";
+					echo "<option value='September'>September</option>";
+					echo "<option value='October'>October</option>";
+					echo "<option value='November'>November</option>";
+					echo "<option value='December'>December</option>";
+                    ?>
+                  </select>
+                </div>
 				<form class="ui form" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
-
+				
 
                   <div align="center" class="field">
 					<?php
 						//require_once('../mysql_connect.php');
 						//$sql = "";
 						//$qry = mysqli_query($dbc,$sql);
-
+						
 						$KoolControlsFolder = "../KoolPHPSuite/KoolControls";
 						require $KoolControlsFolder."/KoolChart/koolchart.php";
 
 						$chart = new KoolChart("chart");
-						$chart->scriptFolder=$KoolControlsFolder."/KoolChart";
+						$chart->scriptFolder=$KoolControlsFolder."/KoolChart";	
 						$chart->Width = 500;
 						$chart->Height = 470;
-						//$chart->Title->Text = "Sales Report";
-
-						$_series = new PieSeries("Treatments");
+						//$chart->Title->Text = "Sales Report";						
+						
+						$_series = new PieSeries("Treatments");	
 						$_series->LabelsAppearance->DataFormatString="{0}%";
-
-						$_item = new PieItem(31.8,"Termite Treatment");
-						$_item->BackgroundColor = "#FF0000";
-						$_item->Exploded = true;
+					 
+						$_item = new PieItem(44.9,"Termite Treatment");
+						$_item->BackgroundColor = "#407DC5";
 						$_series->AddItem($_item);
-
-						$_item = new PieItem(16.1,"Household Treatment");
+						
+						$_item = new PieItem(31.8,"Household Treatment");
 						$_item->BackgroundColor = "#999999";
 						$_series->AddItem($_item);
-
-						$_item = new PieItem(44.9,"General Services");
+						
+						$_item = new PieItem(16.1,"General Services");
 						$_item->BackgroundColor = "#333333";
+						$_item->Exploded = true;
 						$_series->AddItem($_item);
-
+						
 						$chart->PlotArea->AddSeries($_series);
 					?>
 

@@ -22,12 +22,12 @@
 <body>
   <?php
   session_start();
-  /**if (!isset($_SESSION['currentUser'])) {
+  if (!isset($_SESSION['currentUser'])) {
     header("Location: http://".$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'])."/login.php");
   }
   if ($_SESSION['currentType'] != 2) {
     header("Location: http://".$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'])."/login.php");
-  }**/
+  }
 
   ?>
   <!-- SIDEBAR START -->
@@ -201,7 +201,7 @@
                       <select class="ui search dropdown" name="household">
                         <option value="">Select Household Treatment Without Team</option>
                         <?php
-                        $getQuery3 = "SELECT ControlNumber, DATE(StartDate) AS StartDate, DATE(EndDate) AS EndDate, Structure_Type, Name
+                        $getQuery3 = "SELECT JobOrder_JONumber, DATE(StartDate) AS StartDate, DATE(EndDate) AS EndDate, Structure_Type, Name
                                         FROM householdpesttreatment hpt
                                         JOIN job_order jo
                                           ON hpt.JobOrder_JONumber=jo.JONumber
@@ -211,7 +211,7 @@
                                          AND jo.job_status != 'Accomplished'";
                         $result3 = mysqli_query($dbc, $getQuery3);
                         while ($row3 = mysqli_fetch_array($result3, MYSQLI_ASSOC)) {
-                         echo "<option value = \"{$row3['ControlNumber']}\">Date: {$row3['StartDate']} to {$row3['EndDate']} | Structure Type: {$row3['Structure_Type']} | Name: {$row3['Name']}</option>";
+                         echo "<option value = \"{$row3['JobOrder_JONumber']}\">Date: {$row3['StartDate']} to {$row3['EndDate']} | Structure Type: {$row3['Structure_Type']} | Name: {$row3['Name']}</option>";
                         }
                         ?>
                       </select>

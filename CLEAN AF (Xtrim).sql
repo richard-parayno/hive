@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.5.2
--- http://www.phpmyadmin.net
+-- version 4.6.5.2
+-- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 25, 2017 at 10:17 AM
--- Server version: 10.1.16-MariaDB
--- PHP Version: 7.0.9
+-- Generation Time: Mar 30, 2017 at 01:06 PM
+-- Server version: 10.1.21-MariaDB
+-- PHP Version: 7.1.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -36,13 +36,25 @@ CREATE TABLE `action_done` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `areas_treated`
+-- Table structure for table `area_infection`
 --
 
-CREATE TABLE `areas_treated` (
-  `AreaTreatedID` int(11) NOT NULL,
-  `HouseholdIDdetails` int(11) NOT NULL,
-  `Area` varchar(45) NOT NULL
+CREATE TABLE `area_infection` (
+  `AI_ID` int(11) NOT NULL,
+  `HHID` int(11) NOT NULL,
+  `Area_Infection` int(230) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `area_type`
+--
+
+CREATE TABLE `area_type` (
+  `area_type_id` int(11) NOT NULL,
+  `area` varchar(45) NOT NULL,
+  `HHID` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -104,15 +116,22 @@ CREATE TABLE `employee` (
   `StartDate` date NOT NULL,
   `EndDate` date NOT NULL,
   `EmployeePosition` varchar(45) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 --
 -- Dumping data for table `employee`
 --
 
 INSERT INTO `employee` (`EmployeeNo`, `Name`, `ContactNo`, `StartDate`, `EndDate`, `EmployeePosition`) VALUES
-(1, 'Sheila Facuri', '09171234567', '2016-11-01', '2016-12-31', 'Accountant'),
-(2, 'Mary Jane Botona', '09178239118', '2016-11-01', '2016-12-31', 'Supervisor');
+(1, 'Sheila Facuri', '09278697137', '2017-03-30', '2017-12-31', 'Accountant'),
+(2, 'Mary Jane Botona', '09178239118', '2017-03-30', '2017-12-31', 'Supervisor'),
+(3, 'Deanne Baldemor', '0917123456', '2017-03-30', '2017-12-31', 'Supervisor'),
+(4, 'Paul Galang', '09278697137', '2017-03-30', '2017-12-31', 'Worker'),
+(5, 'Alex Espiritu', '0917123457', '2017-03-30', '2017-12-31', 'Worker'),
+(6, 'Manuel Toleran', '0927123456', '2017-03-30', '2017-12-31', 'Worker'),
+(7, 'Ana Laid', '0917123491', '2017-03-30', '2017-12-31', 'Worker'),
+(8, 'Hanz Arce', '0917123123', '2017-03-30', '2017-12-31', 'Worker'),
+(9, 'Paula Casas', '0917833456', '2017-03-30', '2017-12-31', 'Worker');
 
 -- --------------------------------------------------------
 
@@ -121,11 +140,10 @@ INSERT INTO `employee` (`EmployeeNo`, `Name`, `ContactNo`, `StartDate`, `EndDate
 --
 
 CREATE TABLE `findings` (
-  `idFindings` int(11) NOT NULL,
-  `Finding` varchar(45) DEFAULT NULL,
-  `Location` varchar(45) DEFAULT NULL,
-  `HHID` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `Findings_ID` int(11) NOT NULL,
+  `HHID` int(11) NOT NULL,
+  `Finding` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -135,9 +153,10 @@ CREATE TABLE `findings` (
 
 CREATE TABLE `general_services` (
   `GeneralServiceID` int(11) NOT NULL,
-  `JobOrder_JONumber` int(11) DEFAULT NULL,
-  `Service_Type` varchar(45) DEFAULT '',
-  `pending_order` int(11) DEFAULT NULL
+  `JobOrder_JONumber` int(11) NOT NULL,
+  `Service_Type` varchar(45) NOT NULL,
+  `pending_order` int(11) DEFAULT NULL,
+  `TeamID` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -149,8 +168,9 @@ CREATE TABLE `general_services` (
 CREATE TABLE `householdpesttreatment` (
   `ControlNumber` int(11) NOT NULL,
   `JobOrder_JONumber` int(11) NOT NULL,
-  `inventory_ProductID` int(11) NOT NULL,
-  `qtytobeused` int(11) NOT NULL
+  `inventory_ProductID` int(11) DEFAULT NULL,
+  `qtytobeused` int(11) DEFAULT NULL,
+  `teamId` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -176,12 +196,8 @@ CREATE TABLE `householdpms_report` (
 CREATE TABLE `household_details` (
   `householddetails` int(11) NOT NULL,
   `hhpmr` int(11) NOT NULL,
-  `ServicesID` int(11) NOT NULL,
-  `AreasTreated` int(11) NOT NULL,
-  `Findings` int(11) DEFAULT NULL,
   `remarks` varchar(45) DEFAULT NULL,
-  `clientremarks` varchar(45) DEFAULT NULL,
-  `TrapsID` int(11) DEFAULT NULL
+  `clientremarks` varchar(45) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -236,23 +252,6 @@ CREATE TABLE `job_order` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `notifications`
---
-
-CREATE TABLE `notifications` (
-  `id` int(11) UNSIGNED NOT NULL,
-  `recipient_id` int(11) NOT NULL,
-  `sender_id` int(11) NOT NULL,
-  `unread` tinyint(1) NOT NULL DEFAULT '1',
-  `type` varchar(255) NOT NULL DEFAULT '',
-  `parameters` text NOT NULL,
-  `reference_id` int(11) NOT NULL,
-  `created_at` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `occular_visits`
 --
 
@@ -263,12 +262,11 @@ CREATE TABLE `occular_visits` (
   `Date` datetime NOT NULL,
   `Status` varchar(45) NOT NULL,
   `Area_Size` int(11) DEFAULT NULL,
-  `Time_Agreed` time NOT NULL,
   `LF_At_Site` varchar(45) NOT NULL,
-  `Remarks` varchar(45) DEFAULT NULL,
-  `Findings` varchar(45) DEFAULT NULL,
-  `SupervisedBy` int(11) NOT NULL,
-  `Call_Received_By` int(11) NOT NULL,
+  `Remarks` varchar(100) DEFAULT NULL,
+  `Findings` varchar(100) DEFAULT NULL,
+  `SupervisedBy` int(11) DEFAULT NULL,
+  `Call_Received_By` int(11) DEFAULT NULL,
   `pending_order` int(11) DEFAULT NULL,
   `Recommendation` varchar(45) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -288,30 +286,9 @@ CREATE TABLE `pending_order` (
   `date` date DEFAULT NULL,
   `customerType` int(11) DEFAULT NULL,
   `Area_type` varchar(45) DEFAULT NULL,
-  `status` varchar(30) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `ref_area_type`
---
-
-CREATE TABLE `ref_area_type` (
-  `area_type_id` int(11) NOT NULL,
-  `area` varchar(45) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `ref_area_type`
---
-
-INSERT INTO `ref_area_type` (`area_type_id`, `area`) VALUES
-(1, 'Warehouse'),
-(2, 'Office Area'),
-(3, 'Household'),
-(4, 'Restaurant'),
-(5, 'Others');
+  `status` varchar(30) NOT NULL,
+  `remarks` varchar(45) NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 -- --------------------------------------------------------
 
@@ -323,15 +300,6 @@ CREATE TABLE `ref_job_type` (
   `job_type_id` int(11) NOT NULL,
   `job_type` varchar(45) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `ref_job_type`
---
-
-INSERT INTO `ref_job_type` (`job_type_id`, `job_type`) VALUES
-(1, 'Termite Treatment'),
-(2, 'Household Services'),
-(3, 'General Services');
 
 -- --------------------------------------------------------
 
@@ -346,34 +314,14 @@ CREATE TABLE `ref_recommendation` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `ref_service_type`
---
-
-CREATE TABLE `ref_service_type` (
-  `Service_Type` varchar(45) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `ref_service_type`
---
-
-INSERT INTO `ref_service_type` (`Service_Type`) VALUES
-('Construction'),
-('Others'),
-('Paintjob'),
-('Repair');
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `services`
 --
 
 CREATE TABLE `services` (
-  `servicesID` int(11) NOT NULL,
-  `HouseholddetailID` int(11) NOT NULL,
-  `ServicesRendered` varchar(45) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `Services_ID` int(11) NOT NULL,
+  `HHID` int(11) NOT NULL,
+  `Services` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -490,11 +438,17 @@ ALTER TABLE `action_done`
   ADD KEY `fk_Actiondone_termite treatment service performance1_idx` (`TTSPIDno`);
 
 --
--- Indexes for table `areas_treated`
+-- Indexes for table `area_infection`
 --
-ALTER TABLE `areas_treated`
-  ADD PRIMARY KEY (`AreaTreatedID`,`HouseholdIDdetails`),
-  ADD KEY `fk_AreasTreated_Householddetails1_idx` (`HouseholdIDdetails`);
+ALTER TABLE `area_infection`
+  ADD PRIMARY KEY (`AI_ID`),
+  ADD KEY `fk_householdDetailsID_idx` (`HHID`);
+
+--
+-- Indexes for table `area_type`
+--
+ALTER TABLE `area_type`
+  ADD PRIMARY KEY (`area_type_id`);
 
 --
 -- Indexes for table `audit_table_inventory`
@@ -526,8 +480,8 @@ ALTER TABLE `employee`
 -- Indexes for table `findings`
 --
 ALTER TABLE `findings`
-  ADD PRIMARY KEY (`idFindings`,`HHID`),
-  ADD KEY `fk_Findings_Householddetails2_idx` (`HHID`);
+  ADD PRIMARY KEY (`Findings_ID`),
+  ADD KEY `fk_household_details_ID_idx` (`HHID`);
 
 --
 -- Indexes for table `general_services`
@@ -535,8 +489,8 @@ ALTER TABLE `findings`
 ALTER TABLE `general_services`
   ADD PRIMARY KEY (`GeneralServiceID`),
   ADD KEY `fk_General Services_Job Order1_idx` (`JobOrder_JONumber`),
-  ADD KEY `fk_GENERAL_SERVICES_Ref_Service_type1_idx` (`Service_Type`),
-  ADD KEY `fK_pending_order_idx` (`pending_order`);
+  ADD KEY `fK_pending_order_idx` (`pending_order`),
+  ADD KEY `fk_TeamID_idx` (`TeamID`);
 
 --
 -- Indexes for table `householdpesttreatment`
@@ -544,7 +498,8 @@ ALTER TABLE `general_services`
 ALTER TABLE `householdpesttreatment`
   ADD PRIMARY KEY (`ControlNumber`),
   ADD KEY `fk_Household Pest Treatment_Job Order1_idx` (`JobOrder_JONumber`),
-  ADD KEY `fk_household pest treatment_inventory1_idx` (`inventory_ProductID`);
+  ADD KEY `fk_household pest treatment_inventory1_idx` (`inventory_ProductID`),
+  ADD KEY `fk_teamID_idx` (`teamId`);
 
 --
 -- Indexes for table `householdpms_report`
@@ -558,8 +513,7 @@ ALTER TABLE `householdpms_report`
 --
 ALTER TABLE `household_details`
   ADD PRIMARY KEY (`householddetails`,`hhpmr`),
-  ADD KEY `fk_Householddetails_household pest management service repor_idx` (`hhpmr`),
-  ADD KEY `fk_Householddetails_Findings1_idx` (`Findings`);
+  ADD KEY `fk_Householddetails_household pest management service repor_idx` (`hhpmr`);
 
 --
 -- Indexes for table `inventory`
@@ -586,12 +540,6 @@ ALTER TABLE `job_order`
   ADD KEY `fk_JOB_ORDER_EMPLOYEE1_idx` (`AEinCharge`);
 
 --
--- Indexes for table `notifications`
---
-ALTER TABLE `notifications`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Indexes for table `occular_visits`
 --
 ALTER TABLE `occular_visits`
@@ -609,12 +557,6 @@ ALTER TABLE `pending_order`
   ADD KEY `_idx` (`employee_recieved`);
 
 --
--- Indexes for table `ref_area_type`
---
-ALTER TABLE `ref_area_type`
-  ADD PRIMARY KEY (`area_type_id`);
-
---
 -- Indexes for table `ref_job_type`
 --
 ALTER TABLE `ref_job_type`
@@ -627,17 +569,11 @@ ALTER TABLE `ref_recommendation`
   ADD PRIMARY KEY (`Recommendation`);
 
 --
--- Indexes for table `ref_service_type`
---
-ALTER TABLE `ref_service_type`
-  ADD PRIMARY KEY (`Service_Type`);
-
---
 -- Indexes for table `services`
 --
 ALTER TABLE `services`
-  ADD PRIMARY KEY (`servicesID`,`HouseholddetailID`),
-  ADD KEY `fk_Services_Householddetails1_idx` (`HouseholddetailID`);
+  ADD PRIMARY KEY (`Services_ID`,`HHID`),
+  ADD KEY `fk_household_details_id_idx` (`HHID`);
 
 --
 -- Indexes for table `team`
@@ -704,10 +640,15 @@ ALTER TABLE `users`
 ALTER TABLE `action_done`
   MODIFY `ActiondoneID` int(11) NOT NULL AUTO_INCREMENT;
 --
--- AUTO_INCREMENT for table `areas_treated`
+-- AUTO_INCREMENT for table `area_infection`
 --
-ALTER TABLE `areas_treated`
-  MODIFY `AreaTreatedID` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `area_infection`
+  MODIFY `AI_ID` int(11) NOT NULL AUTO_INCREMENT;
+--
+-- AUTO_INCREMENT for table `area_type`
+--
+ALTER TABLE `area_type`
+  MODIFY `area_type_id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `audit_table_inventory`
 --
@@ -722,17 +663,17 @@ ALTER TABLE `contract`
 -- AUTO_INCREMENT for table `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `CustomerId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `CustomerId` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `employee`
 --
 ALTER TABLE `employee`
-  MODIFY `EmployeeNo` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `EmployeeNo` int(8) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 --
 -- AUTO_INCREMENT for table `findings`
 --
 ALTER TABLE `findings`
-  MODIFY `idFindings` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `Findings_ID` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `general_services`
 --
@@ -742,7 +683,7 @@ ALTER TABLE `general_services`
 -- AUTO_INCREMENT for table `householdpesttreatment`
 --
 ALTER TABLE `householdpesttreatment`
-  MODIFY `ControlNumber` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `ControlNumber` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `householdpms_report`
 --
@@ -757,7 +698,7 @@ ALTER TABLE `household_details`
 -- AUTO_INCREMENT for table `inventory`
 --
 ALTER TABLE `inventory`
-  MODIFY `ProductID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `ProductID` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `item_list`
 --
@@ -767,32 +708,22 @@ ALTER TABLE `item_list`
 -- AUTO_INCREMENT for table `job_order`
 --
 ALTER TABLE `job_order`
-  MODIFY `JONumber` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
---
--- AUTO_INCREMENT for table `notifications`
---
-ALTER TABLE `notifications`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `JONumber` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `occular_visits`
 --
 ALTER TABLE `occular_visits`
-  MODIFY `Occular_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `Occular_ID` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `pending_order`
 --
 ALTER TABLE `pending_order`
-  MODIFY `pending_order_Id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
---
--- AUTO_INCREMENT for table `ref_area_type`
---
-ALTER TABLE `ref_area_type`
-  MODIFY `area_type_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `pending_order_Id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `services`
 --
 ALTER TABLE `services`
-  MODIFY `servicesID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `Services_ID` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `team`
 --
@@ -802,12 +733,12 @@ ALTER TABLE `team`
 -- AUTO_INCREMENT for table `termiteteammembers`
 --
 ALTER TABLE `termiteteammembers`
-  MODIFY `TermiteTeamID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `TermiteTeamID` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `termitetreatment_serviceperformance`
 --
 ALTER TABLE `termitetreatment_serviceperformance`
-  MODIFY `TTSPIDNO` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `TTSPIDNO` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `termite_details`
 --
@@ -817,7 +748,7 @@ ALTER TABLE `termite_details`
 -- AUTO_INCREMENT for table `termite_team`
 --
 ALTER TABLE `termite_team`
-  MODIFY `TeamID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `TeamID` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `users`
 --
@@ -834,10 +765,10 @@ ALTER TABLE `action_done`
   ADD CONSTRAINT `fk_Actiondone_termite treatment service performance1` FOREIGN KEY (`TTSPIDno`) REFERENCES `termitetreatment_serviceperformance` (`TTSPIDNO`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
--- Constraints for table `areas_treated`
+-- Constraints for table `area_infection`
 --
-ALTER TABLE `areas_treated`
-  ADD CONSTRAINT `fk_AreasTreated_Householddetails1` FOREIGN KEY (`HouseholdIDdetails`) REFERENCES `household_details` (`householddetails`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE `area_infection`
+  ADD CONSTRAINT `fk_householdDetailsID` FOREIGN KEY (`HHID`) REFERENCES `household_details` (`householddetails`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `audit_table_inventory`
@@ -855,22 +786,23 @@ ALTER TABLE `contract`
 -- Constraints for table `findings`
 --
 ALTER TABLE `findings`
-  ADD CONSTRAINT `fk_Findings_Householddetails2` FOREIGN KEY (`HHID`) REFERENCES `household_details` (`householddetails`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_household_details_ID` FOREIGN KEY (`HHID`) REFERENCES `household_details` (`householddetails`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `general_services`
 --
 ALTER TABLE `general_services`
   ADD CONSTRAINT `fK_pending_order` FOREIGN KEY (`pending_order`) REFERENCES `pending_order` (`pending_order_Id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_GENERAL_SERVICES_Ref_Service_type1` FOREIGN KEY (`Service_Type`) REFERENCES `ref_service_type` (`Service_Type`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_General Services_Job Order1` FOREIGN KEY (`JobOrder_JONumber`) REFERENCES `job_order` (`JONumber`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_General Services_Job Order1` FOREIGN KEY (`JobOrder_JONumber`) REFERENCES `job_order` (`JONumber`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_TeamID` FOREIGN KEY (`TeamID`) REFERENCES `team` (`TeamIDno`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `householdpesttreatment`
 --
 ALTER TABLE `householdpesttreatment`
   ADD CONSTRAINT `fk_Household Pest Treatment_Job Order1` FOREIGN KEY (`JobOrder_JONumber`) REFERENCES `job_order` (`JONumber`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `fk_household pest treatment_inventory1` FOREIGN KEY (`inventory_ProductID`) REFERENCES `inventory` (`ProductID`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_household pest treatment_inventory1` FOREIGN KEY (`inventory_ProductID`) REFERENCES `inventory` (`ProductID`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_team` FOREIGN KEY (`teamId`) REFERENCES `team` (`TeamIDno`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `householdpms_report`
@@ -882,7 +814,6 @@ ALTER TABLE `householdpms_report`
 -- Constraints for table `household_details`
 --
 ALTER TABLE `household_details`
-  ADD CONSTRAINT `fk_Householddetails_Findings1` FOREIGN KEY (`Findings`) REFERENCES `findings` (`idFindings`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_Householddetails_household pest management service report1` FOREIGN KEY (`hhpmr`) REFERENCES `householdpms_report` (`HPMSRIDNo`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
@@ -920,7 +851,7 @@ ALTER TABLE `pending_order`
 -- Constraints for table `services`
 --
 ALTER TABLE `services`
-  ADD CONSTRAINT `fk_Services_Householddetails1` FOREIGN KEY (`HouseholddetailID`) REFERENCES `household_details` (`householddetails`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+  ADD CONSTRAINT `fk_householdDetails_ID` FOREIGN KEY (`HHID`) REFERENCES `household_details` (`householddetails`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 --
 -- Constraints for table `team`

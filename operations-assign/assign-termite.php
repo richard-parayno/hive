@@ -216,6 +216,7 @@
                   <div class="field">
                     <label>Supervisor </label>
           <select name="client1" id="client1" class="ui search dropdown">
+            <option value="">Select Supervisor</option>            
             <?php
                             // $toSchedule = $_SESSION['termiteocular'] ;
                               //('{$aetype}'
@@ -243,6 +244,7 @@
           <div class="field">
                     <label>employee1 </label>
           <select name="client2" id="client2" class="ui search dropdown">
+            <option value="">Select Employee</option>
             <?php
                             // $toSchedule = $_SESSION['termiteocular'] ;
                               //('{$aetype}'
@@ -268,6 +270,8 @@
                    <div class="field">
                     <label>employee2 </label>
           <select name="client3" id="client3" class="ui search dropdown">
+            <option value="">Select Employee</option>
+            
             <?php
                             // $toSchedule = $_SESSION['termiteocular'] ;
                               //('{$aetype}'
@@ -293,6 +297,8 @@
                     <div class="field">
                     <label>employee3 </label>
           <select name="client4" id="client4" class="ui search dropdown">
+            <option value="">Select Employee</option>
+            
             <?php
                             // $toSchedule = $_SESSION['termiteocular'] ;
                               //('{$aetype}'
@@ -318,6 +324,8 @@
                   <div class="field">
                     <label>Accountant </label>
           <select name="client5" id="client5" class="ui search dropdown">
+            <option value="">Select Accountant</option>
+            
             <?php
                             // $toSchedule = $_SESSION['termiteocular'] ;
                               //('{$aetype}'

@@ -17,9 +17,12 @@
   ],
   "dependencies": {
     "chained": "^1.0.0",
-    "fullcalendar": "^3.2.0",
-    "moment": "^2.17.1",
-    "semantic-ui-calendar": "^0.0.6",
-    "semantic": "semantic-ui#^2.2.9"
+    "fullcalendar": "^3.3.0",
+    "moment": "^2.18.1",
+    "semantic-ui-calendar": "^0.0.7",
+    "semantic": "^2.2.10"
+  },
+  "resolutions": {
+    "semantic-ui-calendar": "^0.0.7"
   }
 }

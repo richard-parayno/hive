@@ -6,9 +6,9 @@
 $q = intval($_GET['month']);
 
 require_once("../mysql_connect.php");
-$getQuery = "SELECT jo.jonumber, jo.job_status, c.name, c.address, jo.startdate
-			   FROM job_order jo JOIN customer c on c.customerid = jo.customerid
-			  WHERE MONTH(DATE(JO.startdate)) ={$q}";
+$getQuery = "SELECT jo.jonumber, jo.job_status, c.name, c.address, jo.startdate 
+			   FROM job_order jo JOIN customer c on c.customerid = jo.customerid 
+			  WHERE MONTHNAME(JO.startdate) ={$q}";
 $result=mysqli_query($dbc, $getQuery);
 
 echo "
@@ -23,7 +23,7 @@ echo "
     </tr>
   </thead>
   <tbody>";
-
+  
 while($row=mysqli_fetch_array($result,MYSQLI_ASSOC)){
 
 echo "<tr>";

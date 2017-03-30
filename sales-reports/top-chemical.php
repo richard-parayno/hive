@@ -16,6 +16,7 @@
     <script src="../bower_components/semantic-ui-calendar/dist/calendar.min.js"></script>
     <link href="../style.css" rel="stylesheet" type="text/css"/>
 
+
   </head>
   <body>
     <!-- SIDEBAR START -->
@@ -41,7 +42,7 @@
         <a class="item" href="../sales-chemicals/chemical.php">
           Chemical Inventory
         </a>
-        <a class="item" href="clients-list.php">
+        <a class="item" href="../sales-clients/clients-list.php">
           View Clients
         </a>
         <div class="item">
@@ -99,6 +100,8 @@
           </div>
         </div>
         <!-- TOP BAR END -->
+		
+				
         <div class="ui basic padded segment">
           <div class="ui relaxed grid">
             <!-- NOTIFICATION FEED START -->
@@ -124,51 +127,123 @@
               </div>
             </div>
             <!-- NOTIFICATION FEED END -->
-
-            <div class="thirteen wide centered column">
+			
+            <div class="eight wide centered column">
               <div class="ui basic padded segment">
-                <h3 class="ui centered header">Accomplished Oculars Report</h3>
+                <h3 class="ui centered header">Most Used Chemical</h3>
                 <div class="ui divider"></div>
-				<div align="right"><?php echo "Date: " .date("m/d/y");?></div>
 				<br>
                 <div class="ui form">
+				<div class="field">
+                  <label>Month</label>
+                 <select name="month" id="month" class="ui search dropdown" onchange="getMonth(this.value)">
+                    <?php
+                    echo "<option value=''>Select Month</option>";
+                    echo "<option value='January'>January</option>";
+					echo "<option value='February'>February</option>";
+					echo "<option value='March'>March</option>";
+					echo "<option value='April'>April</option>";
+					echo "<option value='May'>May</option>";
+					echo "<option value='June'>June</option>";
+					echo "<option value='July'>July</option>";
+					echo "<option value='August'>August</option>";
+					echo "<option value='September'>September</option>";
+					echo "<option value='October'>October</option>";
+					echo "<option value='November'>November</option>";
+					echo "<option value='December'>December</option>";
+                    ?>
+                  </select>
+                </div>
 				<form class="ui form" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+				
 
+                  <div align="center" class="field">
+					<?php
+						//require_once('../mysql_connect.php');
+						//$sql = "";
+						//$qry = mysqli_query($dbc,$sql);
+						
+						$KoolControlsFolder = "../KoolPHPSuite/KoolControls";
+						require $KoolControlsFolder."/KoolChart/koolchart.php";
 
-                  <div class="field">
-                    <table id="oculars" class="ui celled table">
-                      <thead>
-                        <tr>
-                          <th>ID Number</th>
-                          <th>Customer Name</th>
-						  <th>Date and Time</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-						<?php
-						require_once('../mysql_connect.php');
-						$sql = "SELECT ov.occular_id, ov.date, c.name FROM occular_visits  ov JOIN customer c ON c.customerid = ov.customerid JOIN pending_order po ON po.pending_order_id = ov.occular_id WHERE ov.occular_id NOT IN (SELECT po.pending_order_id FROM pending_order)";
-						$qry = mysqli_query($dbc,$sql);
+						$chart = new KoolChart("chart");
+						$chart->scriptFolder=$KoolControlsFolder."/KoolChart";	
+						$chart->Width = 500;
+						$chart->Height = 470;
+						//$chart->Title->Text = "Sales Report";						
+						
+						$_series = new PieSeries("Chemicals");	
+						$_series->LabelsAppearance->DataFormatString="{0}%";
+					 
+						$_item = new PieItem(44.9,"Termiticides");
+						$_item->BackgroundColor = "#407DC5";
+						$_series->AddItem($_item);
+						
+						$_item = new PieItem(31.8,"Household Treatment");
+						$_item->BackgroundColor = "#999999";
+						$_series->AddItem($_item);
+						
+						$_item = new PieItem(16.1,"General Services");
+						$_item->BackgroundColor = "#333333";
+						$_item->Exploded = true;
+						$_series->AddItem($_item);
+						
+						$chart->PlotArea->AddSeries($_series);
+					?>
 
-						while($row=mysqli_fetch_array($qry,MYSQLI_ASSOC)){
-							$try = $row['occular_id'];
+					<form id="form1" method="post">
+						<?php echo $chart->Render();?>
+					</form>
+					
+					<?php
+						$KoolControlsFolder = "../../../../KoolControls";//Relative path to "KoolPHPSuite/KoolControls" folder
+					 
+						require $KoolControlsFolder."/KoolChart/koolchart.php";
+					 
+						$chart = new KoolChart("chart");
+						$chart->scriptFolder=$KoolControlsFolder."/KoolChart";	
+						$chart->Width = 750;
+						$chart->Height = 480;
+					 
+						$chart->Title->Text = "Server CPU Load By Days";
+						$chart->PlotArea->XAxis->Title = "Days";
+						$chart->PlotArea->XAxis->Set(array("Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"));
+						$chart->PlotArea->YAxis->Title = "CPU Load";
+						$chart->PlotArea->YAxis->MaxValue = 100;
+						$chart->PlotArea->YAxis->MinValue = 0;
+						$chart->PlotArea->YAxis->MajorStep = 25;
+						$chart->PlotArea->YAxis->MinorStep = 5;
+						$chart->PlotArea->YAxis->LabelsAppearance->DataFormatString = "{0}%";
+					 
+						$series = new LineSeries();
+						$series->Name = "Week 1";
+						$series->Appearance->BackgroundColor="#2D6B99";
+						$series->TooltipsAppearance->DataFormatString = "{0}% {1}";
+						$series->LabelsAppearance->DataFormatString = "{0}% {1}";
+						$series->LabelsAppearance->Position = "Above";
+						$series->MarkersAppearance->MarkersType = "Square";
+						$series->ArrayData(array(20,30,15,70,50,40,55));
+						$chart->PlotArea->AddSeries($series);
+					 
+						$series = new LineSeries();
+						$series->Name = "Week 2";
+						$series->Appearance->BackgroundColor="#5AB7DE";
+						$series->TooltipsAppearance->DataFormatString = "{0}% {1}";
+						$series->LabelsAppearance->DataFormatString = "{0}% {1}";
+						$series->LabelsAppearance->Position = "Above";
+						$series->ArrayData(array(35,52,30,45,null,15,11));
+						$chart->PlotArea->AddSeries($series);
+					?>
+					 
+					<form id="form1" method="post">
+						<?php echo $chart->Render();?>					
+						
+						<div><i>* <u>Note</u>:</i>Generate your own chart with <a style="color:#B8305E;" target="_blank" href="http://codegen.koolphp.net/generate_koolchart.php">Code Generator</a></div>
+					 
+					</form>
 
-							echo "<tr>
-							<td width=\"5%\"><div align=\"center\">{$row['occular_id']}
-							</div></a></td>
-							<td width=\"10%\"><div align=\"center\">{$row['name']}</a>
-							</div></a></td>
-							<td width=\"10%\"><div align=\"center\">{$row['date']}</a>
-							</div></td
-							</tr>";
-
-						}
-
-						?>
-
-                      </tbody>
-                    </table>
 					<center>-End Of Report-</center>
+					<br>
 					<div align="right">Prepared by: Sales Executive</div>
                   </div>
                 </div>
@@ -184,15 +259,6 @@
 
       <!-- scripts -->
       <script src="../dashboard.js"></script>
-	  <!-- DataTables -->
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-		<script type="text/javascript" src="http://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
-		<link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
-		<script type="text/javascript">
-			$(document).ready(function() {
-			   $('#oculars').dataTable();
-			})
-		</script>
 
   </body>
 </html>
