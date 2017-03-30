@@ -105,39 +105,13 @@
               </div>
             </div>
             <div class="right menu ">
-              <a class="ui labeled item notifications">
-                Notifications
-                 
-              </a>
+              
             </div>
           </div>
         </div>
         <!-- TOP BAR END -->
         <div class="ui basic padded segment">
           <div class="ui relaxed grid">
-            <!-- NOTIFICATION FEED START -->
-            <div class="ui special popup">
-              <div class="eight wide column center aligned grid">
-                  <div class="ui small feed">
-                    <h4 class="ui header">Notifications</h4>
-                    <div class="event">
-                      <div class="content">
-                        <div class="summary">
-                          Ocular Inspection for <a>Job Order 1234</a> has been accomplished.
-                        </div>
-                      </div>
-                    </div>
-                    <div class="event">
-                      <div class="content">
-                        <div class="summary">
-                          <a>Job Order 1234</a> has been accomplished.
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-              </div>
-            </div>
-            <!-- NOTIFICATION FEED END -->
 
             <!-- Dispaly Information Start -->
 
@@ -156,15 +130,16 @@
                     $currentcustomer = $_SESSION['currentcustomer'];
                     $run = "SELECT Job_order_type, date FROM pending_order WHERE customer = {$currentcustomer} ORDER BY pending_order_Id DESC LIMIT 1";
                     $ew= mysqli_query($dbc, $run);
-                    while ($row = mysqli_fetch_array($ew,MYSQLI_ASSOC)){
-                      echo "<h4>Service Request Type: </h4><p>".$row['Job_order_type']. "</p>";
-                      echo "<h4>Date Requested: </h4><p>".$row['date']. "</p>";
-                    }
+                    $row = mysqli_fetch_array($ew,MYSQLI_ASSOC);
+                    $_SESSION['oculardate'] = $row['date'];
+                    
+                    echo "<h4>Service Request Type: </h4><p>".$row['Job_order_type']. "</p>";
+                    echo "<h4>Date Requested: </h4><p>".$row['date']. "</p>";
+                    
                     $eww= "SELECT Name FROM customer WHERE CustomerId={$currentcustomer}";
                     $wr= mysqli_query($dbc,$eww); 
                     $row2=mysqli_fetch_array($wr,MYSQLI_ASSOC); 
                     echo "<h4>Customer Name: </h4><p>" .$row2['Name']. "</p>";
-                    $_SESSION['oculardate'] = $row['date'];
 
 
 
@@ -179,8 +154,9 @@
               if (isset($_POST['submit1'])) {
               		
                 $Name= $_POST['contactperson'];
+                echo $_SESSION['oculardate'];
                 $date= new DateTime($_SESSION['oculardate']);
-              		 
+              	echo $date->format('Y-m-d');
   						  require_once('../mysql_connect.php');
  						 
                 $getId= "SELECT pending_order_Id FROM pending_order WHERE customer = {$currentcustomer} ORDER BY pending_order_Id DESC LIMIT 1"; 
