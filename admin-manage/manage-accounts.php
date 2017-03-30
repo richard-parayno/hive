@@ -176,11 +176,11 @@
                             </div>
                             <div class="field">
                                 <label>Password</label>
-                                <input name="password1" id="password1" type="password" placeholder="Enter Username"></input>                                
+                                <input name="password1" id="password1" type="password" placeholder="Enter Password"></input>                                
                             </div>
                             <div class="field">
                                 <label>Confirm Password</label>
-                                <input name="password2" id="password2" type="password" placeholder="Enter Username"></input>                                
+                                <input name="password2" id="password2" type="password" placeholder="Confirm Password"></input>                                
                             </div>
                             <div class="grouped fields">
                                 <div class="field">
@@ -268,15 +268,15 @@
                                     </div>
                                     <div class="field">
                                         <label>Enter New Username</label>
-                                        <input type="updatedusername" name="updatedusername" id="updatedusername" placeholder="Enter New Username"></input>
+                                        <input type="text" name="updatedusername" id="updatedusername" placeholder="Enter New Username"></input>
                                     </div>
                                     <div class="field">
                                         <label>Enter New Password</label>
-                                        <input type="updatedpassword1" name="updatedpassword1" id="updatedpassword1" placeholder="Enter New Password"></input>
+                                        <input type="password" name="updatedpassword1" id="updatedpassword1" placeholder="Enter New Password"></input>
                                     </div>
                                     <div class="field">
                                         <label>Confirm New Password</label>
-                                        <input type="updatedpassword2" name="updatedpassword1" id="updatedpassword1" placeholder="Confirm New Password"></input>
+                                        <input type="password" name="updatedpassword1" id="updatedpassword1" placeholder="Confirm New Password"></input>
                                     </div>
 
                             </div>

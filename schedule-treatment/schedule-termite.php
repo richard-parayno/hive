@@ -130,7 +130,7 @@
             
               $dateTimeclass =  new DateTime ($_SESSION['initialtreattermite']);
               $endDate= new DateTime ($_SESSION['initialtreattermite']);
-              $toGetLastDate = newDateTime($_SESSION['initialtreattermtite']);
+              $toGetLastDate = new DateTime($_SESSION['initialtreattermtite']);
               $dateTimeclass->format('Y-m-d');
               $ctr=1;
               while ($ctr<12)
