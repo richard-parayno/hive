@@ -164,7 +164,7 @@
                         <?php
                           $JobOrder = $_SESSION['termite'];
                           require_once('../mysql_connect.php');
-                          $getoccular= "Select * from  Job_Order where JONumber = '{ $JobOrder}'";
+                          $getoccular= "Select * from  Job_Order where JONumber = '{$JobOrder}'";
                           $runquery= mysqli_query($dbc,$getoccular);
                           $gettingData=mysqli_fetch_array($runquery,MYSQLI_ASSOC);
                           $custname = "select *    from employee e where e.employeeNo not In
@@ -186,7 +186,7 @@
                         <?php
                           $JobOrder = $_SESSION['termite'];
                           require_once('../mysql_connect.php');
-                          $getoccular= "Select * from  Job_Order where JONumber = '{ $JobOrder}'";
+                          $getoccular= "Select * from  Job_Order where JONumber = '{$JobOrder}'";
                           $runquery= mysqli_query($dbc,$getoccular);
                           $gettingData=mysqli_fetch_array($runquery,MYSQLI_ASSOC);
                           $custname = "SELECT * 
@@ -208,7 +208,7 @@
                                                                                                                          WHERE ttmsp.date = '{$gettingData['Date']}'))) 
                                           AND e.employeeNo NOT IN (SELECT ov.SupervisedBy 
                                                                      FROM Occular_visits ov 
-                                                                    WHERE ov.Date = '{$gettingData['Date']}');";
+                                                                    WHERE ov.Date = '{$gettingData['Date']}')";
                           $getname = mysqli_query($dbc, $custname);
                           while ($row = mysqli_fetch_array($getname,MYSQLI_ASSOC)){
                             echo '<option value="'.$row['EmployeeNo'].'">'.$row['Name'].'</option>';

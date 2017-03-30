@@ -36,6 +36,7 @@
     $chosenocular = $_POST['oculars'];
     $_SESSION['ocular'] = $chosenocular;
   }
+  
   ?>
   <!-- SIDEBAR START -->
   <div class="ui inverted left vertical sidebar menu">
@@ -155,6 +156,7 @@
                 <form id="assignocular" class="ui form" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
                   <div class="field">
                     <label>Employees </label>
+
                     <select name="client" id="client" class="ui search dropdown">
                       <option value="">Select Employee</option>
                       <?php 
@@ -166,9 +168,9 @@
                         $result = mysqli_query($dbc, $getQuery);
                         $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
 
-                      
+                        
                         require_once('../mysql_connect.php');
-                        $getoccular= "Select * from  occular_visits where Occular_ID = '{$chosenocular}'";
+                        $getoccular= "Select Date from  occular_visits where Occular_ID = '{$chosenocular}'";
                         $runquery= mysqli_query($dbc,$getoccular); 
                         $gettingData=mysqli_fetch_array($runquery,MYSQLI_ASSOC);
                         $custname = "SELECT * 
@@ -190,7 +192,7 @@
                                                                                                                          WHERE ttmsp.date = '{$gettingData['Date']}'))) 
                                           AND e.employeeNo NOT IN (SELECT ov.SupervisedBy 
                                                                      FROM Occular_visits ov 
-                                                                    WHERE ov.Date = '{$gettingData['Date']}');";
+                                                                    WHERE ov.Date = '{$gettingData['Date']}')";
                         $getname = mysqli_query($dbc, $custname);
                         while ($row = mysqli_fetch_array($getname,MYSQLI_ASSOC)){
                           echo '<option value="'.$row['EmployeeNo'].'">'.$row['Name'].'</option>';

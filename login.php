@@ -56,6 +56,12 @@
               $_SESSION['currentUser'] = $username;
               $_SESSION['currentType'] = $userType;
               header("Location: http://".$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'])."/operations-index.php");
+            } else if ($userType == 3) {
+              ob_start();
+              session_start();
+              $_SESSION['currentUser'] = $username;
+              $_SESSION['currentType'] = $userType;
+              header("Location: http://".$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'])."/admin-index.php");
             }
           }
         }
