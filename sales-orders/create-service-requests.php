@@ -86,7 +86,7 @@
   <div class="pusher">
     <!-- TOP BAR START-->
     <div class="sixteen wide column">
-      <div class="ui top menu">
+      <div class="ui sticky top menu">
         <a class="ui item launch">
           <i class="sidebar icon"></i>
           Menu
@@ -102,38 +102,12 @@
           </div>
         </div>
         <div class="right menu ">
-          <a class="ui labeled item notifications">
-            Notifications
-          </a>
         </div>
       </div>
     </div>
     <!-- TOP BAR END -->
     <div class="ui basic padded segment">
       <div class="ui relaxed grid">
-        <!-- NOTIFICATION FEED START -->
-        <div class="ui special popup">
-          <div class="eight wide column center aligned grid">
-            <div class="ui small feed">
-              <h4 class="ui header">Notifications</h4>
-              <div class="event">
-                <div class="content">
-                  <div class="summary">
-                    Ocular Inspection for <a>Job Order 1234</a> has been accomplished.
-                  </div>
-                </div>
-              </div>
-              <div class="event">
-                <div class="content">
-                  <div class="summary">
-                    <a>Job Order 1234</a> has been accomplished.
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- NOTIFICATION FEED END -->
 
         <!-- FORM SUBMITTION 1 START-->
         <?php

@@ -34,7 +34,7 @@
     <div class="ui inverted left vertical sidebar menu" id="sidebar">
       <div class="item">
         <a class="ui logo icon image" href="#">
-          <!--<img src="assets/logo.png">-->
+
         </a>
         <a href="#">
           <b class="centered">Hive Resource Management System</b>
@@ -97,7 +97,7 @@
     <div class="pusher">
       <!-- TOP BAR START-->
       <div class="sixteen wide column">
-        <div class="ui top menu" id="topbar">
+        <div class="ui sticky top menu" id="topbar">
           <a class="ui item launch">
             <i class="sidebar icon"></i> Menu
           </a>
@@ -110,10 +110,7 @@
             </div>
           </div>
           <div class="right menu ">
-            <a class="ui labeled item notifications">
-            Notifications
-            <!-- -->
-          </a>
+            
           </div>
         </div>
       </div>
@@ -165,6 +162,8 @@
           ?>
 
           <!-- OCULAR STATUS START -->
+
+
           <div class="sixteen wide centered column">
             <div class="ui center aligned segment">
               <h3 class="ui header">Ocular Status of Service Requests</h3>
@@ -205,7 +204,6 @@
                         </div>
                       </div>
                       <button class="positive ui primary button" id="termite-button" name="submit1">Schedule Termite Treatment</button>
-                      <div class="ui error message"></div>
                     </form>
                   </div>
                 </div>
@@ -246,7 +244,6 @@
                         </div>
                       </div>
                       <button class="positive ui primary button" id="household-button" name="submit2">Schedule Household Treatment</button>
-                      <div class="ui error message"></div>
                     </form>
                   </div>
                 </div>
@@ -276,7 +273,75 @@
 
     <!-- scripts -->
     <script src="dashboard.js"></script>
-    <script src="dashboard6.js"></script>
+    <script type="text/javascript">
+      $('#household')
+        .form({
+          inline: true,
+          fields: {
+            householdoculars: {
+              identifier: 'householdoculars',
+              rules: [
+                {
+                  type   : 'empty',
+                  prompt : 'You must choose a Household Ocular to schedule.'
+                }
+              ]
+            },
+            initialtreathousehold: {
+              identifier: 'initialtreathousehold',
+              rules: [
+                {
+                  type   : 'empty',
+                  prompt : 'You must enter the Date of Initial Treatment.'
+                }
+              ]
+            }
+          }
+        })
+      ;
+      $('#termite')
+        .form({
+          inline: true,          
+          fields: {
+            termiteoculars: {
+              identifier: 'termiteoculars',
+              rules: [
+                {
+                  type   : 'empty',
+                  prompt : 'You must choose a Termite Ocular to schedule.'
+                }
+              ]
+            },
+            initialtreattermite: {
+              identifier: 'initialtreattermite',
+              rules: [
+                {
+                  type   : 'empty',
+                  prompt : 'You must enter the Date of Initial Treatment.'
+                }
+              ]
+            }
+            
+          }
+        })
+      ;
+      $('#assignocular')
+        .form({
+          inline: true,          
+          fields: {
+            client: {
+              identifier: 'client',
+              rules: [
+                {
+                  type   : 'empty',
+                  prompt : 'You must choose a someone to do the ocular.'
+                }
+              ]
+            }
+          }
+        })
+      ;
+    </script>
 
 </body>
 

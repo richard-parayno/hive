@@ -71,7 +71,7 @@
   <div class="pusher">
     <!-- TOP BAR START-->
     <div class="sixteen wide column">
-      <div class="ui top menu">
+      <div class="ui sticky top menu">
         <a class="ui item launch">
           <i class="sidebar icon"></i>
           Menu

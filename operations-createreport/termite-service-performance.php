@@ -74,7 +74,7 @@
       <div class="pusher">
         <!-- TOP BAR START-->
         <div class="sixteen wide column">
-          <div class="ui top menu">
+          <div class="ui sticky top menu">
             <div class="ui header item launch button">
                 <i class="icon list layout"></i>
             </div>

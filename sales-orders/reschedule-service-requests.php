@@ -120,7 +120,7 @@
   <div class="pusher">
     <!-- TOP BAR START-->
     <div class="sixteen wide column">
-      <div class="ui top menu">
+      <div class="ui sticky top menu">
         <a class="ui item launch">
           <i class="sidebar icon"></i>
           Menu
@@ -136,40 +136,12 @@
           </div>
         </div>
         <div class="right menu ">
-          <a class="ui labeled item notifications">
-            Notifications
-
-          </a>
         </div>
       </div>
     </div>
     <!-- TOP BAR END -->
     <div class="ui basic padded segment">
       <div class="ui relaxed grid">
-        <!-- NOTIFICATION FEED START -->
-        <div class="ui special popup">
-          <div class="eight wide column center aligned grid">
-            <div class="ui small feed">
-              <h4 class="ui header">Notifications</h4>
-              <div class="event">
-                <div class="content">
-                  <div class="summary">
-                    Ocular Inspection for <a>Job Order 1234</a> has been accomplished.
-                  </div>
-                </div>
-              </div>
-              <div class="event">
-                <div class="content">
-                  <div class="summary">
-                    <a>Job Order 1234</a> has been accomplished.
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- NOTIFICATION FEED END -->
-
         <div class="eight wide centered column">
           <div class="ui padded segment">
             <h3 class="ui centered header">Reschedule Service Requests</h3>
@@ -224,8 +196,7 @@
                   </div>
                 </div>
               </div>
-              <button class="ui primary button" type="submit">Submit</button>
-              <div class="ui error message"></div>
+              <button class="positive ui primary button" type="submit">Submit</button>
             </form>
           </div>
         </div>
@@ -238,7 +209,121 @@
 
   <!-- scripts -->
   <script src="../dashboard.js"></script>
-  <script src="../dashboard3.js"></script>
+  <script type="text/javascript">
+    $('#reschedform')
+      .form({
+        inline: true,
+        fields: {
+          clientselect: {
+            identifier: 'clientselect',
+            rules: [
+              {
+                type   : 'empty',
+                prompt : 'You must select a client.'
+              }
+            ]
+          },
+          treatmenttype: {
+            identifier: 'treatmenttype',
+            rules: [
+              {
+                type   : 'empty',
+                prompt : 'You must select a treatment type.'
+              }
+            ]
+          },
+          reschedulethis: {
+            identifier: 'reschedulethis',
+            rules: [
+              {
+                type   : 'empty',
+                prompt : 'You must select the date of the service request to be rescheduled.'
+              }
+            ]
+          },
+          newdate: {
+            identifier: 'newdate',
+            rules: [
+              {
+                type   : 'empty',
+                prompt : 'You must enter a new date.'
+              }
+            ]
+          }
+        }
+      })
+    ;
+
+    $('#generalform')
+      .form({
+        inline: true,        
+        fields: {
+          aetype: {
+            identifier: 'aetype',
+            rules: [
+              {
+                type   : 'empty',
+                prompt : 'You must select an Account Executive.'
+              }
+            ]
+          },
+          Date: {
+            identifier: 'Date',
+            rules: [
+              {
+                type   : 'empty',
+                prompt : 'You must choose a date.'
+              }
+            ]
+          },
+          Atype: {
+            identifier: 'Atype',
+            rules: [
+              {
+                type   : 'checked',
+                prompt : 'You must choose the job type.'
+              }
+            ]
+          },
+          newdate: {
+            identifier: 'newdate',
+            rules: [
+              {
+                type   : 'empty',
+                prompt : 'You must enter a new date.'
+              }
+            ]
+          }
+        }
+      })
+    ;
+
+    $('#ocularform')
+      .form({
+        inline: true,
+        fields: {
+          daterequested: {
+            identifier: 'daterequested',
+            rules: [
+              {
+                type   : 'empty',
+                prompt : 'You must enter the ocular date requested.'
+              }
+            ]
+          },
+          contactperson: {
+            identifier: 'contactperson',
+            rules: [
+              {
+                type   : 'empty',
+                prompt : 'You must enter a contact person.'
+              }
+            ]
+          }
+        }
+      })
+    ;
+  </script>
 
 </body>
 </html>

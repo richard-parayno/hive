@@ -19,13 +19,9 @@ $(document).ready(function() {
     });
 });
 
-$('.notifications')
-    .popup({
-        popup: $('.special.popup'),
-        on: 'click',
-        position: 'bottom right'
-    });
-
+$(".ui.sticky")
+  .sticky();
+  
 
 
 $(".ui.launch").click(function() {

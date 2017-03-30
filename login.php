@@ -10,12 +10,11 @@
     <script src="bower_components/fullcalendar/dist/fullcalendar.min.js"></script>
     <link href="bower_components/fullcalendar/dist/fullcalendar.min.css" rel="stylesheet" type="text/css" />
     <link href="bower_components/fullcalendar/dist/fullcalendar.print.css" rel="stylesheet" type="text/css" />
-    <script src="../bower_components/moment/moment.js"></script>
+    <script src="bower_components/moment/moment.js"></script>
 
     <style type="text/css">
       .column {
         margin-top: 100px;
-        max-width: 450px;
       }
 
       body {
@@ -30,24 +29,11 @@
   </head>
   <?php
     require_once('mysql_connect.php');
-
-
-
     if (isset($_POST['submit'])) {
-      echo $_POST['username'];
-      echo "HI RICHARD";
 
-      if (empty($_POST['username'])) {
-        echo "<h1> EMPTY </h1>";
-      } else $username = $_POST['username'];
+      $username = $_POST['username'];
+      $password = $_POST['password'];
 
-      if (empty($_POST['password'])) {
-        echo "<h1> EMPTY </h1>";
-
-      } else $password = $_POST['password'];
-
-      echo "username = {$username}";
-      echo "password = {$password}";
       if (isset($username)) {
         if (isset($password)) {
           $getUserType = "SELECT UserType FROM users WHERE Username = '{$username}' AND Password = '{$password}'";
@@ -72,7 +58,6 @@
               header("Location: http://".$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'])."/operations-index.php");
             }
           }
-
         }
       }
 
@@ -83,23 +68,51 @@
 
 
   <body>
-    <div class="ui middle aligned center aligned grid">
-      <div class="column">
+    <div class="ui center aligned grid">
+      <div class="six wide column">
         <!-- TODO: Redesign AFXtrim Logo -->
         <!--<img src="assets/logo.png">-->
         <h2 class="ui header" id="header">Hive Resource Management System</h2>
-        <form class="ui large form" method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
-          <div class="ui stacked segment">
+        <form id="login" class="ui large form attached stacked segment" method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
           <div class="field">
             <input type="text" name="username" placeholder="Username:"></input>
           </div>
           <div class="field">
             <input type="password" name="password" placeholder="Password:"></input>
           </div>
-          <button class="ui button primary" type="submit" name="submit">Login</button>
-          </div>
+          <button class="positive ui button primary" type="submit" name="submit">Login</button>
         </form>
-
+        <div class="ui bottom attached warning message">
+          <i class="icon help"></i>
+          New User? Please contact the administrator to create an account.
+        </div>
       </div>
   </body>
+  <script type='text/javascript'>
+    $('#login')
+    .form({
+      inline: true,
+      fields: {
+        username: {
+          identifier: 'username',
+          rules: [
+            {
+              type   : 'empty',
+              prompt : 'You must enter a username.'
+            }
+          ]
+        },
+        password: {
+          identifier: 'password',
+          rules: [
+            {
+              type   : 'empty',
+              prompt : 'You must enter a password.'
+            }
+          ]
+        }
+      }
+    })
+    ;
+  </script>
 </html>

@@ -71,7 +71,7 @@
   <div class="pusher">
     <!-- TOP BAR START-->
     <div class="sixteen wide column">
-      <div class="ui top menu">
+      <div class="ui sticky top menu">
         <a class="ui item launch">
           <i class="sidebar icon"></i>
           Menu
@@ -80,41 +80,13 @@
           Operations Department
         </div>
         <div class="right menu ">
-          <a class="ui labeled item notifications">
-            Notifications
-          </a>
+
         </div>
       </div>
     </div>
     <!-- TOP BAR END -->
     <div class="ui basic padded segment">
       <div class="ui relaxed grid">
-        <!-- NOTIFICATION FEED START -->
-        <div class="ui special popup">
-          <div class="eight wide column center aligned grid">
-            <div class="ui small feed">
-              <h4 class="ui header">Notifications</h4>
-              <div class="event">
-                <div class="content">
-                  <div class="summary">
-                    Ocular Inspection for <a>Job Order 1234</a> has been accomplished.
-                  </div>
-                </div>
-              </div>
-              <div class="event">
-                <div class="content">
-                  <div class="summary">
-                    <a>Job Order 1234</a> has been accomplished.
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- NOTIFICATION FEED END -->
-
-
-
         <!-- Operations Dashboard START -->
         <div class="sixteen wide centered column">
           <div class="ui center aligned segment">
@@ -279,7 +251,81 @@
 
   <!-- MAIN CONTENT END -->
   <script src="dashboard.js"></script>
-  <script src="dashboard5.js"></script>
+  <script type="text/javascript">
+    $('#oculars').chained('#servicetypes');
+    $('#ocularnosupervisor')
+      .form({
+        fields: {
+          servicetypes: {
+            identifier: 'servicetypes',
+            rules: [
+              {
+                type   : 'empty',
+                prompt : 'You must choose the service type.'
+              }
+            ]
+          },
+          oculars: {
+            identifier: 'oculars',
+            rules: [
+              {
+                type   : 'empty',
+                prompt : 'You must select an ocular request.'
+              }
+            ]
+          }
+        }
+      })
+    ;
+
+    $('#termitenoteam')
+      .form({
+        fields: {
+          termite: {
+            identifier: 'termite',
+            rules: [
+              {
+                type   : 'empty',
+                prompt : 'You must select a Termite Treatment without a team.'
+              }
+            ]
+          }
+        }
+      })
+    ;
+
+    $('#householdnoteam')
+      .form({
+        fields: {
+          household: {
+            identifier: 'household',
+            rules: [
+              {
+                type   : 'empty',
+                prompt : 'You must select a Household Treatment without a team.'
+              }
+            ]
+          }
+        }
+      })
+    ;
+
+    $('#gsnoteam')
+      .form({
+        fields: {
+          generalservice: {
+            identifier: 'generalservice',
+            rules: [
+              {
+                type   : 'empty',
+                prompt : 'You must select a General Service without a team.'
+              }
+            ]
+          }
+        }
+      })
+    ;
+  </script>
 
 </body>
 </html>
