@@ -30,8 +30,8 @@
       if ($_SESSION['currentType'] != 2) {
         header("Location: http://".$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'])."/../login.php");
       }
-      if (!isset($_POST['submit2']))
-        header("Location: http://".$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'])."/../operations-index.php");
+      //if (!isset($_POST['submit2']))
+        //header("Location: http://".$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'])."/../operations-index.php");
         
       if (isset($_POST['termite'])) {
         $termite = $_POST['termite'];
@@ -103,8 +103,8 @@
         $run2=mysqli_query($dbc,$CreateTeam);
         $getNewTeam = "Select TeamId from termite_team order by teamId DESC LIMIT 1";
         $run7=mysqli_query($dbc,$getNewTeam);
-        $data= mysqli_fetch_array($run3,MYSQLI_ASSOC);
-        $Teamid = $data['TeamIdNo'];
+        $data= mysqli_fetch_array($run7,MYSQLI_ASSOC);
+        $Teamid = $data['TeamId'];
         $addSup=" Insert into termiteteammembers (EmployeeNo, TermiteTeamId) values ('{$Supervisor}', '{$Teamid}')";
         $addAcc=" Insert into termiteteammembers (EmployeeNo, TermiteTeamId) values ('{$AccountExecutive}', '{$Teamid}')";
         $addmem1=" Insert into termiteteammembers (EmployeeNo, TermiteTeamId) values ('{$Employee1}', '{$Teamid}')";
@@ -117,6 +117,11 @@
         $run5=mysqli_query($dbc,$addmem3);
         $addtoItemList="insert into item_list (Inventory_ProductID,TermiteIDno) values ('{$item}','{$TermiteNum}'";
         $minusInventory= "UPDATE inventory set quantity= quantity-'{$quantity}' where ProductID = '{$item}'";
+        $getItem = "Select * from item_list where ProductID = '{$item}'";
+        $a= mysqli_query($dbc,getItem);
+        $ItemData = mysqli_fetch_array($a,MYSQLI_ASSOC);
+        $insertIntoAudit = "insert into audit_table_inventory(Product_ID,Product_Name,Brand_Name,Quantity_Used) 
+        values ('{$item}','{$ItemData['ProductName']}','{$ItemData['ItemBrand']}','{$quantity}',";
         $r=mysqli_query($dbc,$minusInventory);
         $a=mysqli_query($dbc,$addtoItemList);
       } 
@@ -208,7 +213,7 @@
                                                                                                                          WHERE ttmsp.date = '{$gettingData['Date']}'))) 
                                           AND e.employeeNo NOT IN (SELECT ov.SupervisedBy 
                                                                      FROM Occular_visits ov 
-                                                                    WHERE ov.Date = '{$gettingData['Date']}' and ov.SupervisedBy is not NULL)";
+                                                                    WHERE ov.Date = '{$gettingData['Date']}' and ov.Status = 'Active' and ov.SupervisedBy IS NOT NULL)";
                           $getname = mysqli_query($dbc, $custname);
                           while ($row = mysqli_fetch_array($getname,MYSQLI_ASSOC)){
                             echo '<option value="'.$row['EmployeeNo'].'">'.$row['Name'].'</option>';
@@ -246,7 +251,7 @@
                                                                                                                          WHERE ttmsp.date = '{$gettingData['Date']}'))) 
                                           AND e.employeeNo NOT IN (SELECT ov.SupervisedBy 
                                                                      FROM Occular_visits ov 
-                                                                    WHERE ov.Date = '{$gettingData['Date']}');";
+                                                                    WHERE ov.Date = '{$gettingData['Date']}' and ov.Status = 'Active')";
                           $getname = mysqli_query($dbc, $custname);
                           while ($row = mysqli_fetch_array($getname,MYSQLI_ASSOC)){
                             echo '<option value="'.$row['EmployeeNo'].'">'.$row['Name'].'</option>';
@@ -284,7 +289,7 @@
                                                                                                                          WHERE ttmsp.date = '{$gettingData['Date']}'))) 
                                           AND e.employeeNo NOT IN (SELECT ov.SupervisedBy 
                                                                      FROM Occular_visits ov 
-                                                                    WHERE ov.Date = '{$gettingData['Date']}');";
+                                                                    WHERE ov.Date = '{$gettingData['Date']}' and ov.Status = 'Active')";
                           $getname = mysqli_query($dbc, $custname);
                           while ($row = mysqli_fetch_array($getname,MYSQLI_ASSOC)){
                             echo '<option value="'.$row['EmployeeNo'].'">'.$row['Name'].'</option>';

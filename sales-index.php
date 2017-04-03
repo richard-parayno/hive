@@ -9,6 +9,7 @@
   <link href="bower_components/fullcalendar/dist/fullcalendar.min.css" rel="stylesheet" type="text/css" />
   <link href="bower_components/fullcalendar/dist/fullcalendar.print.css" rel="stylesheet" media="print" type="text/css" />
   <script src="bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="bower_components/chained/jquery.chained.js"></script>
   <script src="bower_components/semantic/dist/semantic.min.js"></script>
   <script src="bower_components/moment/moment.js"></script>
   <script src="bower_components/fullcalendar/dist/fullcalendar.min.js"></script>
@@ -194,22 +195,24 @@
                       <div class="field">
                         <label>Select Household Ocular</label>
                         <select class="ui search dropdown" name="householdoculars">
+                          
                         <option value="">Select Household Ocular to Schedule</option>                      
-                        <?php
+                        <?php 
                         require_once('mysql_connect.php');
-                        $getQuery2 = "SELECT Occular_Id, Name
+                        $getQuery2 = "SELECT Occular_Id, Name, DATE(ov.date) AS Date, Area_Infection
                                         FROM occular_visits ov
                                         JOIN customer c
                                           ON ov.CustomerId=c.CustomerId
-                                       WHERE ov.Recommendation='Household Services'and Status = 'Accomplished'";
+                                       WHERE ov.Recommendation='Household Services' and ov.Status = 'Accomplished'";
                         $process2 = mysqli_query($dbc,$getQuery2);
 
-                        while ($row = mysqli_fetch_array($process, MYSQLI_ASSOC)) {
-                          echo "<option value='{$row['Occular_Id']}'>Client: {$row['Name']}</option>";
+                        while ($row = mysqli_fetch_array($process2, MYSQLI_ASSOC)) {
+                          echo "<option value=\"{$row['Occular_Id']}\">Date: {$row['Date']} | Client: {$row['Name']} | Infection Level: {$row['Area_Infection']} </option>";
                         }
-                        ?>
-                        
-                      </select>
+                        ?> 
+                      </select> 
+
+
                       </div>
                       <div class="field">
                         <label>Date of Initial Treatment</label>
@@ -302,22 +305,7 @@
           }
         })
       ;
-      $('#assignocular')
-        .form({
-          inline: true,          
-          fields: {
-            client: {
-              identifier: 'client',
-              rules: [
-                {
-                  type   : 'empty',
-                  prompt : 'You must choose a someone to do the ocular.'
-                }
-              ]
-            }
-          }
-        })
-      ;
+      
     </script>
 
 </body>

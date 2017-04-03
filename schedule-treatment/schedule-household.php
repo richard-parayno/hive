@@ -3,7 +3,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-  <title>AF-Xtrim Services</title>
+  <title>Hive Resource Management System</title>
   <link href="../bower_components/semantic/dist/semantic.min.css" rel="stylesheet" type="text/css" />
   <link href="../bower_components/fullcalendar/dist/fullcalendar.min.css" rel="stylesheet" type="text/css" />
   <link href="../bower_components/fullcalendar/dist/fullcalendar.print.css" rel="stylesheet" media="print" type="text/css" />
@@ -16,6 +16,11 @@
   <script src="../bower_components/semantic-ui-calendar/dist/calendar.min.js"></script>
   <?php
      ob_start();
+     session_start();
+     if (isset($_POST['householdoculars'])) 
+      $_SESSION['householdoculars'] = $_POST['householdoculars'];
+    if (isset($_POST['initialtreathousehold']))
+      $_SESSION['initialtreathousehold'] = $_POST['initialtreathousehold'];
   ?>
 
 </head>
@@ -32,20 +37,20 @@
         <b class="centered">AF-Xtrim Services</b>
       </a>
     </div>
-    <a class="item" href="sales-index.php">
+    <a class="item" href="../sales-index.php">
       <i class="home icon"></i>
       Sales Dashboard
     </a>
-    <a class="item" href="sales-orders/create-service-requests.php">
+    <a class="item" href="../sales-orders/create-service-requests.php">
       Create Service Requests
     </a>
-    <a class="item" href="sales-orders/reschedule-service-requests.php">
+    <a class="item" href="../sales-orders/reschedule-service-requests.php">
       Reschedule Service Requests
     </a>
-    <a class="item" href="sales-chemicals/chemical.php">
+    <a class="item" href="../sales-chemicals/chemical.php">
       Chemical Inventory
     </a>
-    <a class="item" href="sales-clients/clients-list.php">
+    <a class="item" href="../sales-clients/clients-list.php">
       View Clients
     </a>
     <div class="item">
@@ -53,27 +58,27 @@
         Reports
       </div>
       <div class="menu">
-        <a class="item" href="sales-reports/termite-treatment-report.php">
+        <a class="item" href="../sales-reports/termite-treatment-report.php">
           Termite Treatment Report
         </a>
-        <a class="item" href="sales-reports/household-treatment-report.php">
+        <a class="item" href="../sales-reports/household-treatment-report.php">
           Household Treatment Report
         </a>
-        <a class="item" href="sales-reports/general-services-report.php">
+        <a class="item" href="../sales-reports/general-services-report.php">
           General Services Report
         </a>
-        <a class="item" href="sales-reports/list-of-oculars-report.php">
+        <a class="item" href="../sales-reports/list-of-oculars-report.php">
           List of Oculars Report
         </a>
-        <a class="item" href="sales-reports/accomplished-oculars-report.php">
+        <a class="item" href="../sales-reports/accomplished-oculars-report.php">
           Accomplished Oculars Report
         </a>
-        <a class="item" href="sales-resports/unaccomplished-oculars-report.php">
+        <a class="item" href="../sales-resports/unaccomplished-oculars-report.php">
           Unaccomplished Oculars Report
         </a>
       </div>
     </div>
-    <a class="item" href="login.php">
+    <a class="item" href="../login.php">
       Log Out
     </a>
   </div>
@@ -96,45 +101,19 @@
           <div class="ui breadcrumb">
 						<a class="section" href="../sales-index.php">Sales Dashboard</a>
 						<i class="right angle icon divider"></i>
-						<a class="section" href="../sales-index.php">Schedule Termite Treatment</div>
+						<a class="section" href="../sales-index.php">Schedule Termite Treatment</a>
             <i class="right angle icon divider"></i>
-            <div class="active section">Confirm Termite Treatment</div>
+            <div class="active section">Confirm Household Treatment</div>
 					</div>
         </div>
         <div class="right menu ">
-          <a class="ui labeled item notifications">
-            Notifications
-            <div class="ui basic red circular label">10</div>
-          </a>
+        
         </div>
       </div>
     </div>
     <!-- TOP BAR END -->
     <div class="ui basic padded segment">
       <div class="ui relaxed grid">
-        <!-- NOTIFICATION FEED START -->
-        <div class="ui special popup">
-          <div class="eight wide column center aligned grid">
-            <div class="ui small feed">
-              <h4 class="ui header">Notifications</h4>
-              <div class="event">
-                <div class="content">
-                  <div class="summary">
-                    Ocular Inspection for <a>Job Order 1234</a> has been accomplished.
-                  </div>
-                </div>
-              </div>
-              <div class="event">
-                <div class="content">
-                  <div class="summary">
-                    <a>Job Order 1234</a> has been accomplished.
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- NOTIFICATION FEED END -->
             <!-- Cancel Button  -->
                <!-- accept Button -->
           <?php
@@ -142,13 +121,13 @@
       if (isset($_POST['accept'])){
        require_once('../mysql_connect.php');
         // $toSchedule = $_SESSION['termiteocular'] ;
-        $toSchedule =4;
+        $toSchedule = $_SESSION['householdoculars'];
        $query="Select * from occular_visits where occular_id = '{$toSchedule}' ";
         $wer =  mysqli_query($dbc,$query); 
         $roww= mysqli_fetch_array($wer, MYSQLI_ASSOC);  
         $callername= $roww['CustomerID']; 
         
-        $callername= $roww['CustomerID'];   
+       // $callername= $roww['CustomerID'];   
         $getAreaType = "Select Area_type from pending_order where pending_order_id = '{$roww['pending_order']}'";
         $run= mysqli_query($dbc,$getAreaType);
         $getIt=mysqli_fetch_array($run,MYSQLI_ASSOC);
@@ -156,8 +135,12 @@
         // $dateTimeclass = new DateTime ($_SESSION['date']);
                 // $endDate= new DateTime($_SESSION['date']);
            //$dt = new DateTime("2015-11-01 00:00:00"
-        $dateTimeclass = new DateTime("2018-12-01 00:00:00");
-        $query="insert into job_order (StartDate,EndDate,CustomerId,occular_id,structure_type,job_type, job_status) values ('{$dateTimeclass->format('Y-m-d')}','{$dateTimeclass->format('Y-m-d')}','{$callername}', '{$toSchedule}', '{$stype}', 'Household Services', 'Ongoing')";
+        
+        $dateTimeclass = new DateTime($_SESSION['initialtreathousehold']);
+        echo " WRFCF " .$callername;
+        $query="insert into job_order (StartDate,EndDate,CustomerId,occular_id,structure_type,job_type, job_status) 
+        values ('{$dateTimeclass->format('Y-m-d')}','{$dateTimeclass->format('Y-m-d')}',
+        '{$callername}', '{$toSchedule}', '{$stype}', 'Household Services', 'Ongoing')";
         $result=mysqli_query($dbc,$query);
         $jon= " select JONumber FROM  job_order ORDER BY JONumber DESC LIMIT 1";
         $placejon= mysqli_query($dbc, $jon); 
@@ -167,6 +150,8 @@
         $query2= "insert into householdpesttreatment (JobOrder_JONumber) values ('$lastJO')"; 
         $result2= mysqli_query($dbc,$query2);
      
+        header("Location:  http://".$_SERVER['HTTP_HOST']. dirname($_SERVER['PHP_SELF']). "../../sales-index.php");
+        
       }
 
 
@@ -191,7 +176,7 @@
         //('{$aetype}'
         // $toSchedule = $_SESSION['termiteocular'] ;
         // remove $toshed=4 once session from sales-index works :) 
-        $toSchedule = 4; 
+        $toSchedule = $_POST['householdoculars']; 
         $query="Select * from occular_visits where occular_id = '{$toSchedule}' "; 
         $run =  mysqli_query($dbc,$query);  
       $getData=mysqli_fetch_array($run,MYSQLI_ASSOC);
@@ -226,13 +211,13 @@
         <br> </br>
             
             <div class="ui horizontal divider">
-             <h3 class="ui header">Household Service Schedule Details</h3>
-        </div>
+             Household Service Schedule Details
+            </div>
               <form class="ui form" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
                 <?php 
                   // $toSchedule = new DateTime ($_SESSION['date']);
                   // $endDate= new DateTime($_SESSION['date']);
-                    $toSchedule  = new DateTime("2018-12-01 00:00:00");
+                    $toSchedule  = new DateTime($_POST['initialtreathousehold']);
                 
                echo "<b> The Household Service is to be scheduled at </b>".$toSchedule->format('m-d-Y');
                echo "<br>";

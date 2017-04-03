@@ -230,7 +230,7 @@
                         $datetri = new DateInterval('P30D');
                         $toSchedule->add($datetri);  
                         //echo "Peter is " . $age['Peter'] . " years old.";
-                        $toDisplay = $counter+1;
+                        $toDisplay = $counter;
                         echo "<b> Termite Treatment # </b>" .$toDisplay . " is on " .$toSchedule->format('m-d-Y');
                         echo "<br>";
                       } 

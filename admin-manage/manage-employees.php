@@ -85,24 +85,162 @@
       <!-- TOP BAR END -->
       <div class="ui basic padded segment">
         <div class="ui relaxed grid">
-          <div class="sixteen wide centered column">
-            <div class="ui center aligned segment">
-              <h3 class="ui header">Manage Employees</h3>
+          <div class="sixteen wide column">
+            <div class="ui segment">
+              <h3 class="ui center aligned header">Manage Employees</h3>
               <div class="ui divider">
               </div>
               <div class="ui two column doubling stackable grid container">
                 <div class="eight wide column">
-                  <div class="ui center aligned segment">
-                    <h3 class="ui header">Add Employee<h3>
+                  <div class="ui segment">
+                    <h3 class="ui center aligned header">Add Employee<h3>
                     <div class="ui divider"></div>
+                        <form id="addaccount" class="ui form" method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+                            <div class="field">
+                                <label>Employee Name</label>
+                                <input name="employeename" id="employeename" type="text" placeholder="Enter Employee Name"></input>                                
+                            </div>
+                            <div class="field">
+                                <label>Contact Number</label>
+                                <input name="number" id="number" type="number" placeholder="Enter Contact Number"></input>                                                                
+                            </div>
+                            <div class="inline fields">
+                              <div class="field">
+                                  <label>Contract Start Date</label>
+                                  <div class="ui calendar" id="mycalendar2">
+                                    <div class="ui input left icon">
+                                      <i class="calendar icon"></i>
+                                      <input type="text" placeholder="Contract Start Date" name="contractstart">
+                                    </div>
+                                  </div>                                
+                              </div>
+                              <div class="field">
+                                  <label>Contract End Date</label>
+                                  <div class="ui calendar" id="mycalendar2">
+                                    <div class="ui input left icon">
+                                      <i class="calendar icon"></i>
+                                      <input type="text" placeholder="Contract End Date" name="contractend">
+                                    </div>
+                                  </div>                                
+                              </div>
+                            </div>
+                            <div class="grouped fields">
+                                <div class="field">
+                                    <label>Employee Position</label>
+                                    <div class="ui radio checkbox">
+                                        <input type="radio" name="accounttype" value="Sales">
+                                        <label>Sales and Marketing Executive</label>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <div class="ui radio checkbox">
+                                        <input type="radio" name="accounttype" value="Operations">
+                                        <label>Operations Executive</label>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <div class="ui radio checkbox">
+                                        <input type="radio" name="accounttype" value="Accountant">
+                                        <label>Accountant</label>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <div class="ui radio checkbox">
+                                        <input type="radio" name="accounttype" value="Supervisor">
+                                        <label>Supervisor</label>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <div class="ui radio checkbox">
+                                        <input type="radio" name="accounttype" value="Systems Administrator">
+                                        <label>System Administrator</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="positive ui button primary" type="submit" name="submit1">Submit</button>
+                        </form>
                   </div>
                 </div>
                 <div class="eight wide column">
-                  <div class="ui center aligned segment">
-                    <h3 class="ui header">Update Employee<h3>
-                    <div class="ui divider"></div>  
-                  </div>                  
+                  <div class="ui segment">
+                    <h3 class="ui center aligned header">Update Employee<h3>
+                    <div class="ui divider"></div>
+                        <form id="updateaccount" class="ui form" method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+                            <div class="field">
+                                <label>Select an Employee</label>
+                                <select name="existingemployee" id="existingemployee" class="ui search dropdown">  
+                                  <option value="">Select an Employee</option> 
+                                  <?php
+                                    require_once('../mysql_connect.php');
+                                    $query = "SELECT EmployeeNo, Name
+                                                FROM employee";
+                                    $runQuery = mysqli_query($dbc, $query);
+                                    while ($row = mysqli_fetch_array($runQuery, MYSQLI_ASSOC)) {
+                                      echo "option value=\"{$row['EmployeeNo']}\">{$row['Name']}</option>";
+                                    }
+                                  ?>
+                                </select>                            
+                            </div>
+                            <div class="field">
+                                <label>Update Contact Number</label>
+                                <input name="updatednumber" id="updatednumber" type="number" placeholder="Enter Contact Number"></input>                                                                
+                            </div>
+                            <div class="grouped fields">
+                                <div class="field">
+                                    <label>Update Employee Position</label>
+                                    <div class="ui radio checkbox">
+                                        <input type="radio" name="updateaccounttype" value="Sales">
+                                        <label>Sales and Marketing Executive</label>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <div class="ui radio checkbox">
+                                        <input type="radio" name="updateaccounttype" value="Operations">
+                                        <label>Operations Executive</label>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <div class="ui radio checkbox">
+                                        <input type="radio" name="updateaccounttype" value="Accountant">
+                                        <label>Accountant</label>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <div class="ui radio checkbox">
+                                        <input type="radio" name="updateaccounttype" value="Supervisor">
+                                        <label>Supervisor</label>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <div class="ui radio checkbox">
+                                        <input type="radio" name="updateaccounttype" value="Systems Administrator">
+                                        <label>System Administrator</label>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <div class="ui radio checkbox">
+                                        <input type="radio" name="updateaccounttype" value="Retired">
+                                        <label>Retired</label>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <div class="ui radio checkbox">
+                                        <input type="radio" name="updateaccounttype" value="Resigned">
+                                        <label>Resigned</label>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <div class="ui radio checkbox">
+                                        <input type="radio" name="updateaccounttype" value="Inactive">
+                                        <label>Inactive</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="positive ui button primary" type="submit" name="submit1">Submit</button>
+                        </form>
+                  </div>
                 </div>
+                
               </div>
             </div>
           </div>

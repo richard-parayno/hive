@@ -88,6 +88,7 @@ $('#mycalendar2').calendar({
 $("#treatment-type").chained("#client-select");
 $("#reschedule-this").chained("#client-select, #treatment-type");
 
+
 $('#client-select').dropdown({
   onChange: function(val) {
     $('.ui.dropdown').removeClass('disabled');

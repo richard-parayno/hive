@@ -81,9 +81,7 @@
           </div>
         </div>
         <div class="right menu ">
-          <a class="ui labeled item notifications">
-            Notifications
-          </a>
+          
         </div>
       </div>
     </div>

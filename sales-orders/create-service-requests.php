@@ -167,6 +167,9 @@
           elseif ($req == 2) {
             header("Location:  http://".$_SERVER['HTTP_HOST']. dirname($_SERVER['PHP_SELF']). "/occular.php");
           }
+          elseif ($req == 3) {
+            header("Location:  http://".$_SERVER['HTTP_HOST']. dirname($_SERVER['PHP_SELF']). "/occular.php");
+          }
         }
         // FORM SUBMISSION 1 END
         // FORM SUBMISSION 2 START

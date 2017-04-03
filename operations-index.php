@@ -105,7 +105,7 @@
                       <select class="ui search dropdown" id="servicetypes" name="servicetypes">
                         <option value="">Select Service Request Type</option>
                         <option value="Termite Treatment">Termite Treatment</option>
-                        <option value="Household Treatment">Household Treatment</option>
+                        <option value="Household Services">Household Services</option>
                       </select>
                     </div>
                     <div class="field">
@@ -142,14 +142,12 @@
                       <select class="ui search dropdown" name="termite">
                         <option value="">Select Termite Treatment Without Team</option>
                         <?php
-                        $getQuery2 = "SELECT TTSPIDNO, Date, Structure_Type, Name
+                        $getQuery2 = "SELECT TTSPIDNO, DATE(ttsp.Date) as Date , Structure_Type, Name
                                         FROM termitetreatment_serviceperformance ttsp
                                         JOIN job_order jo
                                           ON ttsp.JobORderNo=jo.JONumber
                                         JOIN customer c
                                           ON jo.CustomerId=c.CustomerID
-                                        JOIN termite_team tt
-                                          ON ttsp.TTSPIDNo=tt.TTMSPIDNo
                                        WHERE ttsp.TeamID IS NULL";
                         $result2 = mysqli_query($dbc, $getQuery2);
                         while ($row2 = mysqli_fetch_array($result2, MYSQLI_ASSOC)) {
@@ -253,7 +251,9 @@
   <!-- MAIN CONTENT END -->
   <script src="dashboard.js"></script>
   <script type="text/javascript">
+    $('#oculars').chained('#servicetypes');
     
+
     $('#ocularnosupervisor')
       .form({
         inline: true,        
@@ -331,7 +331,6 @@
       })
     ;
 
-    $('#oculars').chained('#servicetypes');
   </script>
 
 </body>

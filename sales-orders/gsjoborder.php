@@ -236,7 +236,23 @@
 
   <!-- scripts -->
   <script src="../dashboard.js"></script>
-  <script src="../dashboard3.js"></script>
+  <script type="text/javascript">
+    $('#generalform')
+        .form({
+          fields: {
+            Atype: {
+              identifier: 'Atype',
+              rules: [
+                {
+                  type   : 'checked',
+                  prompt : 'You must choose a job type.'
+                }
+              ]
+            }
+          }
+        })
+      ;
+  </script>
 
 </body>
 

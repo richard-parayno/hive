@@ -30,8 +30,8 @@
   if ($_SESSION['currentType'] != 2) {
     header("Location: http://".$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'])."/../login.php");
   }
-  if (!isset($_POST['submit4']))
-    header("Location: http://".$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'])."/../operations-index.php");
+  //if (!isset($_POST['submit4']))
+    //header("Location: http://".$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'])."/../operations-index.php");
         
   if (isset($_POST['generalservice'])) {
     $JobOrder = $_POST['generalservice'];
@@ -197,7 +197,7 @@
                                                                                                                          WHERE ttmsp.date = '{$gettingData['Date']}'))) 
                                           AND e.employeeNo NOT IN (SELECT ov.SupervisedBy 
                                                                      FROM Occular_visits ov 
-                                                                    WHERE ov.Date = '{$gettingData['Date']}' and ov.SupervisedBy is not NULL)";
+                                                                    WHERE ov.Date = '{$gettingData['Date']}' and ov.Status = 'Active' and ov.SupervisedBy IS NOT NULL)";
                         $getname = mysqli_query($dbc, $custname);
                         while ($row = mysqli_fetch_array($getname,MYSQLI_ASSOC)){
                                 echo '<option value="'.$row['EmployeeNo'].'">'.$row['Name'].'</option>';
