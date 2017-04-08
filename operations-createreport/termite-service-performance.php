@@ -74,7 +74,7 @@
       <div class="pusher">
         <!-- TOP BAR START-->
         <div class="sixteen wide column">
-          <div class="ui sticky top menu">
+          <div class="ui top menu">
             <div class="ui header item launch button">
                 <i class="icon list layout"></i>
             </div>
@@ -126,7 +126,7 @@
                 <div class="ui form">
         <form class="ui form" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
               
-                  <div class="field">
+            <div class="field">
 						<label>Acknowledged By:</label>
 						<input type="text" name="Name" placeholder="Acknowledged By:"value="<?php if (isset($_POST['Name']) && !$flag) echo $_POST['Name']; ?>"/>
 				  </div>
@@ -159,10 +159,6 @@
 				  <div class="field">
 						<label>Soil Treatment:</label>
 						<input type="text" name="Name" placeholder="Soil Treatment:"value="<?php if (isset($_POST['Name']) && !$flag) echo $_POST['Name']; ?>"/>
-				  </div>
-				  <div class="field">
-						<label>Upload Blueprint:</label>
-						<input type="file" name="fileToUpload" id="fileToUpload">
 				  </div>
 				  
 				</div>

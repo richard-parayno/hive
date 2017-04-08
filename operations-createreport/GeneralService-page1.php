@@ -3,7 +3,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-  <title>Hive Resource Management System - Create Service Request</title>
+  <title>Hive Resource Management System - Create Ocular Report</title>
   <link href="../bower_components/semantic/dist/semantic.min.css" rel="stylesheet" type="text/css" />
   <script src="../bower_components/jquery/dist/jquery.min.js"></script>
   <script src="../bower_components/semantic/dist/semantic.min.js"></script>
@@ -18,14 +18,8 @@
   <?php
   ob_start();
   session_start();
-  /*
-  if (!isset($_SESSION['currentUser'])) {
-    header("Location: http://".$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'])."/login.php");
-  }
-  if ($_SESSION['currentType'] != 1) {
-    header("Location: http://".$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'])."/login.php");
-  }
-  */
+  
+  
   ?>
 </head>
 <body>
@@ -40,22 +34,22 @@
       <i class="home icon"></i>
       Operations Dashboard
     </a>
-    <div class="item">
+     <div class="item">
       <div class="header">
-        Assign
+        Create Report
       </div>
       <div class="menu">
-        <a class="item" href="operations-assign/assign-generalServices.php">
-          Assign General Services
+        <a class="item" href="household-page1.php">
+          Create Household Report
         </a>
-        <a class="item" href="operations-assign/assign-household.php">
-          Assign Household
+        <a class="item" href="termite-treatment-page1.php">
+          Create Termite Report
         </a>
-        <a class="item" href="operations-assign/assign-occular.php">
-          Assign Ocular
+        <a class="item" href="assign-occular.php">
+          Create General Services Report
         </a>
-        <a class="item" href="operations-assign/assign-termite.php">
-          Assign Termite
+        <a class="item" href="assign-termite.php">
+          Create Ocular Report
         </a>
       </div>
     </div>
@@ -83,7 +77,7 @@
           <div class="ui breadcrumb">
             <a class="section" href="../operations-index.php">Operations Dashboard</a>
             <i class="right angle icon divider"></i>
-            <div class="active section">Household Service Report</div>
+            <div class="active section">Choose Ocular Report</div>
           </div>
         </div>
         <div class="right menu ">
@@ -130,8 +124,8 @@
 
         <div class="sixteen wide centered column ">
           <div class="ui padded segment">
-            <h3 class="ui centered header">Termite Treatment Job Order List</h3>
-            <label> <left align><b> Choose a Job Order service to create a Termite Treatment Service Report for </left></b> </label>
+            <h3 class="ui centered header">General Service List</h3>
+            <label>Choose the number of the General Service you wish to create a report for</label>
             <div class="ui divider">
             </div>
 
@@ -142,6 +136,7 @@
                           <th>ID Number</th>
                           <th>Customer Name</th>
                            <th>Address </th>
+                           <th> Service Type </th>
                            <th>Date</th>
                            
                         </tr>
@@ -149,40 +144,27 @@
                       <tbody>
             <?php
             require_once('../mysql_connect.php');
-          /*  $sql = "SELECT hp.ControlNumber, jo.jonumber, jo.startdate, c.name, po.Address FROM householdpesttreatment hp JOIN job_order jo ON hp.joborder_jonumber = jo.jonumber JOIN customer c ON jo.customerid=c.customerid Join occular_visits ov on jo.Occular_id = ov.occular_id join pending_order po on po.pending_order_id = ov.pending_order"; 
+          $sql = "SELECT gs.GeneralServiceId,jo.jonumber, gs.service_type, jo.startdate, c.name, c.Address FROM general_services gs 
+          		  JOIN job_order jo ON gs.joborder_jonumber = jo.jonumber 
+          		  JOIN customer c ON jo.customerid=c.customerid";
             $qry = mysqli_query($dbc,$sql);
+
             while($row=mysqli_fetch_array($qry,MYSQLI_ASSOC)){
               //<a href=\"clientreport.php?pk={$row['customerId']}\"><div align=\"center\">{$row['name']}
-                   $date= new DateTime ($row['startdate']);
+              $date= new DateTime ($row['startdate']);
               echo "<tr>
-              <td width=\"5%\"><a href=\"household-treatment-service.php?pk={$row['ControlNumber']}\"><div align=\"center\">{$row['ControlNumber']}
+              <td width=\"5%\"><a href=\"general-service-performance.php?pk={$row['jonumber']}\"><div align=\"center\">{$row['jonumber']}
               </div></a></td>
               <td width=\"5%\"><div align=\"center\">{$row['name']}</a>
               </div></a></td>
-              <td width=\"10%\"><div align=\"center\">{$row['Address']}</a>
+              <td width=\"10%\"><div align=\"center\">{$row['Address']}</a>	
+              </div></a></td>
+               <td width=\"10%\"><div align=\"center\">{$row['service_type']}</a>
               </div></a></td>
               <td width=\"10%\"><div align=\"center\">{$date->format('m-d-Y')}</a>
               </div></td>
               </tr>";
               }
-              */
-        //    $sql = "SELECT tt.ttspidno, tt.joborderno, tt.date, c.name,po.Address FROM termitetreatment_serviceperformance tt join job_order jo on jo.jonumber = tt.joborderno join customer c on c.customerid = jo.customerid join occular_visits ov on jo.Occular_id = ov.occular_id join pending_order po on po.pending_order_id = ov.pending_order";
-            $sql = "SELECT jo.jonumber, jo.startdate, c.name, po.Address FROM job_order jo  JOIN customer c ON jo.customerid=c.customerid Join occular_visits ov on jo.Occular_id = ov.occular_id join pending_order po on po.pending_order_id = ov.pending_order where jo.job_type = 'Termite Treatment'"; 
-            $qry = mysqli_query($dbc,$sql);
-            while($row=mysqli_fetch_array($qry,MYSQLI_ASSOC)){
-              $try = $row['jonumber'];
-              $date = new DateTime ($row['startdate']);
-              echo "<tr>
-              <td width=\"5%\"><a href=\"termite-treatment-page2.php?pk={$try}\"><div align=\"center\">{$try}
-              </div></a></td>
-              <td width=\"10%\"><div align=\"center\">{$row['name']}</a>
-              </div></a></td>
-               <td width=\"10%\"><div align=\"center\">{$row['Address']}</a>
-              </div></a></td>
-              <td width=\"10%\"><div align=\"center\">{$date->format('m-d-Y')}</a>
-              </div></td
-              </tr>";
-            }
             ?>
            </tbody>
            </table>

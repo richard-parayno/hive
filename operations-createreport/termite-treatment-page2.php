@@ -18,6 +18,8 @@
   <?php
   ob_start();
   session_start();
+    if (isset($_GET['pk']))
+      $_SESSION['pk'] = $_GET['pk'];
   /*
   if (!isset($_SESSION['currentUser'])) {
     header("Location: http://".$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'])."/login.php");
@@ -83,7 +85,7 @@
           <div class="ui breadcrumb">
             <a class="section" href="../operations-index.php">Operations Dashboard</a>
             <i class="right angle icon divider"></i>
-            <div class="active section">Household Service Report</div>
+            <a class="section" href ="../">Termite Treatment Job Orders</a>
           </div>
         </div>
         <div class="right menu ">
@@ -130,8 +132,8 @@
 
         <div class="sixteen wide centered column ">
           <div class="ui padded segment">
-            <h3 class="ui centered header">Termite Treatment Job Order List</h3>
-            <label> <left align><b> Choose a Job Order service to create a Termite Treatment Service Report for </left></b> </label>
+            <h3 class="ui centered header">Termite Treatment List</h3>
+            <label> <left align><b> Choose a Termite Treatment Service to create a Report for </left></b> </label>
             <div class="ui divider">
             </div>
 
@@ -149,31 +151,15 @@
                       <tbody>
             <?php
             require_once('../mysql_connect.php');
-          /*  $sql = "SELECT hp.ControlNumber, jo.jonumber, jo.startdate, c.name, po.Address FROM householdpesttreatment hp JOIN job_order jo ON hp.joborder_jonumber = jo.jonumber JOIN customer c ON jo.customerid=c.customerid Join occular_visits ov on jo.Occular_id = ov.occular_id join pending_order po on po.pending_order_id = ov.pending_order"; 
+            $joborder = $_SESSION['pk'];
+            $sql = "SELECT tt.ttspidno, tt.joborderno, tt.date, c.name,po.Address FROM termitetreatment_serviceperformance tt join job_order jo on jo.jonumber = tt.joborderno join customer c on c.customerid = jo.customerid join occular_visits ov on jo.Occular_id = ov.occular_id join pending_order po on po.pending_order_id = ov.pending_order where jo.jonumber ='{$joborder}'";
+           // $sql = "SELECT  jo.jonumber, jo.startdate, c.name, po.Address FROM  job_order jo join termitetreatment_serviceperformance tt on tt.joborderno = jo,jonumber JOIN customer c ON jo.customerid=c.customerid Join occular_visits ov on jo.Occular_id = ov.occular_id join pending_order po on po.pending_order_id = ov.pending_order"; 
             $qry = mysqli_query($dbc,$sql);
             while($row=mysqli_fetch_array($qry,MYSQLI_ASSOC)){
-              //<a href=\"clientreport.php?pk={$row['customerId']}\"><div align=\"center\">{$row['name']}
-                   $date= new DateTime ($row['startdate']);
+             // $try = $row['joborderno'];
+              $date = new DateTime ($row['date']);
               echo "<tr>
-              <td width=\"5%\"><a href=\"household-treatment-service.php?pk={$row['ControlNumber']}\"><div align=\"center\">{$row['ControlNumber']}
-              </div></a></td>
-              <td width=\"5%\"><div align=\"center\">{$row['name']}</a>
-              </div></a></td>
-              <td width=\"10%\"><div align=\"center\">{$row['Address']}</a>
-              </div></a></td>
-              <td width=\"10%\"><div align=\"center\">{$date->format('m-d-Y')}</a>
-              </div></td>
-              </tr>";
-              }
-              */
-        //    $sql = "SELECT tt.ttspidno, tt.joborderno, tt.date, c.name,po.Address FROM termitetreatment_serviceperformance tt join job_order jo on jo.jonumber = tt.joborderno join customer c on c.customerid = jo.customerid join occular_visits ov on jo.Occular_id = ov.occular_id join pending_order po on po.pending_order_id = ov.pending_order";
-            $sql = "SELECT jo.jonumber, jo.startdate, c.name, po.Address FROM job_order jo  JOIN customer c ON jo.customerid=c.customerid Join occular_visits ov on jo.Occular_id = ov.occular_id join pending_order po on po.pending_order_id = ov.pending_order where jo.job_type = 'Termite Treatment'"; 
-            $qry = mysqli_query($dbc,$sql);
-            while($row=mysqli_fetch_array($qry,MYSQLI_ASSOC)){
-              $try = $row['jonumber'];
-              $date = new DateTime ($row['startdate']);
-              echo "<tr>
-              <td width=\"5%\"><a href=\"termite-treatment-page2.php?pk={$try}\"><div align=\"center\">{$try}
+              <td width=\"5%\"><a href=\"termite-service-performance.php?pk={$row['ttspidno']}\"><div align=\"center\">{$row['ttspidno']}
               </div></a></td>
               <td width=\"10%\"><div align=\"center\">{$row['name']}</a>
               </div></a></td>
